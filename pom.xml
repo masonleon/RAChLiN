@@ -60,6 +60,9 @@
 		<finalName>basic-struts2</finalName>
 		<plugins>
 			<plugin>
+				<!-- https://www.eclipse.org/jetty/documentation/9.4.x/jetty-maven-plugin.html -->
+				<!-- mvn jetty:run -->
+				<!-- Test site: http://localhost:8080/ais-decode-message-store/index.action -->
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.4.19.v20190610</version>
@@ -73,6 +76,18 @@
 					<scanTargets>
 						<scanTarget>src/main/webapp/WEB-INF/web.xml</scanTarget>
 					</scanTargets>
+				</configuration>
+			</plugin>
+ 			<plugin>
+				<!-- http://tomcat.apache.org/maven-plugin.html -->
+				<!-- mvn tomcat7:run -->
+				<!-- Test site: http://localhost:8080/ais-decode-message-store -->
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<port>8080</port>
+					<path>/${project.artifactId}</path>
 				</configuration>
 			</plugin>
 		</plugins>
