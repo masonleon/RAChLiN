@@ -19,6 +19,7 @@ Manual steps for building and deploying project docker containers:
 6) Move container to EC2:
 	Image can be transferred by scp or via a docker hub repository.  Example repo approach:
 		-docker login
+		-docker tag [image_id] brouse12/ais-decode-message:basic-struts2
 		-docker push brouse12/ais-decode-message:basic-struts2
 		-ssh to AWS EC2 instance
 		-sudo docker run -p 80:8080 brouse12/ais-decode-message:basic-struts2 &
