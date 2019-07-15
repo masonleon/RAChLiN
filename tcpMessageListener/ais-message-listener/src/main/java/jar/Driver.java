@@ -16,7 +16,7 @@ public class Driver {
       System.err.println("Specified port number must be between 0 and 65535.");
       System.exit(1);
     }
-    AisTcpServer server = new AisTcpServer();
-    server.start(portNumber);
+
+    new AisTcpServer().start(portNumber);
   }
 }

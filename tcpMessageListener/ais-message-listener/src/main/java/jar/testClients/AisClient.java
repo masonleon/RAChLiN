@@ -1,4 +1,4 @@
-package jar;
+package jar.testClients;
 
 
 import java.io.IOException;
@@ -7,12 +7,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * A TCP client for informal testing of AisTcpServer on localhost.  Takes the place of the AIS
- * receiver to be used in production.
+ * A TCP client for informal testing of AisTcpServer on localhost.  Sends test messages to be
+ * handled.  Takes the place of the AIS receiver to be used in production.
  */
-public class AisTcpClient {
+public class AisClient {
 
-  public static final String[] TEST_MESSAGES = {
+  private static final String[] TEST_MESSAGES = {
           "!AIVDM,1,1,,A,18UG;P0012G?Uq4EdHa=c;7@051@,0*53",
           "!AIVDM,2,1,0,B,539S:k40000000c3G04PPh63<00000000080000o1PVG2uGD:00000000000,0*34",
           "!AIVDM,2,2,0,B,00000000000,2*27",
@@ -58,12 +58,21 @@ public class AisTcpClient {
             Socket clientSocket = new Socket(InetAddress.getLocalHost(), portNumber);
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
     ) {
-      for (String message : TEST_MESSAGES) {
-        out.println(message);
-      }
+      sendMessageStream(out);
     } catch (IOException e) {
       System.err.println("Could not get I/O connection for localhost. Is the server running?");
       System.exit(1);
+    }
+  }
+
+  /**
+   * Passes a stream of test messages to the provided PrintWriter.
+   *
+   * @param output a PrintWriter to receive messages.
+   */
+  private static void sendMessageStream(PrintWriter output) {
+    for (String message : TEST_MESSAGES) {
+      output.println(message);
     }
   }
 }
