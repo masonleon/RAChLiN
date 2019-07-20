@@ -1,0 +1,33 @@
+Command for testing without autossh:
+1)ssh -i "[key pair]" -N -L [local port]:localhost:[aws port] ubuntu@ec2-18-191-96-182.us-east-2.compute.amazonaws.com
+
+2)If unsuccessful, try replacing :localhost: with :https://www.ssh.com/ssh/tunneling/:
+
+3)If unsuccessful, try commands 1) and 2) but add -g flag for GatewayPorts.
+
+--Bracketed values need to be populated.
+--Use the -N flag to open tunnel in background without accessing server's CLI.
+--The -L flag enables local port forwarding - local port connects to remote
+	server port through ssh tunel.
+--The -i flag accesses your AWS keypair.
+
+Autossh command (after downloading autossh):
+1) autossh -M 0 -f -o "ServerAlive Interval 30" -o "ServerAliveCountMax 3" [the regular ssh command but without 'ssh'].
+
+--The "ServerAlive" options send regular pings to prevent inactivity timeout and alert autossh when the connection is hung.  These are OpenSSH options so read the port monitoring tool if they are not supported.
+--The -M 0 flag disables port monitoring. It's less effective than ServerAlive.
+--The -f flag enables running in the background.  Might obviate the need for the -N flag.
+
+Resources:
+SSH tunneling/port forwarding to send arbitrary network data through an encrypted ssh connection:
+https://www.ssh.com/ssh/tunneling/
+https://www.booleanworld.com/guide-ssh-port-forwarding-tunnelling/
+https://dev.to/samuyi/the-how-to-of-ssh-port-forwarding-1f4e
+https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-ssh-tunnel-local.html
+https://superuser.com/questions/87014/how-do-i-remove-an-ssh-forwarded-port
+
+Autossh:
+https://www.everythingcli.org/ssh-tunnelling-for-fun-and-profit-autossh/
+https://linux.die.net/man/1/autossh
+https://superuser.com/questions/37738/how-to-reliably-keep-an-ssh-tunnel-open
+https://www.harding.motd.ca/autossh/

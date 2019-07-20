@@ -1,0 +1,5 @@
+me/matthiasdenu/aisproject/App.class
+me/matthiasdenu/aisproject/tcpClient.class
+org/apache/struts/helloworld/action/HelloWorldAction.class
+org/apache/struts/helloworld/model/MessageStore.class
+me/matthiasdenu/aisproject/fileClient.class
