@@ -1,7 +1,7 @@
 Command for testing without autossh:
 1)ssh -i "[key pair]" -N -L [local port]:localhost:[aws port] ubuntu@ec2-18-191-96-182.us-east-2.compute.amazonaws.com
 
-2)If unsuccessful, try replacing :localhost: with :https://www.ssh.com/ssh/tunneling/:
+2)If unsuccessful, try replacing :localhost: with :ec2-18-191-96-182.us-east-2.compute.amazonaws.com:
 
 3)If unsuccessful, try commands 1) and 2) but add -g flag for GatewayPorts.
 
