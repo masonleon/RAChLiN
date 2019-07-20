@@ -26,7 +26,7 @@ Manual steps for building and deploying project docker containers:
 		-The above step might first require a sudo docker pull command
 
 7) Access via a web browser:
-	-matthias denu.me/appName
+	-matthiasdenu.me/appName
 
 8) Stopping container
 	-Confirm running container: sudo docker container ls
