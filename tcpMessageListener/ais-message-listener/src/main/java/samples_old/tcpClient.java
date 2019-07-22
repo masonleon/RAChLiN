@@ -1,4 +1,4 @@
-package samples;
+package samples_old;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -17,6 +17,7 @@ import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
  * acts as a server for an AIS receiver connected over USB-Serial interface. This class decodes the
  * live AIS messages to the terminal. .
  */
+@Deprecated
 public class tcpClient {
 
   private static final String ANSI_RESET = "\u001B[0m";

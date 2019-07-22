@@ -5,6 +5,6 @@ COPY ais-message-listener.jar /usr/local/bin
 WORKDIR usr/local/bin
 
 # arbitrary port number.  Bind to actual port with docker run -p host_port:9000 ais-message-listener
-EXPOSE 9000/tcp
+EXPOSE 10110/tcp
 
-CMD ["java", "-jar", "ais-message-listener.jar", "9000"]
+CMD ["java", "-jar", "ais-message-listener.jar", "10110"]

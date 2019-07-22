@@ -1,7 +1,10 @@
-package jar;
+package samples_old;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+
+// This is an outdated class.  kplex cannot effectively send messages, and must be accessed by a
+// tcp client.
 
 /**
  * A TCP server that receives AIS messages and passes the input stream to a handler.  Only one
@@ -10,8 +13,8 @@ import java.net.ServerSocket;
  * multithreading to help resolve backlog of multiplexer connections, and to allow for additional
  * receivers in future versions.
  */
+@Deprecated
 class AisTcpServer {
-  // TODO: consider implementing an error log.
 
   /**
    * Binds a server socket to the designated port and listens for tcp connections indefinitely. Once

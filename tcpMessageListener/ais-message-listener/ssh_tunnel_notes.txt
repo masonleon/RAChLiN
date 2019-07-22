@@ -1,20 +1,39 @@
-Command for testing without autossh:
-1)ssh -i "[key pair]" -N -L [local port]:localhost:[aws port] ubuntu@ec2-18-191-96-182.us-east-2.compute.amazonaws.com
+---------------------------Command currently used in production-------------------------------------
+autossh -i "[key pair name]" -N -R [port name]:localhost:[port name] ubuntu@[public server DNS]
+Tunnel started from Raspberry Pi, expecting client requests from remote server accessing port 10110.
 
-2)If unsuccessful, try replacing :localhost: with :ec2-18-191-96-182.us-east-2.compute.amazonaws.com:
+Java tcp client must be run with --net=host so the container can access forwarded localhost port.
+Conventional -p port:port bind syntax does not work for an ssh tunnel with docker.
+----------------------------------------------------------------------------------------------------
+
+
+
+
+
+----------------------------------------Notes-------------------------------------------------------
+Command for testing without autossh:
+1)ssh -i "[key pair]" -N -R [local port]:localhost:[aws port]
+ubuntu@ec2-18-191-96-182.us-east-2.compute.amazonaws.com
+
+2)If unsuccessful, try replacing :localhost: with
+:ec2-18-191-96-182.us-east-2.compute.amazonaws.com:
 
 3)If unsuccessful, try commands 1) and 2) but add -g flag for GatewayPorts.
 
 --Bracketed values need to be populated.
 --Use the -N flag to open tunnel in background without accessing server's CLI.
---The -L flag enables local port forwarding - local port connects to remote
-	server port through ssh tunel.
+--The -L flag enables local port forwarding. Local port connects to remote server port through ssh
+    tunnel.  Swap with -R flag for a reverse tunnel (server is expecting incoming requests from
+    clients, and does not send).
 --The -i flag accesses your AWS keypair.
 
 Autossh command (after downloading autossh):
-1) autossh -M 0 -f -o "ServerAlive Interval 30" -o "ServerAliveCountMax 3" [the regular ssh command but without 'ssh'].
+1) autossh -M 0 -f -o "ServerAlive Interval 30" -o "ServerAliveCountMax 3"
+[the regular ssh command but without 'ssh'].
 
---The "ServerAlive" options send regular pings to prevent inactivity timeout and alert autossh when the connection is hung.  These are OpenSSH options so read the port monitoring tool if they are not supported.
+--The "ServerAlive" options send regular pings to prevent inactivity timeout and alert autossh
+when the connection is hung.  These are OpenSSH options so read the port monitoring tool if they are
+not supported.
 --The -M 0 flag disables port monitoring. It's less effective than ServerAlive.
 --The -f flag enables running in the background.  Might obviate the need for the -N flag.
 
