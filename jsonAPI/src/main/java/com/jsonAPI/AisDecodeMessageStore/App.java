@@ -1,4 +1,4 @@
-package me.matthiasdenu.aisproject;
+package com.jsonAPI.AisDecodeMessageStore;
 import java.io.IOException;
 
 import dk.tbsalling.aismessages.demo.SimpleDemoApp;

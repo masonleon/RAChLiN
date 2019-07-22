@@ -1,5 +1,5 @@
-me/matthiasdenu/aisproject/App.class
-me/matthiasdenu/aisproject/tcpClient.class
+com/jsonAPI/AisDecodeMessageStore/App.class
+com/jsonAPI/AisDecodeMessageStore/fileClient.class
+com/jsonAPI/AisDecodeMessageStore/tcpClient.class
 org/apache/struts/helloworld/action/HelloWorldAction.class
 org/apache/struts/helloworld/model/MessageStore.class
-me/matthiasdenu/aisproject/fileClient.class

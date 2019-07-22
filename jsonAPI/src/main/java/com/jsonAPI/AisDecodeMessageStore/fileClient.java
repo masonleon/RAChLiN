@@ -1,4 +1,4 @@
-package me.matthiasdenu.aisproject;
+package com.jsonAPI.AisDecodeMessageStore;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
