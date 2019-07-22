@@ -1,14 +1,18 @@
-package jar;
+package samples_old;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+// This is an outdated class.  kplex cannot effectively send messages, and must be accessed by a
+// tcp client.
+
 /**
  * Thread created by AisTcpServer to process a single connection from kplex multiplexer.  Reads all
  * stream data, passes that data to a handler, then closes the socket.
  */
+@Deprecated
 public class TcpServerThread extends Thread {
 
   private Socket socket;

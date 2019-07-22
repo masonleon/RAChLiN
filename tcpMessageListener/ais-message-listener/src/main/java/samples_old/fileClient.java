@@ -1,4 +1,4 @@
-package samples;
+package samples_old;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,6 +19,8 @@ import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
  * to the terminal. Used for testing purposes and when access to live AIS server over TCP is not
  * available.
  */
+
+@Deprecated
 public class fileClient {
 
   private static final String ANSI_RESET = "\u001B[0m";
