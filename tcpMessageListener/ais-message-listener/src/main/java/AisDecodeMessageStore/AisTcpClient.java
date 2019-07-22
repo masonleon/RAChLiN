@@ -1,4 +1,4 @@
-package jar;
+package AisDecodeMessageStore;
 
 import java.io.BufferedReader;
 import java.io.IOException;

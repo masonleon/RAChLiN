@@ -1,5 +1,6 @@
-samples_old/AisTcpServer.class
+AisDecodeMessageStore/AisTcpClient.class
 samples_old/tcpClient.class
 samples_old/TcpServerThread.class
-jar/AisTcpClient.class
+AisDecodeMessageStore/Driver.class
 samples_old/fileClient.class
+samples_old/AisTcpServer.class

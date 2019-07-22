@@ -61,7 +61,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>jar.Driver</mainClass>
+                            <mainClass>AisDecodeMessageStore.Driver</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
