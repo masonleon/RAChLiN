@@ -73,10 +73,10 @@ public class DatabaseConnectionManager {
     return connectToDatabase();
   }
 
-  //Sample insert method.
   //TODO: consider if we will need transactions for our db update methods.
-  //TODO: consider handling for when SQL exception is thrown.  We would prefer it if our
-  // app does not exit.  getTestedConnection() can potentially resolve stale connection issues.
+  //TODO: consider handling for when SQL exception is thrown.  getTestedConnection() can
+  // potentially resolve stale connection issues.
+  //Sample insert method.  See also getOrInsertTerm from Prof. Rachlin sample.
   public int insertOneRecord(String insertSQL) throws SQLException {
     int key = -1;
     Connection con = getConnection();
