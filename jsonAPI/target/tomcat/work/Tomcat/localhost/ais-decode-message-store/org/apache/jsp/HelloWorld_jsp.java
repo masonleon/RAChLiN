@@ -13,19 +13,19 @@ import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 
 public final class HelloWorld_jsp extends org.apache.jasper.runtime.HttpJspBase
-    implements org.apache.jasper.runtime.JspSourceDependent {
+        implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final javax.servlet.jsp.JspFactory _jspxFactory =
           javax.servlet.jsp.JspFactory.getDefaultFactory();
 
-  private static java.util.Map<java.lang.String,java.lang.Long> _jspx_dependants;
+  private static java.util.Map<java.lang.String, java.lang.Long> _jspx_dependants;
 
   private org.apache.jasper.runtime.TagHandlerPool _005fjspx_005ftagPool_005fs_005fproperty_0026_005fvalue_005fnobody;
 
   private javax.el.ExpressionFactory _el_expressionfactory;
   private org.apache.tomcat.InstanceManager _jsp_instancemanager;
 
-  public java.util.Map<java.lang.String,java.lang.Long> getDependants() {
+  public java.util.Map<java.lang.String, java.lang.Long> getDependants() {
     return _jspx_dependants;
   }
 
@@ -40,7 +40,7 @@ public final class HelloWorld_jsp extends org.apache.jasper.runtime.HttpJspBase
   }
 
   public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)
-        throws java.io.IOException, javax.servlet.ServletException {
+          throws java.io.IOException, javax.servlet.ServletException {
 
     final javax.servlet.jsp.PageContext pageContext;
     javax.servlet.http.HttpSession session = null;
@@ -55,7 +55,7 @@ public final class HelloWorld_jsp extends org.apache.jasper.runtime.HttpJspBase
     try {
       response.setContentType("text/html; charset=UTF-8");
       pageContext = _jspxFactory.getPageContext(this, request, response,
-      			null, true, 8192, true);
+              null, true, 8192, true);
       _jspx_page_context = pageContext;
       application = pageContext.getServletContext();
       config = pageContext.getServletConfig();
@@ -79,10 +79,13 @@ public final class HelloWorld_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("  </body>\n");
       out.write("</html>\n");
     } catch (java.lang.Throwable t) {
-      if (!(t instanceof javax.servlet.jsp.SkipPageException)){
+      if (!(t instanceof javax.servlet.jsp.SkipPageException)) {
         out = _jspx_out;
         if (out != null && out.getBufferSize() != 0)
-          try { out.clearBuffer(); } catch (java.io.IOException e) {}
+          try {
+            out.clearBuffer();
+          } catch (java.io.IOException e) {
+          }
         if (_jspx_page_context != null) _jspx_page_context.handlePageException(t);
         else throw new ServletException(t);
       }

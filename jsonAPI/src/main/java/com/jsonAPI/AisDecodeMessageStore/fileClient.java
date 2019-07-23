@@ -1,4 +1,5 @@
 package com.jsonAPI.AisDecodeMessageStore;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class fileClient {
   private static final String ANSI_RESET = "\u001B[0m";
   private static final String ANSI_RED = "\u001B[31m";
 
-  public static void main(String[] args)  {
+  public static void main(String[] args) {
 
     System.out.println("AISMessages fileClient Test");
     System.out.println("--------------------");
@@ -74,7 +75,7 @@ public class fileClient {
 
           System.out.print("Message Type Counts : ");
 
-          for (AISMessageType key: messageTypeList.keySet()) {
+          for (AISMessageType key : messageTypeList.keySet()) {
             System.out.print("| #" + key.getCode() + " " + key.getValue() + " : " + messageTypeList.get(key) + " ");
           }
 
@@ -85,7 +86,7 @@ public class fileClient {
         streamReader.run();
 
       } catch (IOException e) {
-       e.printStackTrace();
+        e.printStackTrace();
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();

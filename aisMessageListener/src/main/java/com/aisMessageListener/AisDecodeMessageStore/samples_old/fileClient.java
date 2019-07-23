@@ -1,7 +1,9 @@
-package com.jsonAPI.AisDecodeMessageStore;
+package com.aisMessageListener.AisDecodeMessageStore.samples_old;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.Socket;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,18 +15,20 @@ import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 
 /**
- * Class tcpClient connects via TCP socket to a raspberry pi running kplex NMEA multiplexer. Kplex
- * acts as a server for an AIS receiver connected over USB-Serial interface. This class decodes the
- * live AIS messages to the terminal. .
+ * Class fileClient reads a .txt file containing encoded NMEA sentences and decodes the AIS messages
+ * to the terminal. Used for testing purposes and when access to live AIS server over TCP is not
+ * available.
  */
-public class tcpClient {
+
+
+public class fileClient {
 
   private static final String ANSI_RESET = "\u001B[0m";
   private static final String ANSI_RED = "\u001B[31m";
 
   public static void main(String[] args) {
 
-    System.out.println("AISMessages tcpClient Test");
+    System.out.println("AISMessages fileClient Test");
     System.out.println("--------------------");
 
     Map<AISMessageType, Integer> messageTypeList = new HashMap<>();
@@ -32,12 +36,21 @@ public class tcpClient {
     AtomicInteger messageCount = new AtomicInteger();
 
     try {
-      Socket socket = new Socket("10.0.0.101", 10110);
-      System.out.println("Connected to AIS server on " + socket.getInetAddress() + " " + socket.getPort());
+      InputStream textLog = new FileInputStream("/Users/masonleon/Documents/Projects/AisDecodeMessageStore/aisMessageListener/src/main/java/com/aisMessageListener/AisDecodeMessageStore/samples_old/messages.txt");
+
+//      Scanner scanner = new Scanner(textLog);
+//
+//      while (scanner.hasNextLine()) {
+//        String line = scanner.nextLine();
+//        InputStream message = new ByteArrayInputStream(line.getBytes());
 
       try {
 
-        AISInputStreamReader streamReader = new AISInputStreamReader(socket.getInputStream(), aisMessage ->
+//          AISInputStreamReader streamReader = new AISInputStreamReader(message, aisMessage ->
+//                  System.out.println("Received AIS message from MMSI " + aisMessage.getSourceMmsi().getMMSI() + ": " + aisMessage)
+//          );
+
+        AISInputStreamReader streamReader = new AISInputStreamReader(textLog, aisMessage ->
         {
           AISMessageType messageType = aisMessage.getMessageType();
           int mmsi = aisMessage.getSourceMmsi().getMMSI();
@@ -77,7 +90,7 @@ public class tcpClient {
       } catch (IOException e) {
         e.printStackTrace();
       }
-    } catch (IOException e) {
+    } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
   }
