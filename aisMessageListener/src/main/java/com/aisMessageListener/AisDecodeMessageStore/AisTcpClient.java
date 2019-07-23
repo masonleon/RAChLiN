@@ -52,8 +52,8 @@ class AisTcpClient {
   // TODO: consider AIS exceptions that may be thrown.
   // Consumer method that does stuff with AISmessage classes.  Should use IDatabaseInserter.
   private void insertMessageIntoDatabase(AISMessage message) {
-    // Print for testing.  Delete this.
-    System.out.println("Received message of type: " + message.getMessageType() + "\n");
+    // Print for testing with testKplexServer.  Can be deleted.
+    System.out.println("Received message of type: " + message.getMessageType());
   }
 
   /**
