@@ -8,6 +8,9 @@ import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.sql.Types.BOOLEAN;
 import static java.sql.Types.NULL;
 
 // This is a starting point a utilities class that gets data from an AISmessage.
@@ -18,6 +21,7 @@ public abstract class MessageData {
   private AISMessage message;
   private Instant timeRecieved;
   private boolean isValidMsg;
+  private boolean isMultiPart;
   private String rawNMEA;
   private int msgTypeId;
   private int geospatialDataId;
@@ -36,6 +40,7 @@ public abstract class MessageData {
 
     this.timeRecieved = this.message.getMetadata().getReceived();
     this.isValidMsg = this.getIsValidMsg();
+    this.isMultiPart = FALSE;
     this.rawNMEA = this.getRawNMEA();
     this.msgTypeId = this.getMsgTypeId();
     this.geospatialDataId = NULL;
@@ -112,6 +117,7 @@ public abstract class MessageData {
   public String getRawNMEA() {
     NMEAMessage[] nmeaSentence = this.message.getNmeaMessages();
     if (nmeaSentence.length > 1) {
+      this.isMultiPart = TRUE;
       StringBuilder messages = new StringBuilder();
 
       for (int i = 0; i < nmeaSentence.length; i++) {
