@@ -1,4 +1,6 @@
-package com.aisMessageListener.AisDecodeMessageStore.jdbc;
+package com.aisMessageListener.AisDecodeMessageStore.samples_old;
+
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -5,13 +5,14 @@ import java.time.Instant;
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
-import dk.tbsalling.aismessages.ais.messages.types.MMSI;
 import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
 import static java.sql.Types.NULL;
 
-
+// This is a starting point a utilities class that gets data from an AISmessage.
+// Could be used in conjunction with IDatabaseInserter or as
+// a starting point for classes that implement the interface.
 public abstract class MessageData {
 
   private AISMessage message;
@@ -96,7 +97,7 @@ public abstract class MessageData {
 
   }
 
-  public boolean getIsValidMsg(){
+  public boolean getIsValidMsg() {
     return this.msgTypeId != -1;
   }
 
@@ -110,18 +111,18 @@ public abstract class MessageData {
 
   public String getRawNMEA() {
     NMEAMessage[] nmeaSentence = this.message.getNmeaMessages();
-    if(nmeaSentence.length > 1){
+    if (nmeaSentence.length > 1) {
       StringBuilder messages = new StringBuilder();
 
       for (int i = 0; i < nmeaSentence.length; i++) {
         messages.append(nmeaSentence[i].getRawMessage());
 
-        if (i != nmeaSentence.length - 1){
+        if (i != nmeaSentence.length - 1) {
           messages.append(" | ");
         }
       }
       return messages.toString();
-    } else{
+    } else {
       return nmeaSentence[0].getRawMessage();
     }
   }
