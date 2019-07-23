@@ -47,6 +47,14 @@ public abstract class MessageData {
   }
 
 
+//  public MessageData(ClassAPositionReport message) {
+//  }
+
+//  public MessageData(ClassAPositionReport message) {
+//  }
+
+
+
   public void checkIsSupported() {
     AISMessageType messageType = message.getMessageType();
     int messageTypeID = message.getMessageType().getCode();
