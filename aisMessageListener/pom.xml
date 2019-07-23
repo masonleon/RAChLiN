@@ -9,9 +9,9 @@
     <name>ais-message-listener</name>
     <url>http://maven.apache.org</url>
 
-    <properties>
-        <maven.compiler.source>1.12</maven.compiler.source>
-        <maven.compiler.target>1.12</maven.compiler.target>
+   <properties>
+        <maven.compiler.source>1.10</maven.compiler.source>
+        <maven.compiler.target>1.10</maven.compiler.target>
     </properties>
 
     <dependencies>

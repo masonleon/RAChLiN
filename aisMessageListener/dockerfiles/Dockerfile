@@ -1,6 +1,6 @@
-FROM openjdk:8-jre-slim
+FROM openjdk:11-jre-slim
 
-COPY ais-message-listener.jar /usr/local/bin
+COPY aisMessageListener.jar /usr/local/bin
 
 WORKDIR usr/local/bin
 
