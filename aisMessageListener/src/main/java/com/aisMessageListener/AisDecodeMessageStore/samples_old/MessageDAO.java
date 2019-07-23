@@ -1,4 +1,4 @@
-package com.aisMessageListener.AisDecodeMessageStore.jdbc;
+package com.aisMessageListener.AisDecodeMessageStore.samples_old;
 
 
 //public class MessageDAO extends DataAccessObject<Message> {

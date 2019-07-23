@@ -7,37 +7,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.SQLException;
-import java.time.Instant;
 
 import dk.tbsalling.aismessages.AISInputStreamReader;
+import dk.tbsalling.aismessages.ais.messages.AISMessage;
 
 /**
- * A TCP client that requests AIS messages and passes the message stream to a handler.  The expected
- * server is a Raspberry Pi running a kplex NMEA multiplexer. The multiplexer receives messages from
- * an AIS receiver connected over USB-Serial interface.
+ * A TCP client that requests AIS messages and passes them to a class for updating the database. The
+ * expected server is a Raspberry Pi running a kplex NMEA multiplexer. The multiplexer receives
+ * messages from an AIS receiver connected over USB-Serial interface.
  */
 class AisTcpClient {
 
-
   /**
    * Starts connection with the server on the provided port and requests AIS messages indefinitely.
-   * Before running, open an ssh tunnel that forwards the desired port from localhost.  Use autossh
-   * to keep the tunnel alive.
+   * Received messages will be forwarded to a class for database update. Before running, open an ssh
+   * tunnel that forwards the desired port from localhost.  Use autossh to keep the tunnel alive.
    *
-   * @param portNumber the port number to bind to.
+   * @param portNumber     the port number to bind to.
+   * @param connectManager a connection manager that handles access to the database.
    * @throws InterruptedException does not need to be handled. Only occurs when another thread
    *                              interrupts the sleep method during connection recovery.
    */
-  void start(int portNumber, DatabaseConnectionManager dbConnection) throws InterruptedException {
-
-    try {
-      dbConnection.getConnection();
-
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+  void start(int portNumber, DatabaseConnectionManager connectManager) throws InterruptedException {
 
     while (true) {
       try (// try-with-resources statement - resources will be closed by Java runtime.
@@ -46,24 +37,8 @@ class AisTcpClient {
            InputStream messageStream = clientSocket.getInputStream()
 
       ) {
-
-        // For testing only.  In production, swap this method with AisInputStreamReader.run() to
-        // allow decoding.  Also check if any AIS exceptions would need to be handled.
-        //printBufferedInputStream(messageStream);
-
-
-        AISInputStreamReader streamReader = new AISInputStreamReader(messageStream, aisMessage ->
-        {
-          //TODO to be removed later, useful for debugging
-
-          int mmsi = aisMessage.getSourceMmsi().getMMSI();
-          Instant time = aisMessage.getMetadata().getReceived();
-
-
-          // System.out.print(messageTypeID);
-
-        }
-        );
+        AISInputStreamReader streamReader = new AISInputStreamReader(
+                messageStream, this::insertMessageIntoDatabase);
         streamReader.run();
 
       } catch (IOException e) {
@@ -74,6 +49,13 @@ class AisTcpClient {
     }
   }
 
+  // TODO: consider AIS exceptions that may be thrown.
+  // Consumer method that does stuff with AISmessage classes.  Should use IDatabaseInserter.
+  private void insertMessageIntoDatabase(AISMessage message) {
+    // Print for testing.  Delete this.
+    System.out.println("Received message of type: " + message.getMessageType() + "\n");
+  }
+
   /**
    * Prints lines to the terminal from the provided BufferedReader.  For testing only.  In
    * production, the input stream will be passed to the AIS decoder library.
@@ -81,7 +63,7 @@ class AisTcpClient {
    * @param reader the character stream to be read
    * @throws IOException if error occurs while reading
    */
-  private void printBufferedInputStream(BufferedReader reader) throws IOException {
+  private static void printBufferedInputStream(BufferedReader reader) throws IOException {
 
     String line;
     while ((line = reader.readLine()) != null) {
