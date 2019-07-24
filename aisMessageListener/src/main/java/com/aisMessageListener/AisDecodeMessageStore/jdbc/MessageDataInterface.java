@@ -2,6 +2,8 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc;
 
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 
+import java.time.Instant;
+
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver, whereby they are processed
  * and written to the underlying PostgreSQL database.
@@ -44,5 +46,27 @@ public interface MessageDataInterface {
      * @return String
      */
     String getRawNMEA();
+
+    /**
+     * Checks if the message has multiple parts, specified by the repeat indicator 2 bit integer.
+     * @return boolean
+     */
+    boolean hasMultipleParts();
+
+    /**
+     * Checks the instant this message was received.
+     * @return Instant
+     */
+    Instant getTimeReceived();
+
+    int getGeospatialDataId();
+
+    int getNavigationDataId();
+
+    int getVoyageDataId();
+
+    int getVesselSignatureId();
+
+    int getVesselDataId();
 }
 

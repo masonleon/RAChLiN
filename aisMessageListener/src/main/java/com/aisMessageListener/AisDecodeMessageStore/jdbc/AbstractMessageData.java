@@ -8,14 +8,11 @@ import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
 import java.time.Instant;
 
-import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.sql.Types.NULL;
 
 public class AbstractMessageData implements MessageDataInterface {
     private AISMessage message;
-    private Instant timeRecieved;
-    private boolean isMultiPart;
     private int geospatialDataId;
     private int navigationDataId;
     private int voyageDataId;
@@ -25,8 +22,6 @@ public class AbstractMessageData implements MessageDataInterface {
     public AbstractMessageData(AISMessage message) {
         this.message = message;
 
-        this.timeRecieved = this.message.getMetadata().getReceived();
-        this.isMultiPart = FALSE;
         this.geospatialDataId = NULL;
         this.navigationDataId = NULL;
         this.voyageDataId = NULL;
@@ -34,6 +29,7 @@ public class AbstractMessageData implements MessageDataInterface {
         this.vesselDataId = NULL;
     }
 
+    @Override
     public void processMessage() {
         if (getType() == null) {
             throw new InvalidMessage("Invalid NMEA Message due to NULL message type");
@@ -64,26 +60,30 @@ public class AbstractMessageData implements MessageDataInterface {
         }
     }
 
+    @Override
     public boolean isValidType() {
         return this.getTypeId() > -1;
     }
 
+    @Override
     public int getMMSI() {
         return this.message.getSourceMmsi().getMMSI();
     }
 
+    @Override
     public AISMessageType getType() {
         return this.message.getMessageType();
     }
 
+    @Override
     public int getTypeId() {
         return getType().getCode();
     }
 
+    @Override
     public String getRawNMEA() {
         NMEAMessage[] nmeaSentence = this.message.getNmeaMessages();
-        if (nmeaSentence.length > 1) {
-            this.isMultiPart = TRUE;
+        if (hasMultipleParts()) {
             StringBuilder messages = new StringBuilder();
 
             for (int i = 0; i < nmeaSentence.length; i++) {
@@ -97,5 +97,40 @@ public class AbstractMessageData implements MessageDataInterface {
         } else {
             return nmeaSentence[0].getRawMessage();
         }
+    }
+
+    @Override
+    public boolean hasMultipleParts() {
+        return this.message.getNmeaMessages().length > 1;
+    }
+
+    @Override
+    public Instant getTimeReceived() {
+        return this.message.getMetadata().getReceived();
+    }
+
+    @Override
+    public int getGeospatialDataId() {
+        return geospatialDataId;
+    }
+
+    @Override
+    public int getNavigationDataId() {
+        return navigationDataId;
+    }
+
+    @Override
+    public int getVoyageDataId() {
+        return voyageDataId;
+    }
+
+    @Override
+    public int getVesselSignatureId() {
+        return vesselSignatureId;
+    }
+
+    @Override
+    public int getVesselDataId() {
+        return vesselDataId;
     }
 }
