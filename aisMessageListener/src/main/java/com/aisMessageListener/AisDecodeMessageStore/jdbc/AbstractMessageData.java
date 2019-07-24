@@ -35,44 +35,33 @@ public class AbstractMessageData implements MessageDataInterface {
     }
 
     public void processMessage() {
-        AISMessageType messageType = message.getMessageType();
-
-        if (messageType != null) {
-            switch (messageType) {
-
-                //Message Type 1
-                case PositionReportClassAScheduled:
-
-
-                    break;
-
-                //Message Type 2
-                case PositionReportClassAAssignedSchedule:
-
-
-                    break;
-
-                //Message Type 3
-                case PositionReportClassAResponseToInterrogation:
-
-
-                    break;
-
-                //Message Type 5
-                case ShipAndVoyageRelatedData:
-
-
-                    break;
-
-                //Unsupported Message
-                default:
-                    throw new UnsupportedMessageType(messageType.getCode());
-            }
-        } else {
-            //isInvalid Message field
-            throw new InvalidMessage("Invalid NMEA message");
+        if (getType() == null) {
+            throw new InvalidMessage("Invalid NMEA Message due to NULL message type");
         }
 
+        switch (getType()) {
+
+            // Message Type 1
+            case PositionReportClassAScheduled:
+                break;
+
+            // Message Type 2
+            case PositionReportClassAAssignedSchedule:
+                break;
+
+            // Message Type 3
+            case PositionReportClassAResponseToInterrogation:
+                break;
+
+            // Message Type 5
+            case ShipAndVoyageRelatedData:
+                break;
+
+            // Unsupported Message
+            default:
+                throw new UnsupportedMessageType(getTypeId());
+
+        }
     }
 
     public boolean isValidType() {
@@ -83,8 +72,12 @@ public class AbstractMessageData implements MessageDataInterface {
         return this.message.getSourceMmsi().getMMSI();
     }
 
+    public AISMessageType getType() {
+        return this.message.getMessageType();
+    }
+
     public int getTypeId() {
-        return this.message.getMessageType().getCode();
+        return getType().getCode();
     }
 
     public String getRawNMEA() {

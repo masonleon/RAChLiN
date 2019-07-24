@@ -1,5 +1,7 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc;
 
+import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
+
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver, whereby they are processed
  * and written to the underlying PostgreSQL database.
@@ -24,6 +26,12 @@ public interface MessageDataInterface {
      * @return int
      */
     int getMMSI();
+
+    /**
+     * Grabs the message type of this message.
+     * @return an AISMessageType object
+     */
+    AISMessageType getType();
 
     /**
      * Grabs the integer type Id of the message.
