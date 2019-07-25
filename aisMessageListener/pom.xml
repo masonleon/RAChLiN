@@ -9,7 +9,7 @@
     <name>ais-message-listener</name>
     <url>http://maven.apache.org</url>
 
-   <properties>
+    <properties>
         <maven.compiler.source>1.10</maven.compiler.source>
         <maven.compiler.target>1.10</maven.compiler.target>
     </properties>
@@ -30,6 +30,11 @@
             <groupId>dk.tbsalling</groupId>
             <artifactId>aisutils</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.6.jre7</version>
         </dependency>
     </dependencies>
 
@@ -58,7 +63,8 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.aisMessageListener.AisDecodeMessageStore.Driver</mainClass>
+                            <mainClass>com.aisMessageListener.AisDecodeMessageStore.Driver
+                            </mainClass>
                         </manifest>
                     </archive>
                 </configuration>

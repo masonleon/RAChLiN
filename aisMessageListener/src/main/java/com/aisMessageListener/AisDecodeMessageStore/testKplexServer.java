@@ -26,7 +26,7 @@ class testKplexServer {
     }
 
     int port = Integer.parseInt(args[0]);
-    String filepath = "./aisMessageListener/src/test/" + args[1];
+    String filepath = "./aisMessageListener/src/test/testData/" + args[1];
 
     for (int i = 0; i < 3; i++) {
       try (
