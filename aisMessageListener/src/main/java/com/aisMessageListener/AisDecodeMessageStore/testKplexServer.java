@@ -9,8 +9,8 @@ import java.net.Socket;
 import java.util.Scanner;
 
 /**
- * Test class that emulates kplex.  Listens for requests from Tcp client on on local loopback
- * address (no ssh tunnel required) and responds with 3 batches of AISmessages.
+ * Test class that emulates kplex.  Listens for requests from Tcp client on local loopback address
+ * (no ssh tunnel required) and responds with 3 separate batches of AISmessages.
  */
 class testKplexServer {
 
