@@ -9,20 +9,21 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * JUnit tests of DatabaseConnectionManager.
+ */
 public class DatabaseConnectionManagerTest {
 
-  private String filepath;
-  private Scanner fileScanner;
   private DatabaseConnectionInterface connectionManager;
 
 
   @Before
   public void setUp() throws Exception {
-    filepath = "src/test/testData/dbConnectParams.txt";
-    fileScanner = new Scanner(new File(filepath));
+    String filepath = "src/test/testData/dbConnectParams.txt";
+    Scanner fileScanner = new Scanner(new File(filepath));
     String host = fileScanner.next();
     String dbName = fileScanner.next();
     String username = fileScanner.next();
@@ -55,10 +56,30 @@ public class DatabaseConnectionManagerTest {
   }
 
   @Test
-  public void testGetValidatedConnectionValidation() throws SQLException {
-    Connection connection = connectionManager.getConnection();
-    connectionManager.closeConnection();
-    assertFalse(connection.isValid(0));
+  public void testQueryOneInt() throws SQLException {
+    int result = connectionManager.queryOneInt("select nav_status_id from " +
+            "nav_status where description = 'not under command'", 1);
+    assertEquals(result, 2);
   }
+
+  @Test
+  public void testQueryOneString() throws SQLException {
+    String result = connectionManager.queryOneString("select description from " +
+            "nav_status where nav_status_id = 5", 1);
+    assertEquals(result, "moored");
+  }
+
+  //TODO: update test to remove inserted result at the end.
+  @Test
+  public void testInsertOneRecord() throws SQLException {
+    int key = connectionManager.insertOneRecord("insert into voyage_data(draught, " +
+            "eta, destination) values (638.2, '2019-07-01 19:10:25 America/New_York', 'nowhere')");
+
+    String result = connectionManager.queryOneString("select destination from " +
+            "voyage_data where voyage_data_id = " + key, 1);
+
+    assertEquals(result, "nowhere");
+  }
+
 
 }

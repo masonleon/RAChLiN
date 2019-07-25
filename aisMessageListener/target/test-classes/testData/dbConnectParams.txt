@@ -1,1 +1,5 @@
 localhost ais_decode_message_store postgres 7535Fencing!
+
+// Update according to your local database credentials for testing.
+
+

@@ -4,16 +4,23 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * DBMS Agnostic interface that provides layout for functions required for API Database connections.
+ * DBMS Agnostic interface that provides layout for functions required for API Database
+ * connections.
  */
 public interface DatabaseConnectionInterface {
 
-    Connection getValidatedConnection() throws SQLException;
+  Connection getValidatedConnection() throws SQLException;
 
-    Connection getConnection();
+  Connection getConnection();
 
-    void closeConnection();
+  void closeConnection();
+
+  int queryOneInt(String selectSQL, int column) throws SQLException;
+
+  String queryOneString(String selectSQL, int column) throws SQLException;
+
+  int insertOneRecord(String insertSQL) throws SQLException;
+
+
+
 }
-
-
-
