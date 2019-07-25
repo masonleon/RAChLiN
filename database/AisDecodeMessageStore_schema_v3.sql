@@ -1314,7 +1314,7 @@ CREATE INDEX "fkIdx_nav_status" ON "navigation_data"
 CREATE TABLE "message_data"
 (
  "message_id"          bigint NOT NULL,
- "time_recieved"       timestamp with time zone NOT NULL,
+ "time_received"       timestamp with time zone NOT NULL,
  "is_valid_msg"        boolean NOT NULL,
  "is_multi_part"       boolean NOT NULL,
  "raw_nmea"            varchar(2048) NOT NULL,
