@@ -1,37 +1,24 @@
 -- *************** AisDecodeMessageStore: PostgreSQL DB ****************;
 -- *********************************************************************;
-DROP DATABASE IF EXISTS ais_decode_message_store;
-CREATE DATABASE  IF NOT EXISTS ais_decode_message_store;
-USE ais_decode_message_store;
+DROP TABLE IF EXISTS "message_data";
 
-DROP TABLE "message_data";
+DROP TABLE IF EXISTS "vessel_signature";
 
+DROP TABLE IF EXISTS "navigation_data";
 
-DROP TABLE "vessel_signature";
+DROP TABLE IF EXISTS "voyage_data";
 
+DROP TABLE IF EXISTS "vessel_type";
 
-DROP TABLE "navigation_data";
+DROP TABLE IF EXISTS "vessel_data";
 
+DROP TABLE IF EXISTS "nav_status";
 
-DROP TABLE "voyage_data";
+DROP TABLE IF EXISTS "message_type";
 
+DROP TABLE IF EXISTS "maneuver_indicator";
 
-DROP TABLE "vessel_type";
-
-
-DROP TABLE "vessel_data";
-
-
-DROP TABLE "nav_status";
-
-
-DROP TABLE "message_type";
-
-
-DROP TABLE "maneuver_indicator";
-
-
-DROP TABLE "geospatial_data";
+DROP TABLE IF EXISTS "geospatial_data";
 
 
 
@@ -66,7 +53,7 @@ CREATE TABLE "vessel_type"
  "vessel_group"                  varchar(50) NOT NULL,
  "ais_vessel_code"               int NOT NULL,
  "ais_ship_cargo_classification" varchar(100) NOT NULL,
- "note"                          varchar(1024) NOT NULL
+ "note"                          varchar(1024)
 
 );
 
@@ -1159,7 +1146,7 @@ CREATE TABLE "message_type"
  "name"            varchar(1024) NOT NULL,
  "description"     varchar(1024) NOT NULL,
  "supported"       boolean NOT NULL,
- "note"            varchar(1024) NOT NULL
+ "note"            varchar(1024)
 
 );
 
@@ -1171,7 +1158,7 @@ CREATE UNIQUE INDEX "PK_message_type" ON "message_type"
 -- Source: USCG
 -- https://www.navcen.uscg.gov/?pageName=AISMessages
 INSERT INTO message_type VALUES
-(0 , 'Undefined or invalid AIS message'                         ,   NULL                                                                                                                            ,  FALSE   ,    NULL   ),
+(0 , 'Undefined or invalid AIS message'                         ,   'INVALID or ERROR'                                                                                                              ,  FALSE   ,    NULL   ),
 (1 , 'Position report'                                          ,   'Scheduled position report; Class A shipborne mobile equipment'                                                                 ,  TRUE    ,    NULL   ),
 (2 , 'Position report'                                          ,   'Assigned scheduled position report; Class A shipborne mobile equipment'                                                        ,  TRUE    ,    NULL   ),
 (3 , 'Position report'                                          ,   'Special position report, response to interrogation; Class A shipborne mobile equipment'                                        ,  TRUE    ,    NULL   ),
