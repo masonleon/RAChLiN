@@ -4,7 +4,7 @@ import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
 import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
 
-public class ClassAPositionReport extends MessageData {
+public class ClassAPositionReport extends AbstractMessageData {
 
   private double lat;
   private double lon;
