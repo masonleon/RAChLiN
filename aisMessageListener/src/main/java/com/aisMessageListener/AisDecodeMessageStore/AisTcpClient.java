@@ -31,10 +31,10 @@ class AisTcpClient {
   void start(int portNumber, DatabaseConnectionManager connectManager) throws InterruptedException {
 
     while (true) {
-      try (// try-with-resources statement - resources will be closed by Java runtime.
+      try (
 
-           Socket clientSocket = new Socket(InetAddress.getLoopbackAddress(), portNumber);
-           InputStream messageStream = clientSocket.getInputStream()
+              Socket clientSocket = new Socket(InetAddress.getLoopbackAddress(), portNumber);
+              InputStream messageStream = clientSocket.getInputStream()
 
       ) {
         AISInputStreamReader streamReader = new AISInputStreamReader(
@@ -49,8 +49,11 @@ class AisTcpClient {
     }
   }
 
-  // TODO: consider AIS exceptions that may be thrown.
-  // Consumer method that does stuff with AISmessage classes.  Should use IDatabaseInserter.
+  /**
+   * Entry point for processing a decoded AIS message. Hands off process to jdbc classes.
+   *
+   * @param message a decoded AIS message.
+   */
   private void insertMessageIntoDatabase(AISMessage message) {
     // Print for testing with testKplexServer.  Can be deleted.
     System.out.println("Received message of type: " + message.getMessageType());
