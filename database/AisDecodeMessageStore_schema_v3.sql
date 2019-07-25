@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS "geospatial_data";
 
 CREATE TABLE "voyage_data"
 (
- "voyage_data_id" bigint NOT NULL,
+ "voyage_data_id" bigserial NOT NULL,
  "draught"        decimal(5,1) NULL,
  "eta"            timestamp with time zone NULL,
  "destination"    varchar(100) NULL
@@ -37,11 +37,6 @@ CREATE UNIQUE INDEX "PK_voyage_data" ON "voyage_data"
 (
  "voyage_data_id"
 );
-
-
-
-
-
 
 
 
@@ -1070,14 +1065,11 @@ INSERT INTO vessel_type VALUES
 
 
 
-
-
-
 -- ************************************** "vessel_data"
 
 CREATE TABLE "vessel_data"
 (
- "vessel_data_id" bigint NOT NULL,
+ "vessel_data_id" bigserial NOT NULL,
  "to_bow"         decimal(5,2) NULL,
  "to_stern"       decimal(5,2) NULL,
  "to_port"        decimal(5,2) NULL,
@@ -1089,10 +1081,6 @@ CREATE UNIQUE INDEX "PK_vessel_data" ON "vessel_data"
 (
  "vessel_data_id"
 );
-
-
-
-
 
 
 
@@ -1134,10 +1122,6 @@ INSERT INTO nav_status VALUES
 
 
 
-
-
-
-
 -- ************************************** "message_type"
 
 CREATE TABLE "message_type"
@@ -1146,7 +1130,7 @@ CREATE TABLE "message_type"
  "name"            varchar(1024) NOT NULL,
  "description"     varchar(1024) NOT NULL,
  "supported"       boolean NOT NULL,
- "note"            varchar(1024)
+ "note"            varchar(1024) NULL
 
 );
 
@@ -1190,11 +1174,6 @@ INSERT INTO message_type VALUES
 
 
 
-
-
-
-
-
 -- ************************************** "maneuver_indicator"
 
 CREATE TABLE "maneuver_indicator"
@@ -1219,13 +1198,11 @@ INSERT INTO maneuver_indicator VALUES
 (3, 'engaged in special maneuver'     , 'i.e.: regional passing arrangement on Inland Waterway' );
 
 
-
-
 -- ************************************** "geospatial_data"
 
 CREATE TABLE "geospatial_data"
 (
- "geospatial_data_id" bigint NOT NULL,
+ "geospatial_data_id" bigserial NOT NULL,
  "coord"              point NOT NULL,
  "accuracy"           smallint NULL
 
@@ -1238,16 +1215,11 @@ CREATE UNIQUE INDEX "PK_geospatial_data" ON "geospatial_data"
 
 
 
-
-
-
-
-
 -- ************************************** "vessel_signature"
 
 CREATE TABLE "vessel_signature"
 (
- "vessel_signature_id" bigint NOT NULL,
+ "vessel_signature_id" bigserial NOT NULL,
  "mmsi"                int NOT NULL,
  "imo"                 int NULL,
  "call_sign"           varchar(50) NULL,
@@ -1269,16 +1241,11 @@ CREATE INDEX "fkIdx_vessel_type" ON "vessel_signature"
 
 
 
-
-
-
-
-
 -- ************************************** "navigation_data"
 
 CREATE TABLE "navigation_data"
 (
- "navigation_data_id"    bigint NOT NULL,
+ "navigation_data_id"    bigserial NOT NULL,
  "speed_over_ground"     decimal(5,2) NULL,
  "course_over_ground"    decimal(5,2) NULL,
  "heading"               decimal(5,2) NULL,
@@ -1305,15 +1272,11 @@ CREATE INDEX "fkIdx_nav_status" ON "navigation_data"
 );
 
 
-
-
-
-
 -- ************************************** "message_data"
 
 CREATE TABLE "message_data"
 (
- "message_id"          bigint NOT NULL,
+ "message_id"          bigserial NOT NULL,
  "time_received"       timestamp with time zone NOT NULL,
  "is_valid_msg"        boolean NOT NULL,
  "is_multi_part"       boolean NOT NULL,
