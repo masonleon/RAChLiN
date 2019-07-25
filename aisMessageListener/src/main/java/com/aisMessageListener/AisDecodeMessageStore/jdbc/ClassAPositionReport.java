@@ -16,8 +16,14 @@ public class ClassAPositionReport extends MessageData {
   private double heading;
   private double rateOfTurn;
 
-  public ClassAPositionReport(ClassAPositionReport message) {
+//  public ClassAPositionReport(ClassAPositionReport message) {
+//    super(message);
+//  }
+
+  public ClassAPositionReport(AISMessage message) {
     super(message);
+//    super(message);
+//  }
   }
 
   public double getLat(){

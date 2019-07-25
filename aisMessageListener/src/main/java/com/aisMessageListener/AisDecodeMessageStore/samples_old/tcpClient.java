@@ -32,7 +32,7 @@ public class tcpClient {
     AtomicInteger messageCount = new AtomicInteger();
 
     try {
-      Socket socket = new Socket("10.0.0.101", 10110);
+      Socket socket = new Socket("localhost", 10110);
       System.out.println("Connected to AIS server on " + socket.getInetAddress() + " " + socket.getPort());
 
       try {
