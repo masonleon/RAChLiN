@@ -1,4 +1,4 @@
-package com.aisMessageListener.AisDecodeMessageStore.jdbc;
+package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;

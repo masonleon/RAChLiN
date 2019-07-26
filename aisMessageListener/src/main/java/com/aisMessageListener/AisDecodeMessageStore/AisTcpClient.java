@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.sql.Connection;
 
 import dk.tbsalling.aismessages.AISInputStreamReader;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
@@ -55,8 +56,6 @@ class AisTcpClient {
    * @param message a decoded AIS message.
    */
   private void insertMessageIntoDatabase(AISMessage message) {
-    // Print for testing with testKplexServer.  Can be deleted.
-    System.out.println("Received message of type: " + message.getMessageType());
   }
 
   /**

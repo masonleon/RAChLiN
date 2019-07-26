@@ -1,5 +1,7 @@
-package com.aisMessageListener.AisDecodeMessageStore.jdbc;
+package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 
+
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
 
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 

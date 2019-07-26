@@ -49,9 +49,7 @@ public abstract class AbstractDatabaseConnectionManager implements DatabaseConne
    * Returns a Connection to this database.  Same as getConnection() except connection is tested for
    * validity first, as connections can go stale over time. Testing a connection can affect
    * performance (it is effectively an additional query).  Can be used to get all connections if
-   * performance is not essential.  Otherwise, consider using this method only to resolve
-   * SQLExceptions thrown during updates or queries, which can suggest a stale connection.  Exits
-   * the program if a connection is not possible.
+   * performance is not essential.  Exits the program if a connection is not possible.
    *
    * @return a Connection to the database.
    * @throws SQLException if isValid timeout is negative (e.g., exception does not need to be
