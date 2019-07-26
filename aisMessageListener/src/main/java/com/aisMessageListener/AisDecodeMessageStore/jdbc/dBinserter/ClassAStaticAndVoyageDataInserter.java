@@ -1,43 +1,41 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 
-import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
 
 class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
 
-  ClassAStaticAndVoyageDataInserter(MessageDataInterface message) {
-    super(message);
-  }
-
-
-  @Override
-  public void writeMessageData(DatabaseConnectionInterface con) {
-
-  }
-
-  @Override
-  public void writeVesselSignature(DatabaseConnectionInterface con) {
-
-  }
-
-  @Override
-  public void writeVoyageData(DatabaseConnectionInterface con) {
-
-  }
-
-  @Override
-  public void writeVesselData(DatabaseConnectionInterface con) {
-
-  }
-
-  @Override
-  public void writeNavigationData(DatabaseConnectionInterface con) {
-
-  }
-
-  @Override
-  public void writeGeospatialData(DatabaseConnectionInterface con) {
-
-  }
+    ClassAStaticAndVoyageDataInserter(MessageDataInterface message) {
+        super(message);
+    }
+  
+    @Override
+    public void writeMessageData() {
+  
+    }
+  
+    @Override
+    public void writeVesselSignature() {
+  
+    }
+  
+    @Override
+    public void writeVoyageData() {
+  
+    }
+  
+    @Override
+    public void writeVesselData() {
+  
+    }
+  
+    @Override
+    public void writeNavigationData() {
+  
+    }
+  
+    @Override
+    public void writeGeospatialData() {
+  
+    }
 }
 
