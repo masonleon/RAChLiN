@@ -1,13 +1,12 @@
 package com.aisMessageListener.AisDecodeMessageStore;
 
-import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionManager;
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.Connection;
 
 import dk.tbsalling.aismessages.AISInputStreamReader;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
@@ -29,7 +28,7 @@ class AisTcpClient {
    * @throws InterruptedException does not need to be handled. Only occurs when another thread
    *                              interrupts the sleep method during connection recovery.
    */
-  void start(int portNumber, DatabaseConnectionManager connectManager) throws InterruptedException {
+  void start(int portNumber, DatabaseConnectionInterface connectManager) throws InterruptedException {
 
     while (true) {
       try (

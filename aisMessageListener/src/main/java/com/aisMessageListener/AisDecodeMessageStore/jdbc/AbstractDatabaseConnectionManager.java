@@ -14,7 +14,7 @@ public abstract class AbstractDatabaseConnectionManager implements DatabaseConne
   private static final String port = "5432";
   private final String url;
   private final Properties properties;
-  private Connection connection;
+  protected Connection connection;
 
   /**
    * Create a database connection manager using the provided database information.
@@ -30,39 +30,23 @@ public abstract class AbstractDatabaseConnectionManager implements DatabaseConne
     this.properties = new Properties();
     this.properties.setProperty("user", username);
     this.properties.setProperty("password", password);
-    this.connection = null;
+    connectToDatabase();
   }
 
   /**
-   * Returns a Connection to this database.  Exits the program if a connection is not possible.
+   * Checks if connection has dropped and reestablishes connection as applicable.  Call before
+   * making updates or queries, as connections can go stale over time.  Exits program if connection
+   * is not possible.
    *
-   * @return a Connection to the database.
-   */
-  public Connection getConnection() {
-    if (this.connection == null) {
-      return connectToDatabase();
-    }
-    return this.connection;
-  }
-
-  /**
-   * Returns a Connection to this database.  Same as getConnection() except connection is tested for
-   * validity first, as connections can go stale over time. Testing a connection can affect
-   * performance (it is effectively an additional query).  Can be used to get all connections if
-   * performance is not essential.  Exits the program if a connection is not possible.
-   *
-   * @return a Connection to the database.
    * @throws SQLException if isValid timeout is negative (e.g., exception does not need to be
    *                      handled here).
    */
-  public Connection getValidatedConnection() throws SQLException {
+  public void connectIfDropped() throws SQLException {
     if (this.connection == null) {
-      return connectToDatabase();
+      connectToDatabase();
+    } else if (!this.connection.isValid(2)) {
+      connectToDatabase();
     }
-    if (this.connection.isValid(2)) {
-      return this.connection;
-    }
-    return connectToDatabase();
   }
 
   /**
@@ -83,13 +67,12 @@ public abstract class AbstractDatabaseConnectionManager implements DatabaseConne
    *
    * @return a new connection to the database.
    */
-  private Connection connectToDatabase() {
+  private void connectToDatabase() {
     try {
       this.connection = DriverManager.getConnection(this.url, this.properties);
     } catch (SQLException e) {
       System.err.println("Error while connecting to database.\n");
       System.exit(1);
     }
-    return this.connection;
   }
 }

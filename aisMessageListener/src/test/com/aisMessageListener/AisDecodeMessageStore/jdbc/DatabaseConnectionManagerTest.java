@@ -5,15 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
- * JUnit tests of DatabaseConnectionManager.
+ * JUnit tests for DatabaseConnectionManager.
  */
 public class DatabaseConnectionManagerTest {
 
@@ -38,21 +36,12 @@ public class DatabaseConnectionManagerTest {
   }
 
   @Test
-  public void testGetConnection() throws SQLException {
-    Connection connection = connectionManager.getConnection();
-    assertTrue(connection.isValid(0));
-    // Test for appropriate handling on redundant connect request.
-    connection = connectionManager.getConnection();
-    assertTrue(connection.isValid(0));
-  }
+  public void testConnectIfDropped() throws SQLException {
+    connectionManager.closeConnection();
+    connectionManager.connectIfDropped();
+    connectionManager.queryOneInt("select nav_status_id from nav_status", 1);
+    // No exceptions thrown.  Successful pass.
 
-  @Test
-  public void testGetValidatedConnection() throws SQLException {
-    Connection connection = connectionManager.getValidatedConnection();
-    assertTrue(connection.isValid(0));
-    // Test for appropriate handling on redundant connect request.
-    connection = connectionManager.getValidatedConnection();
-    assertTrue(connection.isValid(0));
   }
 
   @Test

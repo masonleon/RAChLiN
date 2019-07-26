@@ -9,9 +9,7 @@ import java.sql.SQLException;
  */
 public interface DatabaseConnectionInterface {
 
-  Connection getValidatedConnection() throws SQLException;
-
-  Connection getConnection();
+  void connectIfDropped() throws SQLException;
 
   void closeConnection();
 

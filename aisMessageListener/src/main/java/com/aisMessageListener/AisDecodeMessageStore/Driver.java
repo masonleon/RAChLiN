@@ -1,6 +1,6 @@
 package com.aisMessageListener.AisDecodeMessageStore;
 
-
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionManager;
 
 /**
@@ -36,7 +36,7 @@ public class Driver {
     String username = args[3];
     String password = args[4];
 
-    DatabaseConnectionManager dbConnection = new DatabaseConnectionManager(
+    DatabaseConnectionInterface dbConnection = new DatabaseConnectionManager(
             databaseHost, databaseName, username, password);
 
     new AisTcpClient().start(tcpServerPort, dbConnection);
