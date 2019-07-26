@@ -5,18 +5,18 @@ import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInter
 import java.sql.SQLException;
 
 public interface DatabaseInserterInterface {
+    
+    void attachConnection(DatabaseConnectionInterface conn) throws SQLException;
 
-  void writeMessageData(DatabaseConnectionInterface con) throws SQLException;
+    void writeMessageData() throws SQLException;
 
-  void writeVesselSignature(DatabaseConnectionInterface con) throws SQLException;
+    void writeVesselSignature() throws SQLException;
 
-  void writeVoyageData(DatabaseConnectionInterface con) throws SQLException;
+    void writeVoyageData() throws SQLException;
 
-  void writeVesselData(DatabaseConnectionInterface con) throws SQLException;
+    void writeVesselData() throws SQLException;
 
-  void writeNavigationData(DatabaseConnectionInterface con) throws SQLException;
+    void writeNavigationData() throws SQLException;
 
-  void writeGeospatialData(DatabaseConnectionInterface con) throws SQLException;
-
-
+    void writeGeospatialData() throws SQLException;
 }
