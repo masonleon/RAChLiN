@@ -10,32 +10,32 @@ class UnsupportedMessageInserter extends AbstractDatabaseInserter {
   }
 
   @Override
-  public void writeMessageData(DatabaseConnectionInterface con) {
+  public void writeMessageData() {
 
   }
 
   @Override
-  public void writeVesselSignature(DatabaseConnectionInterface con) {
+  public void writeVesselSignature() {
 
   }
 
   @Override
-  public void writeVoyageData(DatabaseConnectionInterface con) {
+  public void writeVoyageData() {
 
   }
 
   @Override
-  public void writeVesselData(DatabaseConnectionInterface con) {
+  public void writeVesselData() {
 
   }
 
   @Override
-  public void writeNavigationData(DatabaseConnectionInterface con) {
+  public void writeNavigationData() {
 
   }
 
   @Override
-  public void writeGeospatialData(DatabaseConnectionInterface con) {
+  public void writeGeospatialData() {
 
   }
 }
