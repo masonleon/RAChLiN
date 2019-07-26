@@ -4,7 +4,7 @@ import java.time.Instant;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
-import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
+import dk.tbsalling.aismessages.ais.messages.types.*;
 import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
@@ -131,5 +131,110 @@ public class AbstractMessageData implements MessageDataInterface {
   @Override
   public int getVesselDataId() {
     return vesselDataId;
+  }
+
+  @Override
+  public Float getLat() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Float getLong() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Boolean getAccuracy() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public NavigationStatus getNavStatus() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public ManeuverIndicator getManeuverIndicator() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Float getSpeedOverGround() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Float getCourseOverGround() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Float getHeading() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Float getRateOfTurn() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public IMO getIMO() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public String getCallsign() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public String getShipName() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public ShipType getShipType() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Integer getToBow() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Integer getToStern() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Integer getToStarboard() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Integer getToPort() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public PositionFixingDevice getPositionFixingDevice() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Float getDraught() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public String getDestination() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Boolean isDataTerminalReady() {
+    throw new UnsupportedMessageType(getTypeId());
   }
 }

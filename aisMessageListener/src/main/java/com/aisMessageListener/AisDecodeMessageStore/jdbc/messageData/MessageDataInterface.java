@@ -2,7 +2,9 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
 
-import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
+import dk.tbsalling.aismessages.ais.messages.AISMessage;
+import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
+import dk.tbsalling.aismessages.ais.messages.types.*;
 
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver,
@@ -65,6 +67,48 @@ public interface MessageDataInterface {
    * @return Instant
    */
   Instant getTimeReceived();
+
+  Float getLat();
+
+  Float getLong();
+
+  Boolean getAccuracy();
+
+  NavigationStatus getNavStatus();
+
+  ManeuverIndicator getManeuverIndicator();
+
+  Float getSpeedOverGround();
+
+  Float getCourseOverGround();
+
+  Float getHeading();
+
+  Float getRateOfTurn();
+
+  IMO getIMO();
+
+  String getCallsign();
+
+  String getShipName();
+
+  ShipType getShipType();
+
+  Integer getToBow();
+
+  Integer getToStern();
+
+  Integer getToStarboard();
+
+  Integer getToPort();
+
+  PositionFixingDevice getPositionFixingDevice();
+
+  Float getDraught();
+
+  String getDestination();
+
+  Boolean isDataTerminalReady();
 
   int getGeospatialDataId();
 

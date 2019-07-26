@@ -19,46 +19,49 @@ public class ClassAPositionReportData extends AbstractMessageData {
         this.positionReport = (PositionReport) message;
     }
 
-    public ClassAPositionReportData(PositionReport positionReport) {
-        super(positionReport);
-
-        this.positionReport = positionReport;
-    }
-
-    public double getLat() {
+    @Override
+    public Float getLat() {
         return positionReport.getLatitude();
     }
 
-    public double getLong() {
+    @Override
+    public Float getLong() {
         return positionReport.getLongitude();
     }
 
-    public int getAccuracy() {
-        return positionReport.getPositionAccuracy() ? 1 : 0;
+    @Override
+    public Boolean getAccuracy() {
+        return positionReport.getPositionAccuracy();
     }
 
+    @Override
     public NavigationStatus getNavStatus() {
         return positionReport.getNavigationStatus();
     }
 
+    @Override
     public ManeuverIndicator getManeuverIndicator() {
         return positionReport.getSpecialManeuverIndicator();
     }
 
-    public double getSpeedOverGround() {
+    @Override
+    public Float getSpeedOverGround() {
         return positionReport.getSpeedOverGround();
     }
 
-    public double getCourseOverGround() {
+    @Override
+    public Float getCourseOverGround() {
         return positionReport.getCourseOverGround();
     }
 
     // TODO: internal implementations of both of these are integers?
-    public double getHeading() {
-        return positionReport.getTrueHeading();
+    @Override
+    public Float getHeading() {
+        return Float.valueOf(String.valueOf(positionReport.getTrueHeading()));
     }
 
-    public double getRateOfTurn() {
-        return positionReport.getRateOfTurn();
+    @Override
+    public Float getRateOfTurn() {
+        return Float.valueOf(String.valueOf(positionReport.getRateOfTurn()));
     }
 }

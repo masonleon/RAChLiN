@@ -6,8 +6,14 @@ import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageData
 
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 
-   private MessageDataInterface message;
+   protected MessageDataInterface message;
    protected DatabaseConnectionInterface connection;
+
+   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
+       this(message);
+
+       attachConnection(connection);
+   }
 
    protected AbstractDatabaseInserter(MessageDataInterface message) {
      this.message = message;
