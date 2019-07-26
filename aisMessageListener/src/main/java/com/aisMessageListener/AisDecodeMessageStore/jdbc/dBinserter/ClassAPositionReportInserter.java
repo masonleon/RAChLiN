@@ -10,7 +10,6 @@ class ClassAPositionReportInserter extends AbstractDatabaseInserter {
 
     @Override
     public void writeMessageData() {
-
     }
 
     @Override
