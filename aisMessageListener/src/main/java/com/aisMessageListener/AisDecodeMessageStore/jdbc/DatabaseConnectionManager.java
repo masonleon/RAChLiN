@@ -90,6 +90,23 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     stmt.close();
     return result;
   }
+
+  @Override
+  public void beginTransaction() throws SQLException {
+    connection.setAutoCommit(false);
+  }
+
+  @Override
+  public void commitTransaction() throws SQLException {
+    connection.commit();
+    connection.setAutoCommit(true);
+  }
+
+  @Override
+  public void rollBackTransaction() throws SQLException {
+    connection.rollback();
+    connection.setAutoCommit(true);
+  }
 }
 
 

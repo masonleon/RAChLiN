@@ -39,6 +39,6 @@ public class Driver {
     DatabaseConnectionInterface dbConnection = new DatabaseConnectionManager(
             databaseHost, databaseName, username, password);
 
-    new AisTcpClient().start(tcpServerPort, dbConnection);
+    new AisTcpClient(tcpServerPort, dbConnection).start();
   }
 }

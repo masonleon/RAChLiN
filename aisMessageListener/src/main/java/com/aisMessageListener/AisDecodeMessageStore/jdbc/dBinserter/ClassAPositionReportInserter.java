@@ -1,43 +1,43 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
 
-import java.sql.Connection;
+class ClassAPositionReportInserter extends AbstractDatabaseInserter {
 
-public class ClassAPositionReportInserter extends AbstractDatabaseInserter {
-
-  public ClassAPositionReportInserter(MessageDataInterface message) {
+  ClassAPositionReportInserter(MessageDataInterface message) {
     super(message);
   }
 
   @Override
-  public void writeMessageData(Connection connection) {
+  public void writeMessageData(DatabaseConnectionInterface con) {
 
   }
 
   @Override
-  public void writeVesselSignature(Connection connection) {
+  public void writeVesselSignature(DatabaseConnectionInterface con) {
 
   }
 
   @Override
-  public void writeVoyageData(Connection connection) {
+  public void writeVoyageData(DatabaseConnectionInterface con) {
 
   }
 
   @Override
-  public void writeVesselData(Connection connection) {
+  public void writeVesselData(DatabaseConnectionInterface con) {
 
   }
 
   @Override
-  public void writeNavigationData(Connection connection) {
+  public void writeNavigationData(DatabaseConnectionInterface con) {
 
   }
 
   @Override
-  public void writeGeospatialData(Connection connection) {
+  public void writeGeospatialData(DatabaseConnectionInterface con) {
 
   }
 }
+
 

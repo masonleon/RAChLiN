@@ -7,7 +7,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
   private MessageDataInterface message;
 
-  public AbstractDatabaseInserter(MessageDataInterface message) {
+  protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
   }
 

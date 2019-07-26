@@ -1,44 +1,58 @@
 package com.aisMessageListener.AisDecodeMessageStore;
 
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter.DatabaseInserterFactory;
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter.DatabaseInserterInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.sql.SQLException;
 
 import dk.tbsalling.aismessages.AISInputStreamReader;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 
 /**
- * A TCP client that requests AIS messages and passes them to a class for updating the database. The
+ * A TCP client that requests AIS messages and uses them to update the message database. The
  * expected server is a Raspberry Pi running a kplex NMEA multiplexer. The multiplexer receives
  * messages from an AIS receiver connected over USB-Serial interface.
  */
 class AisTcpClient {
 
+  private DatabaseConnectionInterface connectManager;
+  private int portNumber;
+
   /**
-   * Starts connection with the server on the provided port and requests AIS messages indefinitely.
-   * Received messages will be forwarded to a class for database update. Before running, open an ssh
-   * tunnel that forwards the desired port from localhost.  Use autossh to keep the tunnel alive.
+   * Creates a client using a the provided port number and connection manager.
    *
-   * @param portNumber     the port number to bind to.
-   * @param connectManager a connection manager that handles access to the database.
+   * @param portNumber     the port number to connect to for tcp requests.
+   * @param connectManager the connection manager for database updates.
+   */
+  AisTcpClient(int portNumber, DatabaseConnectionInterface connectManager) {
+    this.portNumber = portNumber;
+    this.connectManager = connectManager;
+  }
+
+  /**
+   * Starts connection with the server and requests AIS messages indefinitely. Received messages
+   * will be forwarded to an inserter for database update. Before running, open an ssh tunnel that
+   * forwards the desired port from localhost.  Use autossh to keep the tunnel alive.
+   *
    * @throws InterruptedException does not need to be handled. Only occurs when another thread
    *                              interrupts the sleep method during connection recovery.
    */
-  void start(int portNumber, DatabaseConnectionInterface connectManager) throws InterruptedException {
+  void start() throws InterruptedException {
 
     while (true) {
       try (
-
               Socket clientSocket = new Socket(InetAddress.getLoopbackAddress(), portNumber);
               InputStream messageStream = clientSocket.getInputStream()
-
       ) {
         AISInputStreamReader streamReader = new AISInputStreamReader(
                 messageStream, this::insertMessageIntoDatabase);
+
         streamReader.run();
 
       } catch (IOException e) {
@@ -50,11 +64,41 @@ class AisTcpClient {
   }
 
   /**
-   * Entry point for processing a decoded AIS message. Hands off process to jdbc classes.
+   * Inserts a decoded AIS message into the database as a transaction.
    *
    * @param message a decoded AIS message.
    */
   private void insertMessageIntoDatabase(AISMessage message) {
+    DatabaseInserterInterface inserter = DatabaseInserterFactory.getDatabaseInserter(message);
+
+    try {
+      connectManager.connectIfDropped();
+      updateAllTables(inserter);
+
+    } catch (SQLException e) {
+      System.err.println("Unexpected database error\n");
+      e.printStackTrace();
+      System.exit(1);
+    }
+  }
+
+  private void updateAllTables(DatabaseInserterInterface inserter) throws SQLException {
+    connectManager.beginTransaction();
+    try {
+      inserter.writeMessageData(connectManager);
+      inserter.writeVesselSignature(connectManager);
+      inserter.writeVoyageData(connectManager);
+      inserter.writeVesselData(connectManager);
+      inserter.writeNavigationData(connectManager);
+      inserter.writeGeospatialData(connectManager);
+
+    } catch (SQLException e) {
+      System.err.println("Error adding message to database. Moving to next message.\n");
+      e.printStackTrace();
+      connectManager.rollBackTransaction();
+      return;
+    }
+    connectManager.commitTransaction();
   }
 
   /**

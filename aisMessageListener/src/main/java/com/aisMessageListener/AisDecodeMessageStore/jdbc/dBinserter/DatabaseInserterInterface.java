@@ -1,20 +1,22 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 
-import java.sql.Connection;
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
+
+import java.sql.SQLException;
 
 public interface DatabaseInserterInterface {
 
+  void writeMessageData(DatabaseConnectionInterface con) throws SQLException;
 
-  void writeMessageData(Connection connection);
+  void writeVesselSignature(DatabaseConnectionInterface con) throws SQLException;
 
-  void writeVesselSignature(Connection connection);
+  void writeVoyageData(DatabaseConnectionInterface con) throws SQLException;
 
-  void writeVoyageData(Connection connection);
+  void writeVesselData(DatabaseConnectionInterface con) throws SQLException;
 
-  void writeVesselData(Connection connection);
+  void writeNavigationData(DatabaseConnectionInterface con) throws SQLException;
 
-  void writeNavigationData(Connection connection);
+  void writeGeospatialData(DatabaseConnectionInterface con) throws SQLException;
 
-  void writeGeospatialData(Connection connection);
 
 }

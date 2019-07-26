@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 
+//TODO: test transactions
 /**
  * JUnit tests for DatabaseConnectionManager.
  */

@@ -3,12 +3,11 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
 
-class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
+class UnsupportedMessageInserter extends AbstractDatabaseInserter {
 
-  ClassAStaticAndVoyageDataInserter(MessageDataInterface message) {
+  UnsupportedMessageInserter(MessageDataInterface message) {
     super(message);
   }
-
 
   @Override
   public void writeMessageData(DatabaseConnectionInterface con) {
@@ -40,4 +39,3 @@ class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
 
   }
 }
-

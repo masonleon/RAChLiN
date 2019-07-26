@@ -1,6 +1,5 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -13,12 +12,17 @@ public interface DatabaseConnectionInterface {
 
   void closeConnection();
 
+  void beginTransaction() throws SQLException;
+
+  void commitTransaction() throws SQLException;
+
+  void rollBackTransaction() throws SQLException;
+
   int queryOneInt(String selectSQL, int column) throws SQLException;
 
   String queryOneString(String selectSQL, int column) throws SQLException;
 
   int insertOneRecord(String insertSQL) throws SQLException;
-
 
 
 }
