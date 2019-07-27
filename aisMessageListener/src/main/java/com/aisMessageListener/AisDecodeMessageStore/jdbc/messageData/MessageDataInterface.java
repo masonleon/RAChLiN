@@ -1,12 +1,11 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.util.Optional;
-
-import dk.tbsalling.aismessages.ais.messages.AISMessage;
-import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
-import dk.tbsalling.aismessages.ais.messages.types.*;
+import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
+import dk.tbsalling.aismessages.ais.messages.types.IMO;
+import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
+import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
+import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
+import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver,
@@ -66,9 +65,9 @@ public interface MessageDataInterface {
   /**
    * Checks the instant this message was received.
    *
-   * @return Instant
+   * @return String
    */
-  Instant getTimeReceived();
+  String getTimeReceived();
 
   Float getLat();
 
@@ -108,7 +107,7 @@ public interface MessageDataInterface {
 
   Float getDraught();
 
-  Optional<ZonedDateTime> getETA();
+  String getETA();
 
   String getDestination();
 

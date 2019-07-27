@@ -1,16 +1,19 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
-import dk.tbsalling.aismessages.ais.messages.types.*;
+import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
+import dk.tbsalling.aismessages.ais.messages.types.IMO;
+import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
+import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
+import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
+import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
-
-import static java.sql.Types.NULL;
 
 public abstract class AbstractMessageData implements MessageDataInterface {
   private final AISMessage message;
@@ -95,8 +98,16 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public Instant getTimeReceived() {
-    return this.message.getMetadata().getReceived();
+  public String getTimeReceived() {
+    Instant time = this.message.getMetadata().getReceived();
+    ZonedDateTime UTCtime = time.atZone(ZoneOffset.UTC);
+    int year = UTCtime.getYear();
+    String month = addZeroToSingleDigitInt(UTCtime.getMonthValue());
+    String day = addZeroToSingleDigitInt(UTCtime.getDayOfMonth());
+    String hour = addZeroToSingleDigitInt(UTCtime.getHour());
+    String minute = addZeroToSingleDigitInt(UTCtime.getMinute());
+    String second = addZeroToSingleDigitInt(UTCtime.getSecond());
+    return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + " UTC";
   }
 
   @Override
@@ -195,7 +206,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public Optional<ZonedDateTime> getETA() {
+  public String getETA() {
     throw new UnsupportedMessageType(getTypeId());
   }
 
@@ -207,5 +218,13 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
   public Boolean isDataTerminalReady() {
     throw new UnsupportedMessageType(getTypeId());
+  }
+
+  protected String addZeroToSingleDigitInt(int value) {
+    String formattedValue = "" + value;
+    if (formattedValue.length() == 1) {
+      formattedValue = "0" + value;
+    }
+    return formattedValue;
   }
 }

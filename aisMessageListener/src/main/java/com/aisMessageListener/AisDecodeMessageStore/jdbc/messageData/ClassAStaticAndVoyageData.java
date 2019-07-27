@@ -1,13 +1,13 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import java.time.ZonedDateTime;
+import java.util.Optional;
+
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
 import dk.tbsalling.aismessages.ais.messages.types.IMO;
 import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
 import dk.tbsalling.aismessages.ais.messages.types.ShipType;
-
-import java.time.ZonedDateTime;
-import java.util.Optional;
 
 public class ClassAStaticAndVoyageData extends AbstractMessageData {
 
@@ -74,8 +74,18 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public Optional<ZonedDateTime> getETA() {
-    return shipVoyageData.getEtaAfterReceived();
+  public String getETA() {
+    Optional<ZonedDateTime> optionalTime = shipVoyageData.getEtaAfterReceived();
+    if (!optionalTime.isPresent()) {
+      return "NULL";
+    }
+    ZonedDateTime time = optionalTime.get();
+    int year = time.getYear();
+    String month = addZeroToSingleDigitInt(time.getMonthValue());
+    String day = addZeroToSingleDigitInt(time.getDayOfMonth());
+    String hour = addZeroToSingleDigitInt(time.getHour());
+    String minute = addZeroToSingleDigitInt(time.getMinute());
+    return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute + " UTC";
   }
 
   @Override
