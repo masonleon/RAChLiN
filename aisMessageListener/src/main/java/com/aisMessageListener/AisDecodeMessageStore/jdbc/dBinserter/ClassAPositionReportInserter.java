@@ -5,7 +5,7 @@ import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageData
 class ClassAPositionReportInserter extends AbstractDatabaseInserter {
 
     ClassAPositionReportInserter(MessageDataInterface message) {
-      super(message);
+        super(message);
     }
 }
 

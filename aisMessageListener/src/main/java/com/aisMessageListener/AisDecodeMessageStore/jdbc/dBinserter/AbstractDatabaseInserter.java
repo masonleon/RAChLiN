@@ -9,23 +9,44 @@ import java.sql.SQLException;
 
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 
-   protected MessageDataInterface message;
-   protected DatabaseConnectionInterface connection;
+    protected MessageDataInterface message;
+    protected DatabaseConnectionInterface connection;
 
-   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
-       this(message);
+    protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
+        this(message);
 
-       attachConnection(connection);
-   }
+        attachConnection(connection);
+    }
 
-   protected AbstractDatabaseInserter(MessageDataInterface message) {
+    protected AbstractDatabaseInserter(MessageDataInterface message) {
      this.message = message;
    }
 
-   @Override
-   public void attachConnection(DatabaseConnectionInterface conn) {
+    @Override
+    public void attachConnection(DatabaseConnectionInterface conn) {
        this.connection = conn;
-   }
+    }
+
+    @Override
+    public WriteResult writeMessage() throws SQLException {
+        connection.beginTransaction();
+        try {
+            writeGeospatialData();
+            writeVoyageData();
+            writeNavigationStatus();
+            writeManeuverIndicator();
+            writeNavigationData();
+            writeVesselData();
+            writeVesselType();
+            writeVesselSignature();
+            writeMessageData();
+            connection.commitTransaction();
+            return WriteResult.SUCCESS;
+        } catch (SQLException ex) {
+            connection.rollBackTransaction();
+        }
+        return WriteResult.FAILURE;
+    }
 
     @Override
     public WriteResult writeMessageData() {
@@ -34,7 +55,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
     @Override
     public WriteResult writeVesselSignature() throws SQLException {
-        connection.beginTransaction();
         try {
             message.getMMSI();
             message.getIMO();
@@ -43,150 +63,119 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
             // CHECK TO SEE IF THIS PERMUTATION IN TABLE FIRST THEN WRITE IF NECESSARY
 
-            connection.commitTransaction();
             return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
-            connection.commitTransaction();
             return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
-            connection.rollBackTransaction();
+            return WriteResult.FAILURE;
         }
-        return WriteResult.FAILURE;
     }
 
     @Override
     public WriteResult writeVoyageData() throws SQLException {
-        connection.beginTransaction();
         try {
             message.getDraught();
             message.getETA();
             message.getDestination();
 
-            connection.commitTransaction();
             return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
-            connection.commitTransaction();
             return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
-            connection.rollBackTransaction();
+            return WriteResult.FAILURE;
         }
-        return WriteResult.FAILURE;
     }
 
     @Override
     public WriteResult writeVesselData() throws SQLException {
-        connection.beginTransaction();
         try {
             message.getToBow();
             message.getToPort();
             message.getToStarboard();
             message.getToStern();
 
-            connection.commitTransaction();
             return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
-            connection.commitTransaction();
             return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
-            connection.rollBackTransaction();
+            return WriteResult.FAILURE;
         }
-        return WriteResult.FAILURE;
     }
 
     @Override
     public WriteResult writeVesselType() throws SQLException {
-        connection.beginTransaction();
         try {
 
             message.getShipType();
 
-            connection.commitTransaction();
             return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
-            connection.commitTransaction();
             return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
-            connection.rollBackTransaction();
+            return WriteResult.FAILURE;
         }
-        return WriteResult.FAILURE;
     }
 
     @Override
     public WriteResult writeNavigationStatus() throws SQLException {
-        connection.beginTransaction();
         try {
 
-            connection.commitTransaction();
             return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
-            connection.commitTransaction();
             return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
-            connection.rollBackTransaction();
+            return WriteResult.FAILURE;
         }
-        return WriteResult.FAILURE;
     }
 
     @Override
     public WriteResult writeNavigationData() throws SQLException {
-        connection.beginTransaction();
         try {
             message.getCourseOverGround();
             message.getDestination();
             message.getHeading();
             message.getRateOfTurn();
 
-            connection.commitTransaction();
             return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
-            connection.commitTransaction();
             return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
-            connection.rollBackTransaction();
+            return WriteResult.FAILURE;
         }
-        return WriteResult.FAILURE;
     }
 
     @Override
     public WriteResult writeGeospatialData() throws SQLException {
-        connection.beginTransaction();
         try {
             message.getAccuracy();
             // TODO: coord?
 
-            connection.commitTransaction();
             return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
-            connection.commitTransaction();
             return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
-            connection.rollBackTransaction();
+            return WriteResult.FAILURE;
         }
-        return WriteResult.FAILURE;
     }
 
     @Override
     public WriteResult writeManeuverIndicator() throws SQLException {
-        connection.beginTransaction();
         try {
             message.getManeuverIndicator();
 
-            connection.commitTransaction();
             return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
-            connection.commitTransaction();
             return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
-            connection.rollBackTransaction();
+            return WriteResult.FAILURE;
         }
-        return WriteResult.FAILURE;
     }
 }
