@@ -1,33 +1,25 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
-import dk.tbsalling.aismessages.ais.messages.types.*;
+import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
+import dk.tbsalling.aismessages.ais.messages.types.IMO;
+import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
+import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
+import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
+import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
-import static java.sql.Types.NULL;
-
-public class AbstractMessageData implements MessageDataInterface {
-  private AISMessage message;
-  private int geospatialDataId;
-  private int navigationDataId;
-  private int voyageDataId;
-  private int vesselSignatureId;
-  private int vesselDataId;
+public abstract class AbstractMessageData implements MessageDataInterface {
+  private final AISMessage message;
 
   public AbstractMessageData(AISMessage message) {
     this.message = message;
-
-    this.geospatialDataId = NULL;
-    this.navigationDataId = NULL;
-    this.voyageDataId = NULL;
-    this.vesselSignatureId = NULL;
-    this.vesselDataId = NULL;
   }
 
   @Override
@@ -161,33 +153,16 @@ public class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public Instant getTimeReceived() {
-    return this.message.getMetadata().getReceived();
-  }
-
-  @Override
-  public int getGeospatialDataId() {
-    return geospatialDataId;
-  }
-
-  @Override
-  public int getNavigationDataId() {
-    return navigationDataId;
-  }
-
-  @Override
-  public int getVoyageDataId() {
-    return voyageDataId;
-  }
-
-  @Override
-  public int getVesselSignatureId() {
-    return vesselSignatureId;
-  }
-
-  @Override
-  public int getVesselDataId() {
-    return vesselDataId;
+  public String getTimeReceived() {
+    Instant time = this.message.getMetadata().getReceived();
+    ZonedDateTime UTCtime = time.atZone(ZoneOffset.UTC);
+    int year = UTCtime.getYear();
+    String month = addZeroToSingleDigitInt(UTCtime.getMonthValue());
+    String day = addZeroToSingleDigitInt(UTCtime.getDayOfMonth());
+    String hour = addZeroToSingleDigitInt(UTCtime.getHour());
+    String minute = addZeroToSingleDigitInt(UTCtime.getMinute());
+    String second = addZeroToSingleDigitInt(UTCtime.getSecond());
+    return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + " UTC";
   }
 
   @Override
@@ -281,13 +256,25 @@ public class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public Optional<ZonedDateTime> getETA() {
+//  public Optional<ZonedDateTime> getETA() {
+//    throw new UnsupportedMessageType(getMessageTypeId());
+
+  public String getETA() {
     throw new UnsupportedMessageType(getMessageTypeId());
+
   }
 
   @Override
   public String getDestination() {
     throw new UnsupportedMessageType(getMessageTypeId());
+  }
+
+  protected String addZeroToSingleDigitInt(int value) {
+    String formattedValue = "" + value;
+    if (formattedValue.length() == 1) {
+      formattedValue = "0" + value;
+    }
+    return formattedValue;
   }
 
 }

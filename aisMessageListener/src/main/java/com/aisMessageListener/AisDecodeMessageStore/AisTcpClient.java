@@ -72,33 +72,14 @@ class AisTcpClient {
     DatabaseInserterInterface inserter = DatabaseInserterFactory.getDatabaseInserter(message);
 
     try {
-      connectManager.connectIfDropped();
-      updateAllTables(inserter);
+      inserter.attachConnection(connectManager);
+      inserter.writeMessage();
 
     } catch (SQLException e) {
       System.err.println("Unexpected database error\n");
       e.printStackTrace();
       System.exit(1);
     }
-  }
-
-  private void updateAllTables(DatabaseInserterInterface inserter) throws SQLException {
-    connectManager.beginTransaction();
-    try {
-      inserter.writeMessageData(connectManager);
-      inserter.writeVesselSignature(connectManager);
-      inserter.writeVoyageData(connectManager);
-      inserter.writeVesselData(connectManager);
-      inserter.writeNavigationData(connectManager);
-      inserter.writeGeospatialData(connectManager);
-
-    } catch (SQLException e) {
-      System.err.println("Error adding message to database. Moving to next message.\n");
-      e.printStackTrace();
-      connectManager.rollBackTransaction();
-      return;
-    }
-    connectManager.commitTransaction();
   }
 
   /**

@@ -1,16 +1,7 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
-import dk.tbsalling.aismessages.ais.messages.types.IMO;
-import dk.tbsalling.aismessages.ais.messages.types.MMSI;
-import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
-import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
-import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
-import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver,
@@ -78,9 +69,9 @@ public interface MessageDataInterface {
   /**
    * Checks the instant this message was received.
    *
-   * @return Instant
+   * @return String
    */
-  Instant getTimeReceived();
+  String getTimeReceived();
 
   /**
    * Grabs the Latitude from a message containing geometric information that has already been
@@ -194,8 +185,8 @@ public interface MessageDataInterface {
   String getShipName();
 
   /**
-   * Grabs the ship type and cargo type object of a vessel from a message. This can change depending on a
-   * vessel's current voyage and the particular goods being transported.
+   * Grabs the ship type and cargo type object of a vessel from a message. This can change depending
+   * on a vessel's current voyage and the particular goods being transported.
    *
    * @return ShipType
    */
@@ -210,8 +201,8 @@ public interface MessageDataInterface {
   Integer getToBow();
 
   /**
-   * Grabs the length in Meters from the Electronic Position-Fixing Device (EPFD) antenna to the stern
-   * of a vessel from a message. Will be 0 if not available.
+   * Grabs the length in Meters from the Electronic Position-Fixing Device (EPFD) antenna to the
+   * stern of a vessel from a message. Will be 0 if not available.
    *
    * @return Integer
    */
@@ -242,12 +233,16 @@ public interface MessageDataInterface {
    */
   Float getDraught();
 
+
   /**
    * Grabs the voyage estimated time of arrival (ETA) for a vessel from a message. In UTC time.
    *
    * @return Optional/</ZonedDateTime/>/
    */
-  Optional<ZonedDateTime> getETA();
+
+  //Optional<ZonedDateTime> getETA();
+
+  String getETA();
 
 
   /**
@@ -259,16 +254,5 @@ public interface MessageDataInterface {
    */
   String getDestination();
 
-
-
-  int getGeospatialDataId();
-
-  int getNavigationDataId();
-
-  int getVoyageDataId();
-
-  int getVesselSignatureId();
-
-  int getVesselDataId();
 }
 
