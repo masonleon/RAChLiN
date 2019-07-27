@@ -23,37 +23,6 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public void processMessage() {
-    if (getType() == null) {
-      throw new InvalidMessage("Invalid NMEA Message due to NULL message type");
-    }
-
-    switch (getType()) {
-
-      // Message Type 1
-      case PositionReportClassAScheduled:
-        break;
-
-      // Message Type 2
-      case PositionReportClassAAssignedSchedule:
-        break;
-
-      // Message Type 3
-      case PositionReportClassAResponseToInterrogation:
-        break;
-
-      // Message Type 5
-      case ShipAndVoyageRelatedData:
-        break;
-
-      // Unsupported Message
-      default:
-        throw new UnsupportedMessageType(getTypeId());
-
-    }
-  }
-
-  @Override
   public boolean isValidType() {
     return this.getTypeId() > -1;
   }

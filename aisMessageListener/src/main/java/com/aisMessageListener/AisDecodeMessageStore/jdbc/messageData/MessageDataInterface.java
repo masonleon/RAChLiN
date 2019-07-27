@@ -14,13 +14,6 @@ import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 public interface MessageDataInterface {
 
   /**
-   * Processes a message. If it's supported, we write it to tables beyond the overarching
-   * MessageData table, e.g. the GeoPositional Data table. Unsupported messages are just dumped to
-   * the table, so that they can be retroactively conformed as standards change.
-   */
-  void processMessage();
-
-  /**
    * Checks if the the integer message type is valid.
    *
    * @return boolean if message type >= 0, false otherwise
