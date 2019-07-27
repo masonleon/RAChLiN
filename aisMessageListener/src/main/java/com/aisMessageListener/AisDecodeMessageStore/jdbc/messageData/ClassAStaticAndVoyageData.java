@@ -2,7 +2,6 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
-import dk.tbsalling.aismessages.ais.messages.types.IMO;
 import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
 import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 
@@ -24,8 +23,8 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public IMO getIMO() {
-    return shipVoyageData.getImo();
+  public int getIMO() {
+    return shipVoyageData.getImo().getIMO();
   }
 
   @Override
@@ -39,8 +38,8 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public ShipType getShipType() {
-    return shipVoyageData.getShipType();
+  public int getShipTypeId() {
+    return shipVoyageData.getShipType().getCode();
   }
 
   @Override
@@ -64,11 +63,6 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public PositionFixingDevice getPositionFixingDevice() {
-    return shipVoyageData.getPositionFixingDevice();
-  }
-
-  @Override
   public Float getDraught() {
     return shipVoyageData.getDraught();
   }
@@ -83,8 +77,4 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
     return shipVoyageData.getDestination();
   }
 
-  @Override
-  public Boolean isDataTerminalReady() {
-    return shipVoyageData.getDataTerminalReady();
-  }
 }

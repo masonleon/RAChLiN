@@ -32,11 +32,11 @@ public class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public void processMessage() {
-    if (getType() == null) {
+    if (getMessageType() == null) {
       throw new InvalidMessage("Invalid NMEA Message due to NULL message type");
     }
 
-    switch (getType()) {
+    switch (getMessageType()) {
 
       // Message Type 1
       case PositionReportClassAScheduled:
@@ -54,16 +54,67 @@ public class AbstractMessageData implements MessageDataInterface {
       case ShipAndVoyageRelatedData:
         break;
 
-      // Unsupported Message
+      case BaseStationReport:
+        break;
+
+      // Messages We Currently Don't Support
+      case AddressedBinaryMessage:
+        break;
+      case BinaryAcknowledge:
+        break;
+      case BinaryBroadcastMessage:
+        break;
+      case StandardSARAircraftPositionReport:
+        break;
+      case UTCAndDateInquiry:
+        break;
+      case UTCAndDateResponse:
+        break;
+      case AddressedSafetyRelatedMessage:
+        break;
+      case SafetyRelatedAcknowledge:
+        break;
+      case SafetyRelatedBroadcastMessage:
+        break;
+      case Interrogation:
+        break;
+      case AssignedModeCommand:
+        break;
+      case GNSSBinaryBroadcastMessage:
+        break;
+      case StandardClassBCSPositionReport:
+        break;
+      case ExtendedClassBEquipmentPositionReport:
+        break;
+      case DataLinkManagement:
+        break;
+      case AidToNavigationReport:
+        break;
+      case ChannelManagement:
+        break;
+      case GroupAssignmentCommand:
+        break;
+      case ClassBCSStaticDataReport:
+        break;
+      case BinaryMessageSingleSlot:
+        break;
+      case BinaryMessageMultipleSlot:
+        break;
+      case LongRangeBroadcastMessage:
+        break;
+
+      //Invalid
+      case Error:
+        break;
       default:
-        throw new UnsupportedMessageType(getTypeId());
+        throw new UnsupportedMessageType(getMessageTypeId());
 
     }
   }
 
   @Override
   public boolean isValidType() {
-    return this.getTypeId() > -1;
+    return this.getMessageTypeId() > -1;
   }
 
   @Override
@@ -72,13 +123,17 @@ public class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public AISMessageType getType() {
+  public AISMessageType getMessageType() {
     return this.message.getMessageType();
   }
 
   @Override
-  public int getTypeId() {
-    return getType().getCode();
+  public int getMessageTypeId() {
+    if (!(this.isValidType())) {
+      //return 0;
+      return getMessageType().getCode();
+    }
+    return getMessageType().getCode();
   }
 
   @Override
@@ -137,111 +192,102 @@ public class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public Float getLat() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getLong() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Boolean getAccuracy() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public NavigationStatus getNavStatus() {
-    throw new UnsupportedMessageType(getTypeId());
+  public int getNavStatusId() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public ManeuverIndicator getManeuverIndicator() {
-    throw new UnsupportedMessageType(getTypeId());
+  public int getManeuverIndicatorId() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getSpeedOverGround() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getCourseOverGround() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getHeading() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getRateOfTurn() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public IMO getIMO() {
-    throw new UnsupportedMessageType(getTypeId());
+  public int getIMO() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public String getCallsign() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public String getShipName() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public ShipType getShipType() {
-    throw new UnsupportedMessageType(getTypeId());
+  public int getShipTypeId() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getToBow() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getToStern() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getToStarboard() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getToPort() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
-  @Override
-  public PositionFixingDevice getPositionFixingDevice() {
-    throw new UnsupportedMessageType(getTypeId());
-  }
-
-  @Override
+   @Override
   public Float getDraught() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Optional<ZonedDateTime> getETA() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public String getDestination() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
-  @Override
-  public Boolean isDataTerminalReady() {
-    throw new UnsupportedMessageType(getTypeId());
-  }
 }

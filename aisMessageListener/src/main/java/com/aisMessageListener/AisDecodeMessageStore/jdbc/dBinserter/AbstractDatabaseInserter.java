@@ -101,7 +101,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         connection.beginTransaction();
         try {
 
-            message.getShipType();
+            message.getShipTypeId();
 
             connection.commitTransaction();
             return WriteResult.SUCCESS;
@@ -176,7 +176,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     public WriteResult writeManeuverIndicator() throws SQLException {
         connection.beginTransaction();
         try {
-            message.getManeuverIndicator();
+            message.getManeuverIndicatorId();
 
             connection.commitTransaction();
             return WriteResult.SUCCESS;

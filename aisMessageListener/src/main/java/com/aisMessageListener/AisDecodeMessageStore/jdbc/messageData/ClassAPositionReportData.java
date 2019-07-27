@@ -35,13 +35,13 @@ public class ClassAPositionReportData extends AbstractMessageData {
     }
 
     @Override
-    public NavigationStatus getNavStatus() {
-        return positionReport.getNavigationStatus();
+    public int getNavStatusId() {
+        return positionReport.getNavigationStatus().getCode();
     }
 
     @Override
-    public ManeuverIndicator getManeuverIndicator() {
-        return positionReport.getSpecialManeuverIndicator();
+    public int getManeuverIndicatorId() {
+        return positionReport.getSpecialManeuverIndicator().getCode();
     }
 
     @Override
