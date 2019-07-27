@@ -8,17 +8,21 @@ public interface DatabaseInserterInterface {
     
     void attachConnection(DatabaseConnectionInterface conn) throws SQLException;
 
-    void writeMessageData() throws SQLException;
+    WriteResult writeMessageData() throws SQLException;
 
-    void writeVesselSignature() throws SQLException;
+    WriteResult writeVesselSignature() throws SQLException;
 
-    void writeVoyageData() throws SQLException;
+    WriteResult writeVoyageData() throws SQLException;
 
-    void writeVesselData() throws SQLException;
+    WriteResult writeVesselData() throws SQLException;
 
-    void writeNavigationData() throws SQLException;
+    WriteResult writeVesselTypeData() throws SQLException;
 
-    void writeGeospatialData() throws SQLException;
+    WriteResult writeNavigationStatusData() throws SQLException;
 
-    void writeManeuverIndicatorData() throws SQLException;
+    WriteResult writeNavigationData() throws SQLException;
+
+    WriteResult writeGeospatialData() throws SQLException;
+
+    WriteResult writeManeuverIndicatorData() throws SQLException;
 }

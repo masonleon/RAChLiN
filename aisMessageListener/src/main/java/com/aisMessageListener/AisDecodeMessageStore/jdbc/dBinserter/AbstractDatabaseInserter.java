@@ -28,11 +28,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
    }
 
     @Override
-    public void writeMessageData() {
+    public WriteResult writeMessageData() {
+       return WriteResult.UNSUPPORTED;
     }
 
     @Override
-    public void writeVesselSignature() throws SQLException {
+    public WriteResult writeVesselSignature() throws SQLException {
         connection.beginTransaction();
         try {
             message.getMMSI();
@@ -43,16 +44,19 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
             // CHECK TO SEE IF THIS PERMUTATION IN TABLE FIRST THEN WRITE IF NECESSARY
 
             connection.commitTransaction();
+            return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
             connection.commitTransaction();
+            return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
             connection.rollBackTransaction();
         }
+        return WriteResult.FAILURE;
     }
 
     @Override
-    public void writeVoyageData() throws SQLException {
+    public WriteResult writeVoyageData() throws SQLException {
         connection.beginTransaction();
         try {
             message.getDraught();
@@ -60,16 +64,19 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
             message.getDestination();
 
             connection.commitTransaction();
+            return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
             connection.commitTransaction();
+            return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
             connection.rollBackTransaction();
         }
+        return WriteResult.FAILURE;
     }
 
     @Override
-    public void writeVesselData() throws SQLException {
+    public WriteResult writeVesselData() throws SQLException {
         connection.beginTransaction();
         try {
             message.getToBow();
@@ -78,16 +85,55 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
             message.getToStern();
 
             connection.commitTransaction();
+            return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
             connection.commitTransaction();
+            return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
             connection.rollBackTransaction();
         }
+        return WriteResult.FAILURE;
     }
 
     @Override
-    public void writeNavigationData() throws SQLException {
+    public WriteResult writeVesselTypeData() throws SQLException {
+        connection.beginTransaction();
+        try {
+
+            message.getShipType();
+
+            connection.commitTransaction();
+            return WriteResult.SUCCESS;
+        } catch (UnsupportedMessageType ex) {
+            // WRITE BLANK RECORD WITH NULL COLUMNS
+            connection.commitTransaction();
+            return WriteResult.UNSUPPORTED;
+        } catch (Exception ex) {
+            connection.rollBackTransaction();
+        }
+        return WriteResult.FAILURE;
+    }
+
+    @Override
+    public WriteResult writeNavigationStatusData() throws SQLException {
+        connection.beginTransaction();
+        try {
+
+            connection.commitTransaction();
+            return WriteResult.SUCCESS;
+        } catch (UnsupportedMessageType ex) {
+            // WRITE BLANK RECORD WITH NULL COLUMNS
+            connection.commitTransaction();
+            return WriteResult.UNSUPPORTED;
+        } catch (Exception ex) {
+            connection.rollBackTransaction();
+        }
+        return WriteResult.FAILURE;
+    }
+
+    @Override
+    public WriteResult writeNavigationData() throws SQLException {
         connection.beginTransaction();
         try {
             message.getCourseOverGround();
@@ -96,42 +142,51 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
             message.getRateOfTurn();
 
             connection.commitTransaction();
+            return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
             connection.commitTransaction();
+            return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
             connection.rollBackTransaction();
         }
+        return WriteResult.FAILURE;
     }
 
     @Override
-    public void writeGeospatialData() throws SQLException {
+    public WriteResult writeGeospatialData() throws SQLException {
         connection.beginTransaction();
         try {
             message.getAccuracy();
             // TODO: coord?
 
             connection.commitTransaction();
+            return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
             connection.commitTransaction();
+            return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
             connection.rollBackTransaction();
         }
+        return WriteResult.FAILURE;
     }
 
     @Override
-    public void writeManeuverIndicatorData() throws SQLException {
+    public WriteResult writeManeuverIndicatorData() throws SQLException {
         connection.beginTransaction();
         try {
             message.getManeuverIndicator();
 
             connection.commitTransaction();
+            return WriteResult.SUCCESS;
         } catch (UnsupportedMessageType ex) {
             // WRITE BLANK RECORD WITH NULL COLUMNS
             connection.commitTransaction();
+            return WriteResult.UNSUPPORTED;
         } catch (Exception ex) {
             connection.rollBackTransaction();
         }
+        return WriteResult.FAILURE;
     }
 }
