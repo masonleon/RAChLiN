@@ -1,6 +1,8 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
@@ -105,6 +107,8 @@ public interface MessageDataInterface {
   PositionFixingDevice getPositionFixingDevice();
 
   Float getDraught();
+
+  Optional<ZonedDateTime> getETA();
 
   String getDestination();
 

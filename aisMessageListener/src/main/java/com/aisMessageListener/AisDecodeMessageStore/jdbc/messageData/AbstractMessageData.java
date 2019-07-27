@@ -1,6 +1,8 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
@@ -225,6 +227,11 @@ public class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public Float getDraught() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Optional<ZonedDateTime> getETA() {
     throw new UnsupportedMessageType(getTypeId());
   }
 

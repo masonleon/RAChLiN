@@ -19,4 +19,6 @@ public interface DatabaseInserterInterface {
     void writeNavigationData() throws SQLException;
 
     void writeGeospatialData() throws SQLException;
+
+    void writeManeuverIndicatorData() throws SQLException;
 }
