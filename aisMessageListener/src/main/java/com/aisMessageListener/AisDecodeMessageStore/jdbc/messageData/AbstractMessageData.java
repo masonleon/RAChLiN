@@ -1,6 +1,8 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
@@ -10,22 +12,11 @@ import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
 import static java.sql.Types.NULL;
 
-public class AbstractMessageData implements MessageDataInterface {
-  private AISMessage message;
-  private int geospatialDataId;
-  private int navigationDataId;
-  private int voyageDataId;
-  private int vesselSignatureId;
-  private int vesselDataId;
+public abstract class AbstractMessageData implements MessageDataInterface {
+  private final AISMessage message;
 
   public AbstractMessageData(AISMessage message) {
     this.message = message;
-
-    this.geospatialDataId = NULL;
-    this.navigationDataId = NULL;
-    this.voyageDataId = NULL;
-    this.vesselSignatureId = NULL;
-    this.vesselDataId = NULL;
   }
 
   @Override
@@ -106,31 +97,6 @@ public class AbstractMessageData implements MessageDataInterface {
   @Override
   public Instant getTimeReceived() {
     return this.message.getMetadata().getReceived();
-  }
-
-  @Override
-  public int getGeospatialDataId() {
-    return geospatialDataId;
-  }
-
-  @Override
-  public int getNavigationDataId() {
-    return navigationDataId;
-  }
-
-  @Override
-  public int getVoyageDataId() {
-    return voyageDataId;
-  }
-
-  @Override
-  public int getVesselSignatureId() {
-    return vesselSignatureId;
-  }
-
-  @Override
-  public int getVesselDataId() {
-    return vesselDataId;
   }
 
   @Override
@@ -225,6 +191,11 @@ public class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public Float getDraught() {
+    throw new UnsupportedMessageType(getTypeId());
+  }
+
+  @Override
+  public Optional<ZonedDateTime> getETA() {
     throw new UnsupportedMessageType(getTypeId());
   }
 

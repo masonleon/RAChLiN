@@ -1,6 +1,8 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
@@ -106,18 +108,10 @@ public interface MessageDataInterface {
 
   Float getDraught();
 
+  Optional<ZonedDateTime> getETA();
+
   String getDestination();
 
   Boolean isDataTerminalReady();
-
-  int getGeospatialDataId();
-
-  int getNavigationDataId();
-
-  int getVoyageDataId();
-
-  int getVesselSignatureId();
-
-  int getVesselDataId();
 }
 
