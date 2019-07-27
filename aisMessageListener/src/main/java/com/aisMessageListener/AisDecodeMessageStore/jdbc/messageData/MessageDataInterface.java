@@ -113,15 +113,5 @@ public interface MessageDataInterface {
   String getDestination();
 
   Boolean isDataTerminalReady();
-
-  int getGeospatialDataId();
-
-  int getNavigationDataId();
-
-  int getVoyageDataId();
-
-  int getVesselSignatureId();
-
-  int getVesselDataId();
 }
 
