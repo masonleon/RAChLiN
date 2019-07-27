@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
-import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
-import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 
 public class ClassAStaticAndVoyageData extends AbstractMessageData {
 

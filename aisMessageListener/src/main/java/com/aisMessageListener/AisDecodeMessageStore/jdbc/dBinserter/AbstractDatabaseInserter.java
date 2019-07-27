@@ -12,11 +12,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
   protected MessageDataInterface message;
   protected DatabaseConnectionInterface connection;
+  private int voyageDataPrimaryKey;
 
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
-
     attachConnection(connection);
+    voyageDataPrimaryKey = -1; // -1 Indicates that a pk has not been created for this message.
   }
 
   protected AbstractDatabaseInserter(MessageDataInterface message) {
@@ -78,16 +79,21 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeVoyageData() throws SQLException {
     try {
-      message.getDraught();
-      message.getETA();
-      message.getDestination();
+      Float draught = message.getDraught();
+      String eta = message.getETA();
+      String destination = message.getDestination();
+      String sqlUpdate = "insert into voyage_data(draught, eta, destination) " +
+              "values (" + draught + ", '" + eta + "', '" + destination + "')";
+      int primaryKey = connection.insertOneRecord(sqlUpdate);
+      if (primaryKey == -1) {
+        throw new SQLException("Error recording primary key for voyage data record.\n");
+      }
+      this.voyageDataPrimaryKey = primaryKey; // Update for writeMessageData foreign key.
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
+      // This message does not contain voyage data. FK will be null in Message_Data table.
       return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
     }
   }
 
@@ -107,7 +113,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       return WriteResult.FAILURE;
     }
   }
-
 
 
   @Override
