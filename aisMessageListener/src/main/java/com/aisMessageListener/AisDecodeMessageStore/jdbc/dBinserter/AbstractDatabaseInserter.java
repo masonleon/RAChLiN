@@ -97,7 +97,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     }
 
     @Override
-    public WriteResult writeVesselTypeData() throws SQLException {
+    public WriteResult writeVesselType() throws SQLException {
         connection.beginTransaction();
         try {
 
@@ -116,7 +116,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     }
 
     @Override
-    public WriteResult writeNavigationStatusData() throws SQLException {
+    public WriteResult writeNavigationStatus() throws SQLException {
         connection.beginTransaction();
         try {
 
@@ -173,7 +173,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     }
 
     @Override
-    public WriteResult writeManeuverIndicatorData() throws SQLException {
+    public WriteResult writeManeuverIndicator() throws SQLException {
         connection.beginTransaction();
         try {
             message.getManeuverIndicator();
