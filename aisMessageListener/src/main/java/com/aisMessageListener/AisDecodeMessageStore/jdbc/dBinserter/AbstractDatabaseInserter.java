@@ -108,11 +108,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     }
   }
 
+
+
   @Override
   public WriteResult writeVesselType() throws SQLException {
     try {
-
-      message.getShipType();
+      message.getShipTypeId();
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
@@ -171,7 +172,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeManeuverIndicator() throws SQLException {
     try {
-      message.getManeuverIndicator();
+      message.getManeuverIndicatorId();
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
@@ -179,6 +180,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       return WriteResult.UNSUPPORTED;
     } catch (Exception ex) {
       return WriteResult.FAILURE;
+
     }
   }
 }

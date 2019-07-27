@@ -24,7 +24,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public boolean isValidType() {
-    return this.getTypeId() > -1;
+    return this.getMessageTypeId() > -1;
   }
 
   @Override
@@ -33,13 +33,17 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public AISMessageType getType() {
+  public AISMessageType getMessageType() {
     return this.message.getMessageType();
   }
 
   @Override
-  public int getTypeId() {
-    return getType().getCode();
+  public int getMessageTypeId() {
+    if (!(this.isValidType())) {
+      //return 0;
+      return getMessageType().getCode();
+    }
+    return getMessageType().getCode();
   }
 
   @Override
@@ -81,112 +85,106 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public Float getLat() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getLong() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Boolean getAccuracy() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public NavigationStatus getNavStatus() {
-    throw new UnsupportedMessageType(getTypeId());
+  public int getNavStatusId() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public ManeuverIndicator getManeuverIndicator() {
-    throw new UnsupportedMessageType(getTypeId());
+  public int getManeuverIndicatorId() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getSpeedOverGround() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getCourseOverGround() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getHeading() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Float getRateOfTurn() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public IMO getIMO() {
-    throw new UnsupportedMessageType(getTypeId());
+  public int getIMO() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public String getCallsign() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public String getShipName() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public ShipType getShipType() {
-    throw new UnsupportedMessageType(getTypeId());
+  public int getShipTypeId() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getToBow() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getToStern() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getToStarboard() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getToPort() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
-  @Override
-  public PositionFixingDevice getPositionFixingDevice() {
-    throw new UnsupportedMessageType(getTypeId());
-  }
-
-  @Override
+   @Override
   public Float getDraught() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
+//  public Optional<ZonedDateTime> getETA() {
+//    throw new UnsupportedMessageType(getMessageTypeId());
+
   public String getETA() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
+
   }
 
   @Override
   public String getDestination() {
-    throw new UnsupportedMessageType(getTypeId());
-  }
-
-  @Override
-  public Boolean isDataTerminalReady() {
-    throw new UnsupportedMessageType(getTypeId());
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   protected String addZeroToSingleDigitInt(int value) {
@@ -196,4 +194,5 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     }
     return formattedValue;
   }
+
 }
