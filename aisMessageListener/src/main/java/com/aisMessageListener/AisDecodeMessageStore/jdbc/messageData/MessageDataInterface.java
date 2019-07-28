@@ -85,9 +85,6 @@ public interface MessageDataInterface {
    */
   Float getLong();
 
-  //TODO comment
-  PGpoint getCoord();
-
   /**
    * Grabs the position accuracy flag from a message containing geometric information which
    * indicates the accuracy of the vessel's Electronic Position-Fixing Device (EPFD). A value of 1

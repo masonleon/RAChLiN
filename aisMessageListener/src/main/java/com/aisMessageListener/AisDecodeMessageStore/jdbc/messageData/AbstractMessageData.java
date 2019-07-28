@@ -98,11 +98,6 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public PGpoint getCoord() {
-    return null;
-  }
-
-  @Override
   public Boolean getAccuracy() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }

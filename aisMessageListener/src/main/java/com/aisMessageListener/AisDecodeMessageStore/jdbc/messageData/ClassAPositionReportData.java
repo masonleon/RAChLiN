@@ -31,11 +31,6 @@ public class ClassAPositionReportData extends AbstractMessageData {
     }
 
     @Override
-    public PGpoint getCoord() {
-        return new PGpoint(getLat(), getLong());
-    }
-
-    @Override
     public Boolean getAccuracy() {
         return positionReport.getPositionAccuracy();
     }

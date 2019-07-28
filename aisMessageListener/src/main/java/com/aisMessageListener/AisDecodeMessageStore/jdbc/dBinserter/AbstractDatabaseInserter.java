@@ -4,6 +4,7 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
 
+import com.aisMessageListener.AisDecodeMessageStore.jdbc.util.CoordinateUtil;
 import org.postgresql.geometric.PGpoint;
 import java.sql.SQLException;
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
@@ -293,8 +294,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   public WriteResult writeGeospatialData() throws SQLException {
     try {
 
-      int accuracy = convertBoolToInt(message.getAccuracy());
-      PGpoint coord = message.getCoord();
+      int accuracy = message.getAccuracy() ? 1 : 0;
+      PGpoint coord = CoordinateUtil.getCoord(message.getLat(), message.getLong());
 
       String sqlUpdate =
               "INSERT INTO geospatial_data(" +
@@ -370,12 +371,5 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       return WriteResult.FAILURE;
 
     }
-  }
-
-  protected int convertBoolToInt(boolean bool) {
-    if (bool) {
-      return 1;
-    }
-    return 0;
   }
 }
