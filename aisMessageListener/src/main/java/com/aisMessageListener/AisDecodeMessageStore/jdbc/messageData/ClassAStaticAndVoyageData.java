@@ -1,7 +1,5 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
-import org.postgresql.geometric.PGpoint;
-
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
