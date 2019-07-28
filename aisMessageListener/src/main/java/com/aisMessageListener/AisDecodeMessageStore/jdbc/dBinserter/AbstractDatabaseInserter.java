@@ -13,6 +13,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   protected MessageDataInterface message;
   protected DatabaseConnectionInterface connection;
   private int voyageDataPrimaryKey;
+  private int geospatialDataPrimaryKey;
 
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
@@ -162,15 +163,23 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeGeospatialData() throws SQLException {
     try {
-      message.getAccuracy();
-      // TODO: coord?
+      int accuracy = convertBoolToInt(message.getAccuracy());
+      float latitude = message.getLat();
+      float longitude = message.getLong();
+      // TODO: In future implementations, this should be a PostGIS geography type.
+      String point = "'(" + latitude + ", " + longitude + ")'";
+      String sqlUpdate = "insert into geospatial_data(coord, accuracy) " +
+              "values (" + point + ", " + accuracy + ")";
+      int primaryKey = connection.insertOneRecord(sqlUpdate);
+      if (primaryKey == -1) {
+        throw new SQLException("Error recording primary key for geospatial data record.\n");
+      }
+      this.geospatialDataPrimaryKey = primaryKey; // Update for writeMessageData foreign key.
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
       // WRITE BLANK RECORD WITH NULL COLUMNS
       return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
     }
   }
 
@@ -187,5 +196,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       return WriteResult.FAILURE;
 
     }
+  }
+
+  protected int convertBoolToInt(boolean bool) {
+    if (bool) {
+      return 1;
+    }
+    return 0;
   }
 }
