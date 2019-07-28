@@ -238,7 +238,6 @@ public interface MessageDataInterface {
    */
 
   //Optional<ZonedDateTime> getETA();
-
   String getETA();
 
 

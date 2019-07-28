@@ -206,6 +206,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       Integer toPort = message.getToPort();
       Integer toStarboard = message.getToStarboard();
 
+      // TODO CHECK TO SEE IF THIS PERMUTATION IN TABLE FIRST THEN WRITE IF NECESSARY
+
       String sqlUpdate =
               "INSERT INTO vessel_data(" +
                       "to_bow, " +
