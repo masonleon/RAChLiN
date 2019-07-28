@@ -153,7 +153,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getShipTypeId() {
+  public int getVesselTypeId() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
@@ -185,10 +185,8 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
 //  public Optional<ZonedDateTime> getETA() {
 //    throw new UnsupportedMessageType(getMessageTypeId());
-
   public String getETA() {
     throw new UnsupportedMessageType(getMessageTypeId());
-
   }
 
   @Override

@@ -17,7 +17,6 @@ public class ClassAPositionReportData extends AbstractMessageData {
         if (!(message instanceof PositionReport)) {
             throw new IllegalArgumentException("Message is not a position report!");
         }
-
         this.positionReport = (PositionReport) message;
     }
 

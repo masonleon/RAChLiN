@@ -59,26 +59,6 @@ public interface DatabaseInserterInterface {
     WriteResult writeVesselData() throws SQLException;
 
     /**
-     * Parses an AIS message and writes to the vesselType table.
-     *
-     * <p>MUST BE CALLED IN TRANSACTION</p>
-     *
-     * @return WriteResult
-     * @throws SQLException if operation fails due to database access errors.
-     */
-    WriteResult writeVesselType() throws SQLException;
-
-    /**
-     * Parses an AIS message and writes to the navigationStatus table.
-     *
-     * <p>MUST BE CALLED IN TRANSACTION</p>
-     *
-     * @return WriteResult
-     * @throws SQLException if operation fails due to database access errors.
-     */
-    WriteResult writeNavigationStatus() throws SQLException;
-
-    /**
      * Parses an AIS message and writes to the navigationData table. This will fail if vesselType has not been written
      * to first due to foreign key constraint issues.
      *
@@ -99,6 +79,7 @@ public interface DatabaseInserterInterface {
      */
     WriteResult writeGeospatialData() throws SQLException;
 
+    @Deprecated
     /**
      * Parses an AIS message and writes to the maneuverIndicator table.
      *
@@ -108,4 +89,26 @@ public interface DatabaseInserterInterface {
      * @throws SQLException if operation fails due to database access errors.
      */
     WriteResult writeManeuverIndicator() throws SQLException;
+
+    @Deprecated
+    /**
+     * Parses an AIS message and writes to the vesselType table.
+     *
+     * <p>MUST BE CALLED IN TRANSACTION</p>
+     *
+     * @return WriteResult
+     * @throws SQLException if operation fails due to database access errors.
+     */
+    WriteResult writeVesselType() throws SQLException;
+
+    @Deprecated
+    /**
+     * Parses an AIS message and writes to the navigationStatus table.
+     *
+     * <p>MUST BE CALLED IN TRANSACTION</p>
+     *
+     * @return WriteResult
+     * @throws SQLException if operation fails due to database access errors.
+     */
+    WriteResult writeNavigationStatus() throws SQLException;
 }

@@ -85,6 +85,7 @@ public interface MessageDataInterface {
    */
   Float getLong();
 
+  //TODO comment
   PGpoint getCoord();
 
   /**
@@ -186,7 +187,7 @@ public interface MessageDataInterface {
    *
    * @return ShipType
    */
-  int getShipTypeId();
+  int getVesselTypeId();
 
   /**
    * Grabs the length in Meters from the Electronic Position-Fixing Device (EPFD) antenna to the bow

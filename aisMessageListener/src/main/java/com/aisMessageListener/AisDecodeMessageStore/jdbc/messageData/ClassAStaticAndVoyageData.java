@@ -22,8 +22,6 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
     this.shipVoyageData = (ShipAndVoyageData) message;
   }
 
-
-
   @Override
   public int getIMO() {
     return shipVoyageData.getImo().getIMO();
@@ -40,7 +38,7 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public int getShipTypeId() {
+  public int getVesselTypeId() {
     return shipVoyageData.getShipType().getCode();
   }
 
