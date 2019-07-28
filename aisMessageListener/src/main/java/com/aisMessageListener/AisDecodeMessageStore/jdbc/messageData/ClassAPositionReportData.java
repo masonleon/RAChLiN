@@ -1,5 +1,7 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import org.postgresql.geometric.PGpoint;
+
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.PositionReport;
 import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
@@ -27,6 +29,11 @@ public class ClassAPositionReportData extends AbstractMessageData {
     @Override
     public Float getLong() {
         return positionReport.getLongitude();
+    }
+
+    @Override
+    public PGpoint getCoord() {
+        return new PGpoint(getLat(), getLong());
     }
 
     @Override

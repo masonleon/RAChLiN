@@ -2,6 +2,7 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
+import org.postgresql.geometric.PGpoint;
 
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver,
@@ -90,6 +91,8 @@ public interface MessageDataInterface {
    * @return Float
    */
   Float getLong();
+
+  PGpoint getCoord();
 
   /**
    * Grabs the position accuracy flag from a message containing geometric information which

@@ -34,13 +34,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     connection.beginTransaction();
 
     try {
+
+      writeMessageData();
       writeGeospatialData();
-      writeVoyageData();
-      writeNavigationStatus();
-      writeManeuverIndicator();
       writeNavigationData();
+      writeVoyageData();
       writeVesselData();
-      writeVesselType();
       writeVesselSignature();
       writeMessageData();
       connection.commitTransaction();
@@ -53,6 +52,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
   @Override
   public WriteResult writeMessageData() {
+    message.getTimeReceived();
+    message.isValidType();
+    message.hasMultipleParts();
+    message.getRawNMEA();
+    message.getMessageTypeId();
+
     return WriteResult.UNSUPPORTED;
   }
 
@@ -63,6 +68,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       message.getIMO();
       message.getCallsign();
       message.getShipName();
+      message.getShipTypeId();
 
       // CHECK TO SEE IF THIS PERMUTATION IN TABLE FIRST THEN WRITE IF NECESSARY
 
@@ -95,9 +101,43 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   public WriteResult writeVesselData() throws SQLException {
     try {
       message.getToBow();
+      message.getToStern();
       message.getToPort();
       message.getToStarboard();
-      message.getToStern();
+
+      return WriteResult.SUCCESS;
+    } catch (UnsupportedMessageType ex) {
+      // WRITE BLANK RECORD WITH NULL COLUMNS
+      return WriteResult.UNSUPPORTED;
+    } catch (Exception ex) {
+      return WriteResult.FAILURE;
+    }
+  }
+  @Override
+  public WriteResult writeNavigationData() throws SQLException {
+    try {
+      message.getSpeedOverGround();
+      message.getCourseOverGround();
+      message.getDestination();
+      message.getHeading();
+      message.getRateOfTurn();
+      message.getNavStatusId();
+      message.getManeuverIndicatorId();
+
+      return WriteResult.SUCCESS;
+    } catch (UnsupportedMessageType ex) {
+      // WRITE BLANK RECORD WITH NULL COLUMNS
+      return WriteResult.UNSUPPORTED;
+    } catch (Exception ex) {
+      return WriteResult.FAILURE;
+    }
+  }
+
+  @Override
+  public WriteResult writeGeospatialData() throws SQLException {
+    try {
+      message.getCoord();
+      message.getAccuracy();
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
@@ -109,7 +149,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   }
 
 
-
+  // NOTE: vessel_type table is a static reference table
   @Override
   public WriteResult writeVesselType() throws SQLException {
     try {
@@ -124,6 +164,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     }
   }
 
+  // NOTE: nav_status table is a static reference table
   @Override
   public WriteResult writeNavigationStatus() throws SQLException {
     try {
@@ -137,38 +178,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     }
   }
 
-  @Override
-  public WriteResult writeNavigationData() throws SQLException {
-    try {
-      message.getCourseOverGround();
-      message.getDestination();
-      message.getHeading();
-      message.getRateOfTurn();
-
-      return WriteResult.SUCCESS;
-    } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
-      return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
-    }
-  }
-
-  @Override
-  public WriteResult writeGeospatialData() throws SQLException {
-    try {
-      message.getAccuracy();
-      // TODO: coord?
-
-      return WriteResult.SUCCESS;
-    } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
-      return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
-    }
-  }
-
+  // NOTE: maneuver_indicator table is a static reference table
   @Override
   public WriteResult writeManeuverIndicator() throws SQLException {
     try {

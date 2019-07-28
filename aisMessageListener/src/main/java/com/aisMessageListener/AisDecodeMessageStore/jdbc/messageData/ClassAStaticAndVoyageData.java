@@ -1,12 +1,12 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import org.postgresql.geometric.PGpoint;
+
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
-import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
-import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 
 public class ClassAStaticAndVoyageData extends AbstractMessageData {
 
@@ -21,6 +21,8 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
 
     this.shipVoyageData = (ShipAndVoyageData) message;
   }
+
+
 
   @Override
   public int getIMO() {

@@ -1,5 +1,7 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import org.postgresql.geometric.PGpoint;
+
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -14,6 +16,7 @@ import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
 import dk.tbsalling.aismessages.ais.messages.types.ShipType;
 import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
+
 
 public abstract class AbstractMessageData implements MessageDataInterface {
   private final AISMessage message;
@@ -152,6 +155,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     return this.message.getNmeaMessages().length > 1;
   }
 
+
   @Override
   public String getTimeReceived() {
     Instant time = this.message.getMetadata().getReceived();
@@ -173,6 +177,11 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
   public Float getLong() {
     throw new UnsupportedMessageType(getMessageTypeId());
+  }
+
+  @Override
+  public PGpoint getCoord() {
+    return null;
   }
 
   @Override
