@@ -1,7 +1,5 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
-import org.postgresql.geometric.PGpoint;
-
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -9,12 +7,6 @@ import java.time.ZonedDateTime;
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
-import dk.tbsalling.aismessages.ais.messages.types.IMO;
-import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
-import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
-import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
-import dk.tbsalling.aismessages.ais.messages.types.ShipType;
-import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
 
@@ -149,8 +141,8 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getVesselTypeId() {
-    throw new UnsupportedMessageType(getMessageTypeId());
-  }
+    return 0;
+  } // For unavailable vessel types. Override as needed.
 
   @Override
   public Integer getToBow() {
@@ -172,7 +164,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
-   @Override
+  @Override
   public Float getDraught() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }

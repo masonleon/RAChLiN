@@ -3,19 +3,19 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInterface;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
-
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.util.CoordinateUtil;
+
 import org.postgresql.geometric.PGpoint;
+
 import java.sql.SQLException;
+
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
-import static java.sql.Types.NULL;
 
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 
   protected MessageDataInterface message;
   protected DatabaseConnectionInterface connection;
 
-  private int messageDataPrimaryKey;
   private int vesselSignaturePrimaryKey;
   private int navigationDataPrimaryKey;
   private int voyageDataPrimaryKey;
@@ -25,18 +25,17 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
     attachConnection(connection);
+  }
+
+  protected AbstractDatabaseInserter(MessageDataInterface message) {
+    this.message = message;
 
     // -1 Indicates that a pk has not been created for this message.
-    messageDataPrimaryKey = -1;
     vesselSignaturePrimaryKey = -1;
     navigationDataPrimaryKey = -1;
     voyageDataPrimaryKey = -1;
     vesselDataPrimaryKey = -1;
     geospatialDataPrimaryKey = -1;
-  }
-
-  protected AbstractDatabaseInserter(MessageDataInterface message) {
-    this.message = message;
   }
 
   @Override
@@ -49,68 +48,39 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     connection.connectIfDropped();
     connection.beginTransaction();
 
-    try{
-      System.out.println(message.getRawNMEA().toString());
-//      try {
-//        writeVesselData();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
-//        writeVesselSignature();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
-//        writeVoyageData();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
-//        writeNavigationData();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
-//        writeGeospatialData();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
-//        writeMessageData();
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//      }
+    try {
 
-      //try {
-        writeVesselData();
-        writeVesselSignature();
-        writeVoyageData();
-        writeNavigationData();
-        writeGeospatialData();
-        writeMessageData();
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//      }
+      writeVesselData();
+      writeVesselSignature();
+      writeVoyageData();
+      writeNavigationData();
+      writeGeospatialData();
+      writeMessageData();
 
       connection.commitTransaction();
       return WriteResult.SUCCESS;
     } catch (SQLException ex) {
+      ex.printStackTrace();  // For testing.
       connection.rollBackTransaction();
-
-      ex.printStackTrace();
     }
     return WriteResult.FAILURE;
   }
 
   @Override
-  public WriteResult writeMessageData() {
+  public WriteResult writeMessageData() throws SQLException {
     try {
       String timeReceived = message.getTimeReceived();
-      boolean isValidMessage = message.isValidType();
-      boolean isMultiPart = message.hasMultipleParts();
+      Boolean isValidMessage = message.isValidType();
+      Boolean isMultiPart = message.hasMultipleParts();
       String rawNMEA = message.getRawNMEA();
       int messageTypeId = message.getMessageTypeId();
+      String geoDataKey = geospatialDataPrimaryKey == -1 ? "NULL" : Integer.toString(geospatialDataPrimaryKey);
+      String navDataKey = navigationDataPrimaryKey == -1 ? "NULL" : Integer.toString(navigationDataPrimaryKey);
+      String voyageDataKey = voyageDataPrimaryKey == -1 ? "NULL" : Integer.toString(voyageDataPrimaryKey);
+      String vesselDataKey = vesselDataPrimaryKey == -1 ? "NULL" : Integer.toString(vesselDataPrimaryKey);
+      if (vesselSignaturePrimaryKey == -1) {
+        System.err.println("Cannot update message_data table without first updating vessel_signature.\n");
+      }
 
       String sqlUpdate =
               "INSERT INTO message_data(" +
@@ -125,34 +95,32 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       "vessel_signature_id," +
                       "vessel_data_id" +
                       ") " +
-              "VALUES ('" +
+                      "VALUES ('" +
                       timeReceived + "'," +
                       isValidMessage + "," +
                       isMultiPart + ",'" +
                       rawNMEA + "'," +
                       messageTypeId + "," +
-                      geospatialDataPrimaryKey + "," +
-                      navigationDataPrimaryKey + "," +
-                      voyageDataPrimaryKey + "," +
+                      geoDataKey + "," +
+                      navDataKey + "," +
+                      voyageDataKey + "," +
                       vesselSignaturePrimaryKey + "," +
-                      vesselDataPrimaryKey + "," +
+                      vesselDataKey +
                       ")";
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {
         throw new SQLException("Error recording primary key for msg_data record.\n");
       }
-      this.messageDataPrimaryKey = primaryKey;
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
+      // None of these methods should throw an UnsupportedMessageType exception.
+      System.err.println("Could not access data needed for writing to message_data table.\n");
+      System.exit(1);
 
-      this.messageDataPrimaryKey = NULL;
 
       return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
     }
   }
 
@@ -175,7 +143,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       "name," +
                       "vessel_type_id" +
                       ") " +
-              "VALUES (" +
+                      "VALUES (" +
                       mmsi + "," +
                       imo + ",'" +
                       callSign + "','" +
@@ -191,13 +159,28 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
+      String sqlUpdate =
+              "INSERT INTO vessel_signature(" +
+                      "mmsi," +
+                      "imo," +
+                      "call_sign," +
+                      "name," +
+                      "vessel_type_id" +
+                      ") " +
+                      "VALUES (" +
+                      message.getMMSI() + "," +
+                      "NULL," +
+                      "NULL," +
+                      "NULL," +
+                      message.getVesselTypeId() +
+                      ")";
 
-      this.vesselSignaturePrimaryKey = NULL;
-
-      return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
+      int primaryKey = connection.insertOneRecord(sqlUpdate);
+      if (primaryKey == -1) {
+        throw new SQLException("Error recording primary key for MMSI-only vessel_signature record.\n");
+      }
+      this.vesselSignaturePrimaryKey = primaryKey;
+      return WriteResult.SUCCESS;
     }
   }
 
@@ -208,7 +191,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       String eta = message.getETA();
       String destination = message.getDestination();
       String sqlUpdate;
-      if (eta.equals("NULL")) {
+      if (eta == null) {
         sqlUpdate =
                 "INSERT INTO voyage_data(" +
                         "draught," +
@@ -217,10 +200,10 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                         ") " +
                         "VALUES (" +
                         draught + "," +
-                        NULL + ",'" +
+                        "NULL,'" +
                         destination +
                         "')";
-      }else {
+      } else {
         sqlUpdate =
                 "INSERT INTO voyage_data(" +
                         "draught," +
@@ -243,10 +226,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
       // This message does not contain voyage data. FK will be null in Message_Data table.
-
-      //this.vesselDataPrimaryKey = -1;
-      this.vesselDataPrimaryKey = NULL;
-
       return WriteResult.UNSUPPORTED;
     }
   }
@@ -268,7 +247,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       "to_port," +
                       "to_starboard" +
                       ") " +
-              "VALUES (" +
+                      "VALUES (" +
                       toBow + "," +
                       toStern + "," +
                       toPort + "," +
@@ -283,14 +262,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
-
-      //this.vesselDataPrimaryKey = -1;
-      this.vesselDataPrimaryKey = NULL;
-
+      // This message does not contain vessel data. FK will be null in Message_Data table.
       return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
     }
   }
 
@@ -314,7 +287,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       "nav_status_id," +
                       "maneuver_indicator_id" +
                       ") " +
-              "VALUES (" +
+                      "VALUES (" +
                       sog + "," +
                       cog + "," +
                       heading + "," +
@@ -331,14 +304,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
-
-      this.navigationDataPrimaryKey = NULL;
-      //this.navigationDataPrimaryKey = -1;
-
+      // This message does not contain navigation data. FK will be null in Message_Data table.
       return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
     }
   }
 
@@ -347,6 +314,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     try {
 
       int accuracy = message.getAccuracy() ? 1 : 0;
+      // TODO: use geography class from PostGIS
       PGpoint coord = CoordinateUtil.getCoord(message.getLat(), message.getLong());
 
       String sqlUpdate =
@@ -354,8 +322,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       "coord," +
                       "accuracy" +
                       ") " +
-              "VALUES (" +
-                      coord + "," +
+                      "VALUES ('" +
+                      coord + "'," +
                       accuracy +
                       ")";
 
@@ -367,14 +335,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
       return WriteResult.SUCCESS;
     } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
-
-      this.geospatialDataPrimaryKey = NULL;
-      //this.geospatialDataPrimaryKey = -1;
-
+      // This message does not contain geospatial data. FK will be null in Message_Data table.
       return WriteResult.UNSUPPORTED;
-    } catch (Exception ex) {
-      return WriteResult.FAILURE;
     }
   }
 
