@@ -7,6 +7,8 @@ class ClassAPositionReportInserter extends AbstractDatabaseInserter {
     ClassAPositionReportInserter(MessageDataInterface message) {
         super(message);
     }
+//    @Override
+//    public WriteResult
 }
 
 

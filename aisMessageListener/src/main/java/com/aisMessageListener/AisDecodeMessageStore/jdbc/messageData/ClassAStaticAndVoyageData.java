@@ -21,7 +21,7 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public int getIMO() {
+  public Integer getIMO() {
     return shipVoyageData.getImo().getIMO();
   }
 
@@ -36,7 +36,7 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public int getVesselTypeId() {
+  public Integer getVesselTypeId() {
     return shipVoyageData.getShipType().getCode();
   }
 

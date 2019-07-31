@@ -27,6 +27,8 @@ public interface DatabaseInserterInterface {
      */
     WriteResult writeMessageData() throws SQLException;
 
+    WriteResult preparedStatementWriteMessageData();
+
     /**
      * Parses an AIS message and writes to the vesselSignature table. This will fail if vesselType has not been written
      * to first due to foreign key constraint issues.
@@ -38,6 +40,8 @@ public interface DatabaseInserterInterface {
      */
     WriteResult writeVesselSignature() throws SQLException;
 
+    WriteResult preparedStatementWriteVesselSignature() throws SQLException;
+
     /**
      * Parses an AIS message and writes to the voyageData table.
      *
@@ -47,6 +51,8 @@ public interface DatabaseInserterInterface {
      * @throws SQLException if operation fails due to database access errors.
      */
     WriteResult writeVoyageData() throws SQLException;
+
+    WriteResult preparedStatementWriteVoyageData() throws SQLException;
 
     /**
      * Parses an AIS message and writes to the vesselData table.
@@ -58,6 +64,8 @@ public interface DatabaseInserterInterface {
      */
     WriteResult writeVesselData() throws SQLException;
 
+    WriteResult preparedStatementWriteVesselData() throws SQLException;
+
     /**
      * Parses an AIS message and writes to the navigationData table. This will fail if vesselType has not been written
      * to first due to foreign key constraint issues.
@@ -68,6 +76,8 @@ public interface DatabaseInserterInterface {
      * @throws SQLException if operation fails due to database access errors.
      */
     WriteResult writeNavigationData() throws SQLException;
+
+    WriteResult preparedStatementWriteNavigationData() throws SQLException;
 
     /**
      * Parses an AIS message and writes to the geospatialData table.
@@ -89,6 +99,8 @@ public interface DatabaseInserterInterface {
      * @throws SQLException if operation fails due to database access errors.
      */
     WriteResult writeManeuverIndicator() throws SQLException;
+
+    WriteResult preparedStatementWriteGeospatialData() throws SQLException;
 
     @Deprecated
     /**

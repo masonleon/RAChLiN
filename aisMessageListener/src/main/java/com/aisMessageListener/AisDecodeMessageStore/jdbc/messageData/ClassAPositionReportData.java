@@ -1,11 +1,7 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
-import org.postgresql.geometric.PGpoint;
-
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.PositionReport;
-import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
-import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
 
 public class ClassAPositionReportData extends AbstractMessageData {
 
@@ -36,12 +32,12 @@ public class ClassAPositionReportData extends AbstractMessageData {
     }
 
     @Override
-    public int getNavStatusId() {
+    public Integer getNavStatusId() {
         return positionReport.getNavigationStatus().getCode();
     }
 
     @Override
-    public int getManeuverIndicatorId() {
+    public Integer getManeuverIndicatorId() {
         return positionReport.getSpecialManeuverIndicator().getCode();
     }
 

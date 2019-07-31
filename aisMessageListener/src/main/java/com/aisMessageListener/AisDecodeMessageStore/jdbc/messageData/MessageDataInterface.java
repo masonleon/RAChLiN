@@ -2,7 +2,6 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
-import org.postgresql.geometric.PGpoint;
 
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver,
@@ -15,7 +14,7 @@ public interface MessageDataInterface {
    *
    * @return boolean if message type >= 0, false otherwise
    */
-  boolean isValidType();
+  Boolean isValidType();
 
   /**
    * Grabs the MMSI of the sender.
@@ -30,7 +29,7 @@ public interface MessageDataInterface {
    *
    * @return int
    */
-  int getMMSI();
+  Integer getMMSI();
 
   /**
    * Grabs the message type of this message.
@@ -44,7 +43,7 @@ public interface MessageDataInterface {
    *
    * @return int
    */
-  int getMessageTypeId();
+  Integer getMessageTypeId();
 
   /**
    * Grabs the raw NMEA string message from the incoming receiver, to be dumped to the table.
@@ -58,7 +57,7 @@ public interface MessageDataInterface {
    *
    * @return boolean
    */
-  boolean hasMultipleParts();
+  Boolean hasMultipleParts();
 
   /**
    * Checks the instant this message was received.
@@ -100,7 +99,7 @@ public interface MessageDataInterface {
    *
    * @return NavigationStatus
    */
-  int getNavStatusId();
+  Integer getNavStatusId();
 
   /**
    * Grabs the special maneuver indicator of a vessel from a message. This may indicate whether a
@@ -109,7 +108,7 @@ public interface MessageDataInterface {
    *
    * @return ManeuverIndicator
    */
-  int getManeuverIndicatorId();
+  Integer getManeuverIndicatorId();
 
   /**
    * Grabs the speed over ground (SOG) of a vessel from a message already calculated in 1/10 knot
@@ -156,7 +155,7 @@ public interface MessageDataInterface {
    *
    * @return int
    */
-  int getIMO();
+  Integer getIMO();
 
   /**
    * Grabs the radio call sign of a vessel from a message. Call sign is governed by the
@@ -184,7 +183,7 @@ public interface MessageDataInterface {
    *
    * @return ShipType
    */
-  int getVesselTypeId();
+  Integer getVesselTypeId();
 
   /**
    * Grabs the length in Meters from the Electronic Position-Fixing Device (EPFD) antenna to the bow

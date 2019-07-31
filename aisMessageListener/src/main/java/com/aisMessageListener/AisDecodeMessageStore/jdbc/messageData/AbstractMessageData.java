@@ -1,7 +1,5 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
-import org.postgresql.geometric.PGpoint;
-
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -9,12 +7,6 @@ import java.time.ZonedDateTime;
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
-import dk.tbsalling.aismessages.ais.messages.types.IMO;
-import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
-import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
-import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
-import dk.tbsalling.aismessages.ais.messages.types.ShipType;
-import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
 
@@ -26,12 +18,12 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public boolean isValidType() {
+  public Boolean isValidType() {
     return this.message.getMessageType().getCode() > -1;
   }
 
   @Override
-  public int getMMSI() {
+  public Integer getMMSI() {
     return this.message.getSourceMmsi().getMMSI();
   }
 
@@ -41,7 +33,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getMessageTypeId() {
+  public Integer getMessageTypeId() {
     if (!(this.isValidType())) {
       //return 0;
       return getMessageType().getCode();
@@ -69,7 +61,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public boolean hasMultipleParts() {
+  public Boolean hasMultipleParts() {
     return this.message.getNmeaMessages().length > 1;
   }
 
@@ -103,12 +95,12 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getNavStatusId() {
+  public Integer getNavStatusId() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
-  public int getManeuverIndicatorId() {
+  public Integer getManeuverIndicatorId() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
@@ -133,7 +125,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getIMO() {
+  public Integer getIMO() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
@@ -148,7 +140,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getVesselTypeId() {
+  public Integer getVesselTypeId() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
