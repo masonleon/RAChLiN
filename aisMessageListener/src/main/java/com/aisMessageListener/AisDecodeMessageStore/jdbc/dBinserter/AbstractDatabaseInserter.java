@@ -50,6 +50,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     connection.beginTransaction();
 
     try{
+      System.out.println(message.getRawNMEA().toString());
 //      try {
 //        writeVesselData();
 //      } catch (SQLException e) {
