@@ -27,7 +27,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public boolean isValidType() {
-    return this.getMessageTypeId() > -1;
+    return this.message.getMessageType().getCode() > -1;
   }
 
   @Override

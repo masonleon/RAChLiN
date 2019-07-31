@@ -1,8 +1,8 @@
--- Database:  ais_decode_message_store
+-- Database: ais_decode_message_store
 
--- DROP DATABASE " ais_decode_message_store";
+-- DROP DATABASE "ais_decode_message_store";
 
-CREATE DATABASE " ais_decode_message_store"
+CREATE DATABASE "ais_decode_message_store"
     WITH
     OWNER = postgres
     ENCODING = 'UTF8'

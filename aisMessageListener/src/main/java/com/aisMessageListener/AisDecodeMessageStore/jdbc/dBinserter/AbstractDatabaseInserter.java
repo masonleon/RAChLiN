@@ -49,18 +49,55 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     connection.connectIfDropped();
     connection.beginTransaction();
 
-    try {
-      writeVesselData();
-      writeVesselSignature();
-      writeVoyageData();
-      writeNavigationData();
-      writeGeospatialData();
-      writeMessageData();
+    try{
+//      try {
+//        writeVesselData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeVesselSignature();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeVoyageData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeNavigationData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeGeospatialData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeMessageData();
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
+
+      //try {
+        writeVesselData();
+        writeVesselSignature();
+        writeVoyageData();
+        writeNavigationData();
+        writeGeospatialData();
+        writeMessageData();
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
 
       connection.commitTransaction();
       return WriteResult.SUCCESS;
     } catch (SQLException ex) {
       connection.rollBackTransaction();
+
+      ex.printStackTrace();
     }
     return WriteResult.FAILURE;
   }
@@ -75,30 +112,30 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       int messageTypeId = message.getMessageTypeId();
 
       String sqlUpdate =
-              "INSERT INTO msg_data(" +
-                      "time_received, " +
-                      "is_valid_msg, " +
-                      "is_multi_part, " +
-                      "raw_nmea, " +
-                      "message_type_id, " +
-                      "geospatial_data_id, " +
-                      "navigation_data_id, " +
-                      "voyage_data_id, " +
-                      "vessel_signature_id, " +
-                      "vessel_data_id " +
+              "INSERT INTO message_data(" +
+                      "time_received," +
+                      "is_valid_msg," +
+                      "is_multi_part," +
+                      "raw_nmea," +
+                      "message_type_id," +
+                      "geospatial_data_id," +
+                      "navigation_data_id," +
+                      "voyage_data_id," +
+                      "vessel_signature_id," +
+                      "vessel_data_id" +
                       ") " +
-              "VALUES (" +
-                      timeReceived + ", '" +
-                      isValidMessage + "', '" +
-                      isMultiPart + "', '" +
-                      rawNMEA + "', '" +
-                      messageTypeId + "', '" +
-                      geospatialDataPrimaryKey +
-                      navigationDataPrimaryKey +
-                      voyageDataPrimaryKey +
-                      vesselSignaturePrimaryKey +
-                      vesselDataPrimaryKey +
-                      "')";
+              "VALUES ('" +
+                      timeReceived + "'," +
+                      isValidMessage + "," +
+                      isMultiPart + ",'" +
+                      rawNMEA + "'," +
+                      messageTypeId + "," +
+                      geospatialDataPrimaryKey + "," +
+                      navigationDataPrimaryKey + "," +
+                      voyageDataPrimaryKey + "," +
+                      vesselSignaturePrimaryKey + "," +
+                      vesselDataPrimaryKey + "," +
+                      ")";
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {
@@ -110,7 +147,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     } catch (UnsupportedMessageType ex) {
       // WRITE BLANK RECORD WITH NULL COLUMNS
 
-      //this.vesselSignaturePrimaryKey = NULL;
+      this.messageDataPrimaryKey = NULL;
 
       return WriteResult.UNSUPPORTED;
     } catch (Exception ex) {
@@ -131,19 +168,19 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
       String sqlUpdate =
               "INSERT INTO vessel_signature(" +
-                      "mmsi, " +
-                      "imo, " +
+                      "mmsi," +
+                      "imo," +
                       "call_sign," +
                       "name," +
                       "vessel_type_id" +
                       ") " +
               "VALUES (" +
-                      mmsi + ", '" +
-                      imo + "', '" +
-                      callSign + "', '" +
-                      name + "', '" +
+                      mmsi + "," +
+                      imo + ",'" +
+                      callSign + "','" +
+                      name + "'," +
                       vesselTypeId +
-                      "')";
+                      ")";
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {
@@ -155,7 +192,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     } catch (UnsupportedMessageType ex) {
       // WRITE BLANK RECORD WITH NULL COLUMNS
 
-      //this.vesselSignaturePrimaryKey = NULL;
+      this.vesselSignaturePrimaryKey = NULL;
 
       return WriteResult.UNSUPPORTED;
     } catch (Exception ex) {
@@ -169,18 +206,32 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       Float draught = message.getDraught();
       String eta = message.getETA();
       String destination = message.getDestination();
-
-      String sqlUpdate =
-              "INSERT INTO voyage_data(" +
-                      "draught, " +
-                      "eta, " +
-                      "destination" +
-                      ") " +
-              "VALUES (" +
-                      draught + ", '" +
-                      eta + "', '" +
-                      destination +
-                      "')";
+      String sqlUpdate;
+      if (eta.equals("NULL")) {
+        sqlUpdate =
+                "INSERT INTO voyage_data(" +
+                        "draught," +
+                        "eta," +
+                        "destination" +
+                        ") " +
+                        "VALUES (" +
+                        draught + "," +
+                        NULL + ",'" +
+                        destination +
+                        "')";
+      }else {
+        sqlUpdate =
+                "INSERT INTO voyage_data(" +
+                        "draught," +
+                        "eta," +
+                        "destination" +
+                        ") " +
+                        "VALUES (" +
+                        draught + ",'" +
+                        eta + "','" +
+                        destination +
+                        "')";
+      }
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {
@@ -211,15 +262,15 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
       String sqlUpdate =
               "INSERT INTO vessel_data(" +
-                      "to_bow, " +
-                      "to_stern, " +
-                      "to_port, " +
-                      "to_starboard, " +
+                      "to_bow," +
+                      "to_stern," +
+                      "to_port," +
+                      "to_starboard" +
                       ") " +
               "VALUES (" +
-                      toBow + ", " +
-                      toStern + ", " +
-                      toPort + ", " +
+                      toBow + "," +
+                      toStern + "," +
+                      toPort + "," +
                       toStarboard +
                       ")";
 
@@ -255,19 +306,19 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
       String sqlUpdate =
               "INSERT INTO navigation_data(" +
-                      "speed_over_ground, " +
-                      "course_over_ground, " +
-                      "heading, " +
-                      "rate_of_turn, " +
-                      "nav_status_id, " +
+                      "speed_over_ground," +
+                      "course_over_ground," +
+                      "heading," +
+                      "rate_of_turn," +
+                      "nav_status_id," +
                       "maneuver_indicator_id" +
                       ") " +
               "VALUES (" +
-                      sog + ", " +
-                      cog + ", " +
-                      heading + ", " +
-                      rot + ", " +
-                      navStatusId + ", " +
+                      sog + "," +
+                      cog + "," +
+                      heading + "," +
+                      rot + "," +
+                      navStatusId + "," +
                       maneuverIndicatorId +
                       ")";
 
@@ -299,11 +350,11 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
       String sqlUpdate =
               "INSERT INTO geospatial_data(" +
-                      "coord, " +
+                      "coord," +
                       "accuracy" +
                       ") " +
               "VALUES (" +
-                      coord + ", " +
+                      coord + "," +
                       accuracy +
                       ")";
 
