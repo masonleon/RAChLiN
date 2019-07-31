@@ -65,7 +65,6 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     return this.message.getNmeaMessages().length > 1;
   }
 
-
   @Override
   public String getTimeReceived() {
     Instant time = this.message.getMetadata().getReceived();

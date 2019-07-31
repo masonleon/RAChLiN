@@ -25,7 +25,8 @@ public interface DatabaseInserterInterface {
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
-    WriteResult writeMessageData() throws SQLException;
+
+    //WriteResult writeMessageData() throws SQLException;
 
     WriteResult preparedStatementWriteMessageData();
 
@@ -38,7 +39,8 @@ public interface DatabaseInserterInterface {
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
-    WriteResult writeVesselSignature() throws SQLException;
+
+    //WriteResult writeVesselSignature() throws SQLException;
 
     WriteResult preparedStatementWriteVesselSignature() throws SQLException;
 
@@ -50,7 +52,8 @@ public interface DatabaseInserterInterface {
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
-    WriteResult writeVoyageData() throws SQLException;
+
+    //WriteResult writeVoyageData() throws SQLException;
 
     WriteResult preparedStatementWriteVoyageData() throws SQLException;
 
@@ -62,7 +65,8 @@ public interface DatabaseInserterInterface {
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
-    WriteResult writeVesselData() throws SQLException;
+
+    //WriteResult writeVesselData() throws SQLException;
 
     WriteResult preparedStatementWriteVesselData() throws SQLException;
 
@@ -75,7 +79,8 @@ public interface DatabaseInserterInterface {
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
-    WriteResult writeNavigationData() throws SQLException;
+
+    //WriteResult writeNavigationData() throws SQLException;
 
     WriteResult preparedStatementWriteNavigationData() throws SQLException;
 
@@ -87,40 +92,40 @@ public interface DatabaseInserterInterface {
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
-    WriteResult writeGeospatialData() throws SQLException;
-
-    @Deprecated
-    /**
-     * Parses an AIS message and writes to the maneuverIndicator table.
-     *
-     * <p>MUST BE CALLED IN TRANSACTION</p>
-     *
-     * @return WriteResult
-     * @throws SQLException if operation fails due to database access errors.
-     */
-    WriteResult writeManeuverIndicator() throws SQLException;
+    //WriteResult writeGeospatialData() throws SQLException;
 
     WriteResult preparedStatementWriteGeospatialData() throws SQLException;
 
-    @Deprecated
-    /**
-     * Parses an AIS message and writes to the vesselType table.
-     *
-     * <p>MUST BE CALLED IN TRANSACTION</p>
-     *
-     * @return WriteResult
-     * @throws SQLException if operation fails due to database access errors.
-     */
-    WriteResult writeVesselType() throws SQLException;
-
-    @Deprecated
-    /**
-     * Parses an AIS message and writes to the navigationStatus table.
-     *
-     * <p>MUST BE CALLED IN TRANSACTION</p>
-     *
-     * @return WriteResult
-     * @throws SQLException if operation fails due to database access errors.
-     */
-    WriteResult writeNavigationStatus() throws SQLException;
+//    @Deprecated
+//    /**
+//     * Parses an AIS message and writes to the maneuverIndicator table.
+//     *
+//     * <p>MUST BE CALLED IN TRANSACTION</p>
+//     *
+//     * @return WriteResult
+//     * @throws SQLException if operation fails due to database access errors.
+//     */
+//    WriteResult writeManeuverIndicator() throws SQLException;
+//
+//    @Deprecated
+//    /**
+//     * Parses an AIS message and writes to the vesselType table.
+//     *
+//     * <p>MUST BE CALLED IN TRANSACTION</p>
+//     *
+//     * @return WriteResult
+//     * @throws SQLException if operation fails due to database access errors.
+//     */
+//    WriteResult writeVesselType() throws SQLException;
+//
+//    @Deprecated
+//    /**
+//     * Parses an AIS message and writes to the navigationStatus table.
+//     *
+//     * <p>MUST BE CALLED IN TRANSACTION</p>
+//     *
+//     * @return WriteResult
+//     * @throws SQLException if operation fails due to database access errors.
+//     */
+//    WriteResult writeNavigationStatus() throws SQLException;
 }

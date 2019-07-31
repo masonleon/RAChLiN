@@ -95,4 +95,9 @@ class UnsupportedMessageInserter extends AbstractDatabaseInserter {
     }
   }
 
+  @Override
+  public WriteResult preparedStatementWriteVoyageData() throws SQLException {
+    return null;
+  }
+
 }
