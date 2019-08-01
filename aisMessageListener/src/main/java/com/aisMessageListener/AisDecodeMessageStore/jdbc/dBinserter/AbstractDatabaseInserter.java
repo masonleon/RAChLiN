@@ -30,25 +30,25 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   protected long vesselDataPrimaryKey;
   protected long geospatialDataPrimaryKey;
 
-  protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
-    this(message);
-    attachConnection(connection);
-
-    // -1 Indicates that a pk has not been created for this message.
-    messageDataPrimaryKey = -1;
-    vesselSignaturePrimaryKey = -1;
-    navigationDataPrimaryKey = -1;
-    voyageDataPrimaryKey = -1;
-    vesselDataPrimaryKey = -1;
-    geospatialDataPrimaryKey = -1;
-
-//    messageDataPrimaryKey = NULL;
-//    vesselSignaturePrimaryKey = NULL;
-//    navigationDataPrimaryKey = NULL;
-//    voyageDataPrimaryKey = NULL;
-//    vesselDataPrimaryKey = NULL;
-//    geospatialDataPrimaryKey = NULL;
-  }
+//  protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
+//    this(message);
+//    attachConnection(connection);
+//
+//    // -1 Indicates that a pk has not been created for this message.
+//    messageDataPrimaryKey = -1;
+//    vesselSignaturePrimaryKey = -1;
+//    navigationDataPrimaryKey = -1;
+//    voyageDataPrimaryKey = -1;
+//    vesselDataPrimaryKey = -1;
+//    geospatialDataPrimaryKey = -1;
+//
+////    messageDataPrimaryKey = NULL;
+////    vesselSignaturePrimaryKey = NULL;
+////    navigationDataPrimaryKey = NULL;
+////    voyageDataPrimaryKey = NULL;
+////    vesselDataPrimaryKey = NULL;
+////    geospatialDataPrimaryKey = NULL;
+//  }
 
   protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
@@ -66,73 +66,73 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     this.connection = conn;
   }
 
-  @Override
-  public WriteResult writeMessage() throws SQLException {
-    connection.connectIfDropped();
-    connection.beginTransaction();
-
-    try{
-      System.out.println(message.getRawNMEA().toString());
-      System.out.println(message.getMessageType().toString());
-//      try {
-//        writeVesselData();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-     // try {
-        //writeVesselSignature();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
-//        writeVoyageData();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
-//        writeNavigationData();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
-//        writeGeospatialData();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//      try {
- //       writeMessageData();
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//      }
-
-//      //try {
-//        writeVesselData();
-//        writeVesselSignature();
-//        writeVoyageData();
-//        writeNavigationData();
-//        writeGeospatialData();
-//        writeMessageData();
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//      }
-
-      preparedStatementWriteVesselData();
-      preparedStatementWriteVesselSignature();
-      preparedStatementWriteVoyageData();
-      preparedStatementWriteNavigationData();
-      preparedStatementWriteGeospatialData();
-      preparedStatementWriteMessageData();
-
-
-      connection.commitTransaction();
-      return WriteResult.SUCCESS;
-    } catch (SQLException ex) {
-      connection.rollBackTransaction();
-
-      //ex.printStackTrace();
-    }
-    return WriteResult.FAILURE;
-  }
+//  @Override
+//  public WriteResult writeMessage() throws SQLException {
+//    connection.connectIfDropped();
+//    connection.beginTransaction();
+//
+//    try{
+//      System.out.println(message.getRawNMEA().toString());
+//      System.out.println(message.getMessageType().toString());
+////      try {
+////        writeVesselData();
+////      } catch (SQLException e) {
+////        e.printStackTrace();
+////      }
+//     // try {
+//        //writeVesselSignature();
+////      } catch (SQLException e) {
+////        e.printStackTrace();
+////      }
+////      try {
+////        writeVoyageData();
+////      } catch (SQLException e) {
+////        e.printStackTrace();
+////      }
+////      try {
+////        writeNavigationData();
+////      } catch (SQLException e) {
+////        e.printStackTrace();
+////      }
+////      try {
+////        writeGeospatialData();
+////      } catch (SQLException e) {
+////        e.printStackTrace();
+////      }
+////      try {
+// //       writeMessageData();
+////      } catch (Exception e) {
+////        e.printStackTrace();
+////      }
+//
+////      //try {
+////        writeVesselData();
+////        writeVesselSignature();
+////        writeVoyageData();
+////        writeNavigationData();
+////        writeGeospatialData();
+////        writeMessageData();
+////      } catch (Exception e) {
+////        e.printStackTrace();
+////      }
+//
+//      preparedStatementWriteVesselData();
+//      preparedStatementWriteVesselSignature();
+//      preparedStatementWriteVoyageData();
+//      preparedStatementWriteNavigationData();
+//      preparedStatementWriteGeospatialData();
+//      preparedStatementWriteMessageData();
+//
+//
+//      connection.commitTransaction();
+//      return WriteResult.SUCCESS;
+//    } catch (SQLException ex) {
+//      connection.rollBackTransaction();
+//
+//      //ex.printStackTrace();
+//    }
+//    return WriteResult.FAILURE;
+//  }
 
   @Override
   public WriteResult preparedStatementWriteMessageData() {
@@ -177,18 +177,24 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
           throw new SQLException("Error recording primary key for message_data record.\n");
         }
       }
-    } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
-      this.messageDataPrimaryKey = NULL;
-      //ex.printStackTrace();
-      return WriteResult.UNSUPPORTED;
+//    } catch (UnsupportedMessageType ex) {
+//      // WRITE BLANK RECORD WITH NULL COLUMNS
+//      this.messageDataPrimaryKey = NULL;
+//      //ex.printStackTrace();
+//      return WriteResult.UNSUPPORTED;
 
     } catch (Exception ex) {
-      ex.printStackTrace();
+      // ex.printStackTrace();
       return WriteResult.FAILURE;
     }
   }
 
+
+  @Override
+  public WriteResult preparedStatementWriteVoyageData() throws SQLException {
+    this.voyageDataPrimaryKey = NULL;
+    return WriteResult.UNSUPPORTED;
+  }
 
   @Override
   public WriteResult preparedStatementWriteVesselData() throws SQLException{
@@ -247,11 +253,11 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
           throw new SQLException("Error recording primary key for vessel_signature record.\n");
         }
       }
-    } catch (UnsupportedMessageType ex) {
-      // WRITE BLANK RECORD WITH NULL COLUMNS
-      this.vesselSignaturePrimaryKey = NULL;
-      //ex.printStackTrace();
-      return WriteResult.UNSUPPORTED;
+//    } catch (UnsupportedMessageType ex) {
+//      // WRITE BLANK RECORD WITH NULL COLUMNS
+//      this.vesselSignaturePrimaryKey = NULL;
+//      //ex.printStackTrace();
+//      return WriteResult.UNSUPPORTED;
 
     } catch (Exception ex) {
       ex.printStackTrace();

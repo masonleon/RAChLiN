@@ -20,16 +20,97 @@ class ClassAPositionReportInserter extends AbstractDatabaseInserter {
         super(message);
     }
 
-    @Override
-    public WriteResult preparedStatementWriteVoyageData() throws SQLException {
-        this.voyageDataPrimaryKey = NULL;
-        return WriteResult.UNSUPPORTED;
-    }
 
     @Override
-    public WriteResult preparedStatementWriteVesselData() throws SQLException {
-        this.vesselDataPrimaryKey = NULL;
-        return WriteResult.UNSUPPORTED;
+    public WriteResult writeMessage() throws SQLException {
+        connection.connectIfDropped();
+        connection.beginTransaction();
+
+        try{
+            System.out.println(message.getRawNMEA().toString());
+            System.out.println(message.getMessageType().toString());
+//      try {
+//        writeVesselData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+            // try {
+            //writeVesselSignature();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeVoyageData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeNavigationData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeGeospatialData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+            //       writeMessageData();
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
+
+//      //try {
+//        writeVesselData();
+//        writeVesselSignature();
+//        writeVoyageData();
+//        writeNavigationData();
+//        writeGeospatialData();
+//        writeMessageData();
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
+
+            //preparedStatementWriteVesselData();
+            try{
+                preparedStatementWriteVesselSignature();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+            //preparedStatementWriteVoyageData();
+            try{
+                preparedStatementWriteNavigationData();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+
+            try{
+                preparedStatementWriteGeospatialData();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+
+            preparedStatementWriteMessageData();
+
+
+
+//            try{
+//                preparedStatementWriteMessageData();
+//            } catch (SQLException e){
+//                e.printStackTrace();
+//            }
+
+
+
+
+            connection.commitTransaction();
+            return WriteResult.SUCCESS;
+        } catch (SQLException ex) {
+            connection.rollBackTransaction();
+
+            //ex.printStackTrace();
+        }
+        return WriteResult.FAILURE;
     }
 
     @Override
@@ -62,11 +143,11 @@ class ClassAPositionReportInserter extends AbstractDatabaseInserter {
                     throw new SQLException("Error recording primary key for geospatial_data record.\n");
                 }
             }
-        } catch (UnsupportedMessageType ex) {
-            // WRITE BLANK RECORD WITH NULL COLUMNS
-            this.geospatialDataPrimaryKey = NULL;
-            //ex.printStackTrace();
-            return WriteResult.UNSUPPORTED;
+//        } catch (UnsupportedMessageType ex) {
+//            // WRITE BLANK RECORD WITH NULL COLUMNS
+//            this.geospatialDataPrimaryKey = NULL;
+//            //ex.printStackTrace();
+//            return WriteResult.UNSUPPORTED;
 
 
         } catch (Exception ex) {
@@ -114,11 +195,11 @@ class ClassAPositionReportInserter extends AbstractDatabaseInserter {
                     throw new SQLException("Error recording primary key for navigation_data record.\n");
                 }
             }
-        } catch (UnsupportedMessageType ex) {
-            // WRITE BLANK RECORD WITH NULL COLUMNS
-            this.navigationDataPrimaryKey  = NULL;
-            //ex.printStackTrace();
-            return WriteResult.UNSUPPORTED;
+//        } catch (UnsupportedMessageType ex) {
+//            // WRITE BLANK RECORD WITH NULL COLUMNS
+//            this.navigationDataPrimaryKey  = NULL;
+//            //ex.printStackTrace();
+//            return WriteResult.UNSUPPORTED;
 
         } catch (Exception ex) {
             ex.printStackTrace();

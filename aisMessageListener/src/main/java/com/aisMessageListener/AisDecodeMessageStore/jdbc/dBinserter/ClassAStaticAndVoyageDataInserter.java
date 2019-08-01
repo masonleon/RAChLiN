@@ -20,6 +20,89 @@ class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
     }
 
     @Override
+    public WriteResult writeMessage() throws SQLException {
+        connection.connectIfDropped();
+        connection.beginTransaction();
+
+        try{
+            System.out.println(message.getRawNMEA().toString());
+            System.out.println(message.getMessageType().toString());
+//      try {
+//        writeVesselData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+            // try {
+            //writeVesselSignature();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeVoyageData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeNavigationData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        writeGeospatialData();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+            //       writeMessageData();
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
+
+//      //try {
+//        writeVesselData();
+//        writeVesselSignature();
+//        writeVoyageData();
+//        writeNavigationData();
+//        writeGeospatialData();
+//        writeMessageData();
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
+
+            try{
+                preparedStatementWriteVesselData();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+
+
+            try{
+                preparedStatementWriteVesselSignature();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+
+
+            try{
+                preparedStatementWriteVoyageData();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+
+            preparedStatementWriteMessageData();
+
+
+            connection.commitTransaction();
+            return WriteResult.SUCCESS;
+        } catch (SQLException ex) {
+            connection.rollBackTransaction();
+
+            //ex.printStackTrace();
+        }
+        return WriteResult.FAILURE;
+    }
+
+    @Override
     public WriteResult preparedStatementWriteVesselData() throws SQLException {
 
         final Integer toBow = message.getToBow();
@@ -55,11 +138,11 @@ class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
                     throw new SQLException("Error recording primary key for vessel_data record.\n");
                 }
             }
-        } catch (UnsupportedMessageType ex) {
-            // WRITE BLANK RECORD WITH NULL COLUMNS
-            this.vesselDataPrimaryKey  = NULL;
-            //ex.printStackTrace();
-            return WriteResult.UNSUPPORTED;
+//        } catch (UnsupportedMessageType ex) {
+//            // WRITE BLANK RECORD WITH NULL COLUMNS
+//            this.vesselDataPrimaryKey  = NULL;
+//            //ex.printStackTrace();
+//            return WriteResult.UNSUPPORTED;
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -67,15 +150,7 @@ class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
         }
     }
 
-    @Override
-    public WriteResult preparedStatementWriteNavigationData() throws SQLException {
-        return null;
-    }
 
-    @Override
-    public WriteResult preparedStatementWriteGeospatialData() throws SQLException {
-        return null;
-    }
 
     @Override
     public WriteResult preparedStatementWriteVoyageData() throws SQLException {
@@ -91,12 +166,12 @@ class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
         try (PreparedStatement ps = this.connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setFloat(1, draught);
-
-            if (eta.equals("NULL")) {
-                ps.setTimestamp(2, Timestamp.valueOf(eta));
-            }else {
-                ps.setNull(2, Types.TIMESTAMP_WITH_TIMEZONE);
-            }
+            ps.setObject(2, eta, Types.TIME_WITH_TIMEZONE);
+//            if (eta.equals("NULL")) {
+//                ps.setTimestamp(2, Timestamp.valueOf(eta));
+//            }else {
+//                ps.setNull(2, Types.TIMESTAMP_WITH_TIMEZONE);
+//            }
             ps.setString(3, destination);
 
 
@@ -115,11 +190,11 @@ class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
                     throw new SQLException("Error recording primary key for voyage_data record.\n");
                 }
             }
-        } catch (UnsupportedMessageType ex) {
-            // WRITE BLANK RECORD WITH NULL COLUMNS
-            this.voyageDataPrimaryKey  = NULL;
-            //ex.printStackTrace();
-            return WriteResult.UNSUPPORTED;
+//        } catch (UnsupportedMessageType ex) {
+//            // WRITE BLANK RECORD WITH NULL COLUMNS
+//            this.voyageDataPrimaryKey  = NULL;
+//            //ex.printStackTrace();
+//            return WriteResult.UNSUPPORTED;
 
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -69,7 +69,7 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   public String getETA() {
     Optional<ZonedDateTime> optionalTime = shipVoyageData.getEtaAfterReceived();
     if (!optionalTime.isPresent()) {
-      return "NULL";
+      return null;
     }
     ZonedDateTime time = optionalTime.get();
     int year = time.getYear();
