@@ -22,6 +22,11 @@ public interface DatabaseConnectionInterface {
 
   String queryOneString(String selectSQL, int column) throws SQLException;
 
+  int checkVesselSig(int mmsi, int imo, String callSign, String name, int vesselTypeID)
+          throws SQLException;
+
+  int checkVesselSigWithNulls(int mmsi, int vesselTypeID) throws SQLException;
+
   int insertOneRecord(String insertSQL) throws SQLException;
 
 
