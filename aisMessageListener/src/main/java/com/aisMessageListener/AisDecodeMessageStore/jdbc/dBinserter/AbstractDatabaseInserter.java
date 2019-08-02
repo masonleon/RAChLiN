@@ -133,7 +133,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       String name = message.getShipName();
       int vesselTypeId = message.getVesselTypeId();
 
-      // TODO CHECK TO SEE IF THIS PERMUTATION IN TABLE FIRST THEN WRITE IF NECESSARY
+      // Check if vessel signature already exists in table.
+      int vesselSignatureID = connection.checkVesselSig(mmsi, imo, callSign, name, vesselTypeId);
+      if (vesselSignatureID != -1) {
+        this.vesselSignaturePrimaryKey = vesselSignatureID;
+        return WriteResult.SUCCESS;
+      }
 
       String sqlUpdate =
               "INSERT INTO vessel_signature(" +
@@ -151,14 +156,23 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       vesselTypeId +
                       ")";
 
+
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {
         throw new SQLException("Error recording primary key for vessel_signature record.\n");
       }
       this.vesselSignaturePrimaryKey = primaryKey; // Update for writeMessageData foreign key.
-
       return WriteResult.SUCCESS;
+
     } catch (UnsupportedMessageType ex) {
+
+      // Check if vessel signature already exists in table.
+      int vesselSignatureID = connection.checkVesselSigWithNulls(message.getMMSI(), message.getVesselTypeId());
+      if (vesselSignatureID != -1) {
+        this.vesselSignaturePrimaryKey = vesselSignatureID;
+        return WriteResult.SUCCESS;
+      }
+
       String sqlUpdate =
               "INSERT INTO vessel_signature(" +
                       "mmsi," +
@@ -314,7 +328,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     try {
 
       int accuracy = message.getAccuracy() ? 1 : 0;
-      // TODO: use geography class from PostGIS
+      // TODO: use appropriate geography data type from PostGIS
       PGpoint coord = CoordinateUtil.getCoord(message.getLat(), message.getLong());
 
       String sqlUpdate =
