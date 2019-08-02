@@ -60,6 +60,31 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     return key;
   }
 
+  public int checkVesselSig(int mmsi, int imo, String callSign, String name, int vesselTypeID)
+          throws SQLException {
+
+    String sqlQuery =
+            "SELECT vessel_signature_id from vessel_signature WHERE " +
+                    "mmsi = " + mmsi + " and " +
+                    "imo = " + imo + " and " +
+                    "call_sign = '" + callSign + "' and " +
+                    "name = '" + name + "' and " +
+                    "vessel_type_id = " + vesselTypeID;
+
+    return queryOneInt(sqlQuery, 1);
+  }
+
+  public int checkVesselSigWithNulls(int mmsi, int vesselTypeID)
+          throws SQLException {
+
+    String sqlQuery =
+            "SELECT vessel_signature_id from vessel_signature WHERE " +
+                    "mmsi = " + mmsi + " and " +
+                    "vessel_type_id = " + vesselTypeID;
+
+    return queryOneInt(sqlQuery, 1);
+  }
+
   /**
    * Executes provided SQL query and returns an integer from the first returned row in the specified
    * column.  Returns -1 if the query produces no results.

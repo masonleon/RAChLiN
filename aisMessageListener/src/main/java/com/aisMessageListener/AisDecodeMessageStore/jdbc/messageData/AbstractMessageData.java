@@ -35,8 +35,9 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
   public Integer getMessageTypeId() {
     if (!(this.isValidType())) {
-      //return 0;
-      return getMessageType().getCode();
+
+      //return getMessageType().getCode();
+      return 0;
     }
     return getMessageType().getCode();
   }
@@ -95,13 +96,15 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public Integer getNavStatusId() {
+    //return 15; // Default for unavailable navigation status. Override as needed.
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public Integer getManeuverIndicatorId() {
-    throw new UnsupportedMessageType(getMessageTypeId());
-  }
+    return 0;
+  } // Default for unavailable maneuver indicator. Override as needed.
+
 
   @Override
   public Float getSpeedOverGround() {
@@ -140,8 +143,8 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public Integer getVesselTypeId() {
-    throw new UnsupportedMessageType(getMessageTypeId());
-  }
+    return 0;
+  } // For unavailable vessel types. Override as needed.
 
   @Override
   public Integer getToBow() {
@@ -163,7 +166,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
-   @Override
+  @Override
   public Float getDraught() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
