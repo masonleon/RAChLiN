@@ -25,18 +25,18 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
     attachConnection(connection);
-
-    // -1 Indicates that a pk has not been created for this message.
-    messageDataPrimaryKey = -1;
-    vesselSignaturePrimaryKey = -1;
-    navigationDataPrimaryKey = -1;
-    voyageDataPrimaryKey = -1;
-    vesselDataPrimaryKey = -1;
-    geospatialDataPrimaryKey = -1;
   }
 
   protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
+
+      // -1 Indicates that a pk has not been created for this message.
+      messageDataPrimaryKey = -1;
+      vesselSignaturePrimaryKey = -1;
+      navigationDataPrimaryKey = -1;
+      voyageDataPrimaryKey = -1;
+      vesselDataPrimaryKey = -1;
+      geospatialDataPrimaryKey = -1;
   }
 
   @Override
