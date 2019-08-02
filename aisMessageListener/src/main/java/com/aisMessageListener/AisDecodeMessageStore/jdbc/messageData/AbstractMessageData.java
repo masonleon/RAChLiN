@@ -1,7 +1,5 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
-import org.postgresql.geometric.PGpoint;
-
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -9,12 +7,6 @@ import java.time.ZonedDateTime;
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
-import dk.tbsalling.aismessages.ais.messages.types.IMO;
-import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
-import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
-import dk.tbsalling.aismessages.ais.messages.types.PositionFixingDevice;
-import dk.tbsalling.aismessages.ais.messages.types.ShipType;
-import dk.tbsalling.aismessages.nmea.exceptions.InvalidMessage;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
 
@@ -27,7 +19,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public boolean isValidType() {
-    return this.getMessageTypeId() > -1;
+    return this.message.getMessageType().getCode() > -1;
   }
 
   @Override
@@ -43,8 +35,9 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
   public int getMessageTypeId() {
     if (!(this.isValidType())) {
-      //return 0;
-      return getMessageType().getCode();
+
+      //return getMessageType().getCode();
+      return 0;
     }
     return getMessageType().getCode();
   }
@@ -104,13 +97,14 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getNavStatusId() {
+    //return 15; // Default for unavailable navigation status. Override as needed.
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public int getManeuverIndicatorId() {
-    throw new UnsupportedMessageType(getMessageTypeId());
-  }
+    return 0;
+  } // Default for unavailable maneuver indicator. Override as needed.
 
   @Override
   public Float getSpeedOverGround() {
@@ -149,8 +143,8 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getVesselTypeId() {
-    throw new UnsupportedMessageType(getMessageTypeId());
-  }
+    return 0;
+  } // For unavailable vessel types. Override as needed.
 
   @Override
   public Integer getToBow() {
@@ -172,7 +166,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
-   @Override
+  @Override
   public Float getDraught() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
