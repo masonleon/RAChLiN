@@ -35,8 +35,9 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
   public int getMessageTypeId() {
     if (!(this.isValidType())) {
-      //return 0;
-      return getMessageType().getCode();
+
+      //return getMessageType().getCode();
+      return 0;
     }
     return getMessageType().getCode();
   }
@@ -96,13 +97,14 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getNavStatusId() {
+    //return 15; // Default for unavailable navigation status. Override as needed.
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public int getManeuverIndicatorId() {
-    throw new UnsupportedMessageType(getMessageTypeId());
-  }
+    return 0;
+  } // Default for unavailable maneuver indicator. Override as needed.
 
   @Override
   public Float getSpeedOverGround() {

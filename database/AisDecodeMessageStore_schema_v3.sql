@@ -1194,8 +1194,8 @@ CREATE UNIQUE INDEX "PK_maneuver_indicator" ON "maneuver_indicator"
 
 INSERT INTO maneuver_indicator VALUES
 (0, 'not available'                   , 'default'                                               ),
-(2, 'not engaged in special maneuver' , NULL                                                    ),
-(3, 'engaged in special maneuver'     , 'i.e.: regional passing arrangement on Inland Waterway' );
+(1, 'not engaged in special maneuver' , NULL                                                    ),
+(2, 'engaged in special maneuver'     , 'i.e.: regional passing arrangement on Inland Waterway' );
 
 
 -- ************************************** "geospatial_data"
