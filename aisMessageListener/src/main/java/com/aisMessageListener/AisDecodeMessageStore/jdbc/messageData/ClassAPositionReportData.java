@@ -7,10 +7,16 @@ import dk.tbsalling.aismessages.ais.messages.PositionReport;
 import dk.tbsalling.aismessages.ais.messages.types.ManeuverIndicator;
 import dk.tbsalling.aismessages.ais.messages.types.NavigationStatus;
 
+/**
+ * TODO java doc
+ */
 public class ClassAPositionReportData extends AbstractMessageData {
 
     private final PositionReport positionReport;
 
+    /**
+     * TODO java doc
+     */
     public ClassAPositionReportData(AISMessage message) {
         super(message);
 

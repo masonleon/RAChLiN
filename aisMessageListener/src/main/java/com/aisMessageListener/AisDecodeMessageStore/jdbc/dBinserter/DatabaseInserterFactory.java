@@ -7,6 +7,9 @@ import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.Unsupported
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 
+/**
+ * TODO java doc
+ */
 public class DatabaseInserterFactory {
 
   /**

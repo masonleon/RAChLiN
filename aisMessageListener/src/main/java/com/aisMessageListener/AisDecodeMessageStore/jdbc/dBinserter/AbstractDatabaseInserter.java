@@ -11,6 +11,9 @@ import java.sql.SQLException;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 
+/**
+ * TODO java doc
+ */
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 
   protected MessageDataInterface message;
@@ -22,11 +25,20 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   private int vesselDataPrimaryKey;
   private int geospatialDataPrimaryKey;
 
+  /**
+   * TODO java doc
+   * @param message
+   * @param connection
+   */
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
     attachConnection(connection);
   }
 
+  /**
+   * TODO java doc
+   * @param message
+   */
   protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
 
@@ -49,7 +61,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     connection.beginTransaction();
 
     try {
-
       writeVesselData();
       writeVesselSignature();
       writeVoyageData();
@@ -155,7 +166,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       name + "'," +
                       vesselTypeId +
                       ")";
-
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {
@@ -331,7 +341,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeGeospatialData() throws SQLException {
     try {
-
       int accuracy = message.getAccuracy() ? 1 : 0;
       // TODO: use appropriate geography data type from PostGIS
       PGpoint coord = CoordinateUtil.getCoord(message.getLat(), message.getLong());
@@ -358,7 +367,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       return WriteResult.UNSUPPORTED;
     }
   }
-
 
   // NOTE: vessel_type table is a static reference table
   @Deprecated

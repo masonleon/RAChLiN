@@ -9,10 +9,15 @@ import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
-
+/**
+ * TODO java doc
+ */
 public abstract class AbstractMessageData implements MessageDataInterface {
   private final AISMessage message;
 
+  /**
+   * TODO java doc
+   */
   public AbstractMessageData(AISMessage message) {
     this.message = message;
   }
@@ -193,5 +198,4 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     }
     return formattedValue;
   }
-
 }

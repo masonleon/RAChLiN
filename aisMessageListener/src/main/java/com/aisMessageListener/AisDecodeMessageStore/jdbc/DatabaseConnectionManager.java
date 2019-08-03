@@ -45,6 +45,9 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     return key;
   }
 
+  /**
+   * TODO java doc
+   */
   public int checkVesselSig(int mmsi, int imo, String callSign, String name, int vesselTypeID)
           throws SQLException {
 
@@ -59,6 +62,9 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     return queryOneInt(sqlQuery, 1);
   }
 
+  /**
+   * TODO java doc
+   */
   public int checkVesselSigWithNulls(int mmsi, int vesselTypeID)
           throws SQLException {
 
@@ -70,7 +76,9 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     return queryOneInt(sqlQuery, 1);
   }
 
-
+  /**
+   * TODO java doc
+   */
   public int checkVesselData(int toBow, int toStern, int toPort, int toStarboard)
           throws SQLException {
 
