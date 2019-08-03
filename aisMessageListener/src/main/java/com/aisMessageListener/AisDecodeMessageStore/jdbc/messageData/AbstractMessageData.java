@@ -103,8 +103,10 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getManeuverIndicatorId() {
-    return 0;
-  } // Default for unavailable maneuver indicator. Override as needed.
+    //return 0;
+    //Default for unavailable maneuver indicator. Override as needed.
+    throw new UnsupportedMessageType(getMessageTypeId());
+  }
 
   @Override
   public Float getSpeedOverGround() {
@@ -143,8 +145,9 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getVesselTypeId() {
-    return 0;
-  } // For unavailable vessel types. Override as needed.
+    //return 0; //For unavailable vessel types and unsupported Message Types. Override as needed.
+    throw new UnsupportedMessageType(getMessageTypeId());
+  }
 
   @Override
   public Integer getToBow() {

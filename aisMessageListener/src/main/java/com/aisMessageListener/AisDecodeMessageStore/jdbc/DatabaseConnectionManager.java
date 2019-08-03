@@ -70,6 +70,20 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     return queryOneInt(sqlQuery, 1);
   }
 
+
+  public int checkVesselData(int toBow, int toStern, int toPort, int toStarboard)
+          throws SQLException {
+
+    String sqlQuery =
+            "SELECT vessel_data_id from vessel_data WHERE " +
+                    "to_bow = " + toBow + " and " +
+                    "to_stern = " + toStern + " and " +
+                    "to_port = '" + toPort + "' and " +
+                    "to_starboard = '" + toStarboard;
+
+    return queryOneInt(sqlQuery, 1);
+  }
+
   /**
    * Executes provided SQL query and returns an integer from the first returned row in the specified
    * column.  Returns -1 if the query produces no results.

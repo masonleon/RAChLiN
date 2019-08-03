@@ -27,7 +27,8 @@ public interface DatabaseConnectionInterface {
 
   int checkVesselSigWithNulls(int mmsi, int vesselTypeID) throws SQLException;
 
-  int insertOneRecord(String insertSQL) throws SQLException;
+  int checkVesselData(int toBow, int toStern, int toPort, int toStarboard) throws SQLException;
 
+  int insertOneRecord(String insertSQL) throws SQLException;
 
 }

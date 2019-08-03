@@ -252,7 +252,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       Integer toPort = message.getToPort();
       Integer toStarboard = message.getToStarboard();
 
-      // TODO CHECK TO SEE IF THIS PERMUTATION IN TABLE FIRST THEN WRITE IF NECESSARY
+      // Check if vessel signature already exists in table.
+      int vesselDataID = connection.checkVesselData(toBow, toStern, toPort, toStarboard);
+      if (vesselDataID != -1) {
+        this.vesselSignaturePrimaryKey = vesselDataID;
+        return WriteResult.SUCCESS;
+      }
 
       String sqlUpdate =
               "INSERT INTO vessel_data(" +
@@ -273,8 +278,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         throw new SQLException("Error recording primary key for vessel_data record.\n");
       }
       this.vesselDataPrimaryKey = primaryKey; // Update for writeMessageData foreign key.
-
       return WriteResult.SUCCESS;
+
     } catch (UnsupportedMessageType ex) {
       // This message does not contain vessel data. FK will be null in Message_Data table.
       return WriteResult.UNSUPPORTED;
