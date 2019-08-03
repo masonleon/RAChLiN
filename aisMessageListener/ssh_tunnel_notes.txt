@@ -1,13 +1,22 @@
 ---------------------------Command currently used in production-------------------------------------
-autossh -i "[key pair name]" -N -R [port name]:localhost:[port name] ubuntu@[public server DNS]
-Tunnel started from Raspberry Pi, expecting client requests from remote server accessing port 10110.
+autossh -i "[key pair name]" -N -R [aws port]:localhost:[pi port] ubuntu@[public server DNS]
+Tunnel started from Raspberry Pi localhost to aws, expecting client requests from remote server
+accessing port 10110.
 
 Java tcp client must be run with --net=host so the container can access forwarded localhost port.
 Conventional -p port:port bind syntax does not work for an ssh tunnel with docker.
 ----------------------------------------------------------------------------------------------------
 
+-----------------------------------Development commands---------------------------------------------
+ssh -i "[key pair name]" -L [local port]:localhost:[aws port] ubuntu@[public server DNS]
+Tunnel started from aws localhost to client, forward connections from client local port to aws port.
+Use to forward AIS messages (NMEA sentences) from aws port 10110 to local port 10110 for dev testing
+on local machine.
 
-
+nc [destination] [port]
+Netcat client connection to destination localhost and port 10110 to check if ais messages are being
+received.
+----------------------------------------------------------------------------------------------------
 
 
 ----------------------------------------Notes-------------------------------------------------------
@@ -44,9 +53,13 @@ https://www.booleanworld.com/guide-ssh-port-forwarding-tunnelling/
 https://dev.to/samuyi/the-how-to-of-ssh-port-forwarding-1f4e
 https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-ssh-tunnel-local.html
 https://superuser.com/questions/87014/how-do-i-remove-an-ssh-forwarded-port
+https://man.openbsd.org/ssh.1
 
 Autossh:
 https://www.everythingcli.org/ssh-tunnelling-for-fun-and-profit-autossh/
 https://linux.die.net/man/1/autossh
 https://superuser.com/questions/37738/how-to-reliably-keep-an-ssh-tunnel-open
 https://www.harding.motd.ca/autossh/
+
+Netcat:
+https://man.openbsd.org/nc.1
