@@ -1,12 +1,12 @@
 FROM openjdk:11-jre-slim
 
-COPY aisMessageListener.jar /usr/local/bin
+COPY aisMessageListener-jar-with-dependencies.jar /usr/local/bin
 
 WORKDIR usr/local/bin
 
-# arbitrary port number.  Bind to actual port with docker run -p host_port:9000 ais-message-listener
+# arbitrary port numbers.  Bind to actual port with docker run -p host_port:10110 ais-message-listener.
+# see build notes.
 EXPOSE 10110/tcp
+EXPOSE 5432/tcp
 
-# TODO: create a separate, non-root user profile or two for application database access.
-CMD ["java", "-jar", "ais-message-listener.jar", "10110",
-"aisdb.cz93wcr6yyio.us-east-2.rds.amazonaws.com", "aisDB", "aisDBmasterUser", "[enter password]"]
+CMD ["java", "-jar", "aisMessageListener-jar-with-dependencies.jar", "10110", "aisdb.cz93wcr6yyio.us-east-2.rds.amazonaws.com", "ais_DB", "aisDBmasterUser", "[Insert password here]"]
