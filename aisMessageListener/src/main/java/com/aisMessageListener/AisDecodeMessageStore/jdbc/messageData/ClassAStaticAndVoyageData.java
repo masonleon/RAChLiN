@@ -6,10 +6,16 @@ import java.util.Optional;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
 
+/**
+ * TODO java doc
+ */
 public class ClassAStaticAndVoyageData extends AbstractMessageData {
 
   private final ShipAndVoyageData shipVoyageData;
 
+  /**
+   * TODO java doc
+   */
   public ClassAStaticAndVoyageData(AISMessage message) {
     super(message);
 

@@ -1,6 +1,5 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
-
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 import org.postgresql.geometric.PGpoint;
 
@@ -18,6 +17,7 @@ public interface MessageDataInterface {
   boolean isValidType();
 
   /**
+   * TODO edit java doc
    * Grabs the MMSI of the sender.
    *
    * s regulated  I believe each * country has a different organization responsible for allocating
@@ -233,7 +233,7 @@ public interface MessageDataInterface {
    *
    * @return Optional/</ZonedDateTime/>/
    */
-
+  //TODO what was the Optional from?
   //Optional<ZonedDateTime> getETA();
   String getETA();
 

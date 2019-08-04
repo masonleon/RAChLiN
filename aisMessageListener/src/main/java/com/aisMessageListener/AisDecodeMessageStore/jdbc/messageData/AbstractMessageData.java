@@ -9,10 +9,15 @@ import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
-
+/**
+ * TODO java doc
+ */
 public abstract class AbstractMessageData implements MessageDataInterface {
   private final AISMessage message;
 
+  /**
+   * TODO java doc
+   */
   public AbstractMessageData(AISMessage message) {
     this.message = message;
   }
@@ -35,8 +40,6 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
   public int getMessageTypeId() {
     if (!(this.isValidType())) {
-
-      //return getMessageType().getCode();
       return 0;
     }
     return getMessageType().getCode();
@@ -102,8 +105,8 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getManeuverIndicatorId() {
-    return 0;
-  } // Default for unavailable maneuver indicator. Override as needed.
+    return 0; //Default for unavailable maneuver indicator. Override as needed.
+  }
 
   @Override
   public Float getSpeedOverGround() {
@@ -142,8 +145,8 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getVesselTypeId() {
-    return 0;
-  } // For unavailable vessel types. Override as needed.
+    return 0; //For unavailable vessel types and unsupported Message Types. Override as needed.
+  }
 
   @Override
   public Integer getToBow() {
@@ -171,8 +174,6 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-//  public Optional<ZonedDateTime> getETA() {
-//    throw new UnsupportedMessageType(getMessageTypeId());
   public String getETA() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
@@ -189,5 +190,4 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     }
     return formattedValue;
   }
-
 }

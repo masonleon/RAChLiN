@@ -11,6 +11,9 @@ import java.sql.SQLException;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 
+/**
+ * TODO java doc
+ */
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 
   protected MessageDataInterface message;
@@ -22,11 +25,17 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   private int vesselDataPrimaryKey;
   private int geospatialDataPrimaryKey;
 
+  /**
+   * TODO java doc
+   */
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
     attachConnection(connection);
   }
 
+  /**
+   * TODO java doc
+   */
   protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
 
@@ -49,7 +58,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     connection.beginTransaction();
 
     try {
-
       writeVesselData();
       writeVesselSignature();
       writeVoyageData();
@@ -270,7 +278,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       Integer toPort = message.getToPort();
       Integer toStarboard = message.getToStarboard();
 
-      // TODO CHECK TO SEE IF THIS PERMUTATION IN TABLE FIRST THEN WRITE IF NECESSARY
+      // Check if vessel signature already exists in table.
+      int vesselDataID = connection.checkVesselData(toBow, toStern, toPort, toStarboard);
+      if (vesselDataID != -1) {
+        this.vesselDataPrimaryKey = vesselDataID;
+        return WriteResult.SUCCESS;
+      }
 
       String sqlUpdate =
               "INSERT INTO vessel_data(" +
@@ -291,8 +304,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         throw new SQLException("Error recording primary key for vessel_data record.\n");
       }
       this.vesselDataPrimaryKey = primaryKey; // Update for writeMessageData foreign key.
-
       return WriteResult.SUCCESS;
+
     } catch (UnsupportedMessageType ex) {
       // This message does not contain vessel data. FK will be null in Message_Data table.
       return WriteResult.UNSUPPORTED;
@@ -344,7 +357,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeGeospatialData() throws SQLException {
     try {
-
       int accuracy = message.getAccuracy() ? 1 : 0;
       // TODO: use appropriate geography data type from PostGIS
       PGpoint coord = CoordinateUtil.getCoord(message.getLat(), message.getLong());
@@ -371,7 +383,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       return WriteResult.UNSUPPORTED;
     }
   }
-
 
   // NOTE: vessel_type table is a static reference table
   @Deprecated

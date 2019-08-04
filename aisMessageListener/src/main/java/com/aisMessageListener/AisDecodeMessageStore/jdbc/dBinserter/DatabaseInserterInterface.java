@@ -4,8 +4,16 @@ import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInter
 
 import java.sql.SQLException;
 
+/**
+ * TODO java doc
+ */
 public interface DatabaseInserterInterface {
-    
+
+    /**
+     * TODO Java doc
+     * @param conn
+     * @throws SQLException
+     */
     void attachConnection(DatabaseConnectionInterface conn) throws SQLException;
 
     /**
