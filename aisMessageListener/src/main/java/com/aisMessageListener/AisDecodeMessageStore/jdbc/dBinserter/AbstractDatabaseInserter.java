@@ -140,22 +140,40 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         return WriteResult.SUCCESS;
       }
 
-      String sqlUpdate =
-              "INSERT INTO vessel_signature(" +
-                      "mmsi," +
-                      "imo," +
-                      "call_sign," +
-                      "name," +
-                      "vessel_type_id" +
-                      ") " +
-                      "VALUES (" +
-                      mmsi + "," +
-                      imo + ",'" +
-                      callSign + "','" +
-                      name + "'," +
-                      vesselTypeId +
-                      ")";
-
+      String sqlUpdate;
+      if (imo != -1) {
+        sqlUpdate =
+                "INSERT INTO vessel_signature(" +
+                        "mmsi," +
+                        "imo," +
+                        "call_sign," +
+                        "name," +
+                        "vessel_type_id" +
+                        ") " +
+                        "VALUES (" +
+                        mmsi + "," +
+                        imo + ",'" +
+                        callSign + "','" +
+                        name + "'," +
+                        vesselTypeId +
+                        ")";
+      } else {
+        sqlUpdate =
+                "INSERT INTO vessel_signature(" +
+                        "mmsi," +
+                        "imo," +
+                        "call_sign," +
+                        "name," +
+                        "vessel_type_id" +
+                        ") " +
+                        "VALUES (" +
+                        mmsi + "," +
+                        "NULL" + ",'" +
+                        callSign + "','" +
+                        name + "'," +
+                        vesselTypeId +
+                        ")";
+      }
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {

@@ -97,8 +97,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getNavStatusId() {
-    //return 15; // Default for unavailable navigation status. Override as needed.
-    throw new UnsupportedMessageType(getMessageTypeId());
+    return 15; // Default for unavailable navigation status. Override as needed.
   }
 
   @Override
