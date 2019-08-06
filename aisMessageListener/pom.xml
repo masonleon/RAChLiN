@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.6.jre7</version>
+            <version>42.2.6</version>
         </dependency>
     </dependencies>
 
@@ -63,8 +63,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.aisMessageListener.AisDecodeMessageStore.Driver
-                            </mainClass>
+                            <mainClass>com.aisMessageListener.AisDecodeMessageStore.Driver</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -85,6 +84,28 @@
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+       		<artifactId>maven-assembly-plugin</artifactId>
+		<executions>
+          	<execution>
+            		<goals>
+              			<goal>attached</goal>
+            		</goals>
+            		<phase>package</phase>
+            		<configuration>
+              			<descriptorRefs>
+               				<descriptorRef>jar-with-dependencies</descriptorRef>
+              			</descriptorRefs>
+              			<archive>
+                			<manifest>
+                  				<mainClass>com.aisMessageListener.AisDecodeMessageStore.Driver</mainClass>
+               				</manifest>
+             			 </archive>
+            		</configuration>
+		</execution>
+		</executions>
+	    </plugin>
         </plugins>
     </build>
 </project>

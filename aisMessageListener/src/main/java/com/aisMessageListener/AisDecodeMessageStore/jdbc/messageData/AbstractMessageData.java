@@ -40,8 +40,6 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
   public int getMessageTypeId() {
     if (!(this.isValidType())) {
-
-      //return getMessageType().getCode();
       return 0;
     }
     return getMessageType().getCode();
@@ -102,15 +100,12 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getNavStatusId() {
-    //return 15; // Default for unavailable navigation status. Override as needed.
-    throw new UnsupportedMessageType(getMessageTypeId());
+    return 15; // Default for unavailable navigation status. Override as needed.
   }
 
   @Override
   public int getManeuverIndicatorId() {
-    //return 0;
-    //Default for unavailable maneuver indicator. Override as needed.
-    throw new UnsupportedMessageType(getMessageTypeId());
+    return 0; //Default for unavailable maneuver indicator. Override as needed.
   }
 
   @Override
@@ -150,8 +145,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getVesselTypeId() {
-    //return 0; //For unavailable vessel types and unsupported Message Types. Override as needed.
-    throw new UnsupportedMessageType(getMessageTypeId());
+    return 0; //For unavailable vessel types and unsupported Message Types. Override as needed.
   }
 
   @Override
@@ -180,8 +174,6 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-//  public Optional<ZonedDateTime> getETA() {
-//    throw new UnsupportedMessageType(getMessageTypeId());
   public String getETA() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }

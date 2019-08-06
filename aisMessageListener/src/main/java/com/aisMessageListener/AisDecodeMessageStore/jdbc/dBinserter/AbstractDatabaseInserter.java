@@ -27,8 +27,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
   /**
    * TODO java doc
-   * @param message
-   * @param connection
    */
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
@@ -37,7 +35,6 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
 
   /**
    * TODO java doc
-   * @param message
    */
   protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
@@ -151,21 +148,40 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         return WriteResult.SUCCESS;
       }
 
-      String sqlUpdate =
-              "INSERT INTO vessel_signature(" +
-                      "mmsi," +
-                      "imo," +
-                      "call_sign," +
-                      "name," +
-                      "vessel_type_id" +
-                      ") " +
-                      "VALUES (" +
-                      mmsi + "," +
-                      imo + ",'" +
-                      callSign + "','" +
-                      name + "'," +
-                      vesselTypeId +
-                      ")";
+      String sqlUpdate;
+      if (imo != -1) {
+        sqlUpdate =
+                "INSERT INTO vessel_signature(" +
+                        "mmsi," +
+                        "imo," +
+                        "call_sign," +
+                        "name," +
+                        "vessel_type_id" +
+                        ") " +
+                        "VALUES (" +
+                        mmsi + "," +
+                        imo + ",'" +
+                        callSign + "','" +
+                        name + "'," +
+                        vesselTypeId +
+                        ")";
+      } else {
+        sqlUpdate =
+                "INSERT INTO vessel_signature(" +
+                        "mmsi," +
+                        "imo," +
+                        "call_sign," +
+                        "name," +
+                        "vessel_type_id" +
+                        ") " +
+                        "VALUES (" +
+                        mmsi + "," +
+                        "NULL" + ",'" +
+                        callSign + "','" +
+                        name + "'," +
+                        vesselTypeId +
+                        ")";
+      }
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {
@@ -265,7 +281,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       // Check if vessel signature already exists in table.
       int vesselDataID = connection.checkVesselData(toBow, toStern, toPort, toStarboard);
       if (vesselDataID != -1) {
-        this.vesselSignaturePrimaryKey = vesselDataID;
+        this.vesselDataPrimaryKey = vesselDataID;
         return WriteResult.SUCCESS;
       }
 

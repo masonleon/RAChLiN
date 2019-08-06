@@ -69,10 +69,14 @@ public abstract class AbstractDatabaseConnectionManager implements DatabaseConne
    */
   private void connectToDatabase() {
     try {
+      Class.forName("org.postgresql.Driver");
       this.connection = DriverManager.getConnection(this.url, this.properties);
     } catch (SQLException e) {
       System.err.println("Error while connecting to database.\n");
+        e.printStackTrace();
       System.exit(1);
+    } catch (ClassNotFoundException ex){
+	ex.printStackTrace();
     }
   }
 }

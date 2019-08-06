@@ -94,7 +94,6 @@ INSERT INTO vessel_type VALUES
 (30,    'Fishing'               ,    30, 'Fishing'                           ,  NULL                                           ),
 (31,    'Tug Tow'               ,    31, 'Towing'                            ,  NULL                                           ),
 (32,    'Tug Tow'               ,    32, 'Towing'                            ,  'length exceeds 200m or breadth exceeds 25m'   ),
-(32,    'Tug Tow'               ,    32, 'Towing'                            ,  'length exceeds 200m or breadth exceeds 25m'   ),
 (33,    'Other'                 ,    33, 'Dredging or underwater operations' ,  NULL                                           ),
 (34,    'Other'                 ,    34, 'Diving operations'                 ,  NULL                                           ),
 (35,    'Military'              ,    35, 'Military operations'               ,  NULL                                           ),

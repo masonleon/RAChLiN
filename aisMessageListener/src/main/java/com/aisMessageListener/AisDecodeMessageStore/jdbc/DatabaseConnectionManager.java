@@ -86,8 +86,8 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
             "SELECT vessel_data_id from vessel_data WHERE " +
                     "to_bow = " + toBow + " and " +
                     "to_stern = " + toStern + " and " +
-                    "to_port = '" + toPort + "' and " +
-                    "to_starboard = '" + toStarboard;
+                    "to_port = " + toPort + " and " +
+                    "to_starboard = " + toStarboard;
 
     return queryOneInt(sqlQuery, 1);
   }
