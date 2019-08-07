@@ -29,6 +29,42 @@ END;
 $BODY$
     LANGUAGE plpgsql;
 
+-----------------------------------------------VIEWS----------------------------------------------------------------
+-- View for distinct vessel signatures from message 5's
+CREATE MATERIALIZED VIEW msg_5_signature AS
+
+SELECT DISTINCT vs.vessel_signature_id,
+                vs.mmsi,
+                vs.imo,
+                vs.name,
+                vs.call_sign,
+                LENGTH_OVERALL_METERS(vd.to_bow, vd.to_stern)    loa,
+                BEAM_OVERALL_METERS(vd.to_port, vd.to_starboard) beam,
+                vt.vessel_type_id,
+                vt.vessel_group,
+                vt.ais_vessel_code,
+                vt.ais_ship_cargo_classification,
+                vt.note
+FROM vessel_signature vs
+         LEFT JOIN message_data md USING (vessel_signature_id)
+         LEFT JOIN vessel_data vd USING (vessel_data_id)
+         LEFT JOIN vessel_type vt USING (vessel_type_id)
+
+WHERE md.message_type_id = 5 AND vs.vessel_type_id IS NOT NULL
+
+GROUP BY vs.vessel_signature_id,
+         vs.mmsi,
+         vs.imo,
+         vs.name,
+         vs.call_sign,
+         loa,
+         beam,
+         vt.vessel_type_id,
+         vt.vessel_group,
+         vt.ais_vessel_code,
+         vt.ais_ship_cargo_classification,
+         vt.note;
+
 ---------------------------------------------SAMPLE QUERIES-------------------------------------------------------------
 -- List of distinct vessels (vessel signatures), sorted largest to smallest
 SELECT DISTINCT vs.mmsi,
@@ -81,6 +117,8 @@ GROUP BY vs.mmsi,
          vt.note;
 -- loa, beam
 -- ORDER BY loa DESC NULLS LAST;
+
+
 -- Number of distinct vessels (vessel signatures)
 SELECT count(DISTINCT mmsi)
 FROM vessel_signature
@@ -118,7 +156,8 @@ FROM message_data
 GROUP BY mt.supported, mt.message_type_id, mt.name, mt.description
 ORDER BY num_msg_received DESC;
 
-
+---------------------------------------------QUERY FOR MAP API-------------------------------------------------------------
+-----------------------------------------***STILL IN DEVELOPMENT-------------------------------------------------------------
 -- List of  most recent geo and navigation data (msg 1, 2, or 3) joined to distinct vessels (msg 5)
 SELECT md.time_received as "time",
        gd.coord,
@@ -149,40 +188,3 @@ FROM message_data md
 ORDER BY time_received DESC;
 
 
-drop MATERIALIZED VIEW msg_5_signature;
-
-CREATE MATERIALIZED VIEW msg_5_signature AS
-
-SELECT DISTINCT vs.vessel_signature_id,
-                vs.mmsi,
-                vs.imo,
-                vs.name,
-                vs.call_sign,
-                LENGTH_OVERALL_METERS(vd.to_bow, vd.to_stern)    loa,
-                BEAM_OVERALL_METERS(vd.to_port, vd.to_starboard) beam,
-                vt.vessel_type_id,
-                vt.vessel_group,
-                vt.ais_vessel_code,
-                vt.ais_ship_cargo_classification,
-                vt.note
-FROM vessel_signature vs
-         LEFT JOIN message_data md USING (vessel_signature_id)
-         LEFT JOIN vessel_data vd USING (vessel_data_id)
-         LEFT JOIN vessel_type vt USING (vessel_type_id)
-
-WHERE md.message_type_id = 5 AND vs.vessel_type_id IS NOT NULL
-
-GROUP BY vs.vessel_signature_id,
-         vs.mmsi,
-         vs.imo,
-         vs.name,
-         vs.call_sign,
-         loa,
-         beam,
-         vt.vessel_type_id,
-         vt.vessel_group,
-         vt.ais_vessel_code,
-         vt.ais_ship_cargo_classification,
-         vt.note;
-
-select * from msg_5_signature;
