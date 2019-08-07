@@ -7,7 +7,7 @@
     <title>Basic Struts 2 Application - Welcome</title>
 </head>
 <body>
-<h1>Welcome To Struts 2!</h1>
+<h1>PUT API DOCUMENTATION HERE CLICK BELOW TO SEE MAP</h1>
 <p><a href="<s:url action='hello'/>">Hello World</a></p>
 </body>
 </html>
