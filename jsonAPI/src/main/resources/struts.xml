@@ -23,6 +23,14 @@
             <result name="success">/HelloWorld.jsp</result>
         </action>
 
+        <!--TODO Rename or remove -->
+        <!-- If the URL is test.action then call the execute method of class HelloWorldAction.
+         If the result returned by the execute method is success render the HelloWorld.jsp -->
+        <action name="test" class="org.apache.struts.helloworld.action.TestDisplayAction"
+                method="execute">
+            <result name="success">/TestDisplay.jsp</result>
+        </action>
+
     </package>
 
 </struts>

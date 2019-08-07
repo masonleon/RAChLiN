@@ -8,6 +8,8 @@
 </head>
 <body>
 <h1>PUT API DOCUMENTATION HERE CLICK BELOW TO SEE MAP</h1>
+<%--TODO Rename--%>
 <p><a href="<s:url action='hello'/>">Hello World</a></p>
+<p><a href="<s:url action='test'/>">Test Display</a></p>
 </body>
 </html>

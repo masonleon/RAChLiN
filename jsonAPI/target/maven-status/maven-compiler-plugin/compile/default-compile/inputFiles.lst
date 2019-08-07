@@ -3,3 +3,6 @@
 /Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/com/jsonAPI/AisDecodeMessageStore/App.java
 /Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/com/jsonAPI/AisDecodeMessageStore/tcpClient.java
 /Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/action/HelloWorldAction.java
+/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/model/JSONQueryResult.java
+/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/model/ResultSetConverter.java
+/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/action/TestDisplayAction.java
