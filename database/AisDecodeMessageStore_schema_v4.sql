@@ -1224,9 +1224,9 @@ CREATE TABLE "vessel_signature"
  "imo"                 int NULL,
  "call_sign"           varchar(50) NULL,
  "name"                varchar(50) NULL,
- "vessel_type_id"      int NOT NULL,
- CONSTRAINT "Indx_unique_vessel_signature" UNIQUE ( "call_sign", "imo", "mmsi", "name", "vessel_type_id" ),
- CONSTRAINT "FK_102" FOREIGN KEY ( "vessel_type_id" ) REFERENCES "vessel_type" ( "vessel_type_id" )
+ "vessel_type_id"      int NULL,
+ CONSTRAINT "idx_unique_vessel_signature" UNIQUE ( "call_sign", "imo", "mmsi", "name", "vessel_type_id" ),
+ CONSTRAINT "FK_vessel_type" FOREIGN KEY ( "vessel_type_id" ) REFERENCES "vessel_type" ( "vessel_type_id" )
 );
 
 CREATE UNIQUE INDEX "PK_vessel_signature_id" ON "vessel_signature"
@@ -1252,8 +1252,8 @@ CREATE TABLE "navigation_data"
  "rate_of_turn"          decimal(5,2) NULL,
  "nav_status_id"         int NOT NULL,
  "maneuver_indicator_id" int NOT NULL,
- CONSTRAINT "FK_209" FOREIGN KEY ( "maneuver_indicator_id" ) REFERENCES "maneuver_indicator" ( "maneuver_indicator_id" ),
- CONSTRAINT "FK_202" FOREIGN KEY ( "nav_status_id" ) REFERENCES "nav_status" ( "nav_status_id" )
+ CONSTRAINT "FK_maneuver_indicator" FOREIGN KEY ( "maneuver_indicator_id" ) REFERENCES "maneuver_indicator" ( "maneuver_indicator_id" ),
+ CONSTRAINT "FK_nav_status" FOREIGN KEY ( "nav_status_id" ) REFERENCES "nav_status" ( "nav_status_id" )
 );
 
 CREATE UNIQUE INDEX "PK_navigation_data" ON "navigation_data"
@@ -1287,12 +1287,12 @@ CREATE TABLE "message_data"
  "voyage_data_id"      bigint NULL,
  "vessel_signature_id" bigint NOT NULL,
  "vessel_data_id"      bigint NULL,
- CONSTRAINT "FK_50" FOREIGN KEY ( "geospatial_data_id" ) REFERENCES "geospatial_data" ( "geospatial_data_id" ),
- CONSTRAINT "FK_37" FOREIGN KEY ( "message_type_id" ) REFERENCES "message_type" ( "message_type_id" ),
- CONSTRAINT "FK_60" FOREIGN KEY ( "navigation_data_id" ) REFERENCES "navigation_data" ( "navigation_data_id" ),
- CONSTRAINT "FK_187" FOREIGN KEY ( "vessel_data_id" ) REFERENCES "vessel_data" ( "vessel_data_id" ),
- CONSTRAINT "FK_155" FOREIGN KEY ( "vessel_signature_id" ) REFERENCES "vessel_signature" ( "vessel_signature_id" ),
- CONSTRAINT "FK_66" FOREIGN KEY ( "voyage_data_id" ) REFERENCES "voyage_data" ( "voyage_data_id" )
+ CONSTRAINT "FK_geospatial_data" FOREIGN KEY ( "geospatial_data_id" ) REFERENCES "geospatial_data" ( "geospatial_data_id" ),
+ CONSTRAINT "FK_message_type" FOREIGN KEY ( "message_type_id" ) REFERENCES "message_type" ( "message_type_id" ),
+ CONSTRAINT "FK_navigation_data" FOREIGN KEY ( "navigation_data_id" ) REFERENCES "navigation_data" ( "navigation_data_id" ),
+ CONSTRAINT "FK_vessel_data" FOREIGN KEY ( "vessel_data_id" ) REFERENCES "vessel_data" ( "vessel_data_id" ),
+ CONSTRAINT "FK_vessel_signature" FOREIGN KEY ( "vessel_signature_id" ) REFERENCES "vessel_signature" ( "vessel_signature_id" ),
+ CONSTRAINT "FK_voyage_data" FOREIGN KEY ( "voyage_data_id" ) REFERENCES "voyage_data" ( "voyage_data_id" )
 );
 
 CREATE UNIQUE INDEX "PK_msg_data" ON "message_data"
