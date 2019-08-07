@@ -1,0 +1,15 @@
+127.0.0.1 - - [07/Aug/2019:11:33:55 -0400] "GET / HTTP/1.1" 404 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:46:40 -0400] "GET /jsonAPI HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:46:41 -0400] "GET /jsonAPI/ HTTP/1.1" 200 326 http-bio-8080-exec-2 1011
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:46:41 -0400] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-4 0
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:46:43 -0400] "GET /jsonAPI/hello.action;jsessionid=6CB814CC84EC6099CEB3889360A97C23 HTTP/1.1" 200 775 http-bio-8080-exec-3 161
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:46:44 -0400] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-5 0
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:47:01 -0400] "GET /jsonAPI/hello.action;jsessionid=6CB814CC84EC6099CEB3889360A97C23 HTTP/1.1" 200 775 http-bio-8080-exec-8 67
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:47:03 -0400] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-9 0
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:53:14 -0400] "GET /jsonAPI HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:53:14 -0400] "GET /jsonAPI/ HTTP/1.1" 200 282 http-bio-8080-exec-2 372
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:53:17 -0400] "GET /jsonAPI/hello.action HTTP/1.1" 200 2198 http-bio-8080-exec-3 876
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:53:18 -0400] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-5 0
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:55:29 -0400] "GET /jsonAPI HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:55:30 -0400] "GET /jsonAPI/ HTTP/1.1" 200 305 http-bio-8080-exec-2 834
+0:0:0:0:0:0:0:1 - - [07/Aug/2019:11:55:31 -0400] "GET /jsonAPI/hello.action HTTP/1.1" 200 2246 http-bio-8080-exec-3 71
