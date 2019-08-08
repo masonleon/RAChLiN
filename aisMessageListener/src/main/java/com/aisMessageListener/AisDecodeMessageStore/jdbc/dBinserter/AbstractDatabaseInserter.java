@@ -90,6 +90,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         System.err.println("Cannot update message_data table without first updating vessel_signature.\n");
       }
 
+      // TODO: Replace with Prepared Statement
       String sqlUpdate =
               "INSERT INTO message_data(" +
                       "time_received," +
@@ -160,6 +161,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         return WriteResult.SUCCESS;
       }
 
+      // TODO: Replace with Prepared Statement
       String sqlUpdate =
               "INSERT INTO vessel_signature(" +
                       "mmsi," +
@@ -192,6 +194,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         return WriteResult.SUCCESS;
       }
 
+      // TODO: Replace with Prepared Statement
       String sqlUpdate =
               "INSERT INTO vessel_signature(" +
                       "mmsi," +
@@ -230,6 +233,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       Float draught = message.getDraught();
       String destination = message.getDestination();
 
+      // TODO: Replace with Prepared Statement
       String sqlUpdate =
               "INSERT INTO voyage_data(" +
                       "draught," +
@@ -272,6 +276,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
         return WriteResult.SUCCESS;
       }
 
+      // TODO: Replace with Prepared Statement
       String sqlUpdate =
               "INSERT INTO vessel_data(" +
                       "to_bow," +
@@ -310,6 +315,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       int navStatusId = message.getNavStatusId();
       int maneuverIndicatorId = message.getManeuverIndicatorId();
 
+      // TODO: Replace with Prepared Statement
       String sqlUpdate =
               "INSERT INTO navigation_data(" +
                       "speed_over_ground," +
@@ -345,9 +351,10 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   public WriteResult writeGeospatialData() throws SQLException {
     try {
       int accuracy = message.getAccuracy() ? 1 : 0;
-      // TODO: use appropriate geography data type from PostGIS
+      // TODO: use appropriate geography data type for PostGIS extension
       PGpoint coord = CoordinateUtil.getCoord(message.getLat(), message.getLong());
 
+      // TODO: Replace with Prepared Statement
       String sqlUpdate =
               "INSERT INTO geospatial_data(" +
                       "coord," +
