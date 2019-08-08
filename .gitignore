@@ -31,5 +31,6 @@ hs_err_pid*
 *.DS_Store
 /.idea
 /target/
-/aisMessageListener/target/
-/jsonAPI/target/
+*/target/*
+#/aisMessageListener/target/
+#/jsonAPI/target/
