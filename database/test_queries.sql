@@ -185,6 +185,7 @@ FROM message_data md
          JOIN navigation_data nd USING (navigation_data_id)
          JOIN nav_status ns USING (nav_status_id)
          JOIN maneuver_indicator mi USING (maneuver_indicator_id)
+where  sig.ais_ship_cargo_classification like 'Local'
 ORDER BY time_received DESC;
 
 
