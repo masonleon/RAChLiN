@@ -2,11 +2,11 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.bostontportt</groupId>
+    <groupId>com.AisDecodeMessageStore</groupId>
     <artifactId>jsonAPI</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>basic-struts2 Maven Webapp</name>
+    <name>AisDecodeMessageStore Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -60,10 +60,18 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.6.jre7</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180813</version>
+        </dependency>
+
     </dependencies>
 
     <build>
-        <finalName>basic-struts2</finalName>
+        <finalName>AisDecodeMessageStore</finalName>
         <plugins>
             <plugin>
                 <!-- https://www.eclipse.org/jetty/documentation/9.4.x/jetty-maven-plugin.html -->

@@ -1,2 +1,0 @@
-127.0.0.1 - - [09/Jul/2019:12:51:38 -0400] "GET /ais-decode-message-store/ HTTP/1.1" 200 309 http-bio-8080-exec-2 1034
-127.0.0.1 - - [09/Jul/2019:12:51:39 -0400] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-3 0

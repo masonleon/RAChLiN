@@ -1,3 +1,6 @@
+# Private files not to be uploaded
+database_credentials
+
 # Compiled class file
 *.class
 
