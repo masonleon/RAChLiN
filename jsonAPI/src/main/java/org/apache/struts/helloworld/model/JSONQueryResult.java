@@ -35,7 +35,8 @@ public class JSONQueryResult {
     String databaseName;
     String username = null;
     String password;
-    try (BufferedReader br = new BufferedReader(new FileReader("database_credentials"))) {
+    String catalinaHome = System.getenv("CATALINA_HOME");
+    try (BufferedReader br = new BufferedReader(new FileReader(catalinaHome + "/webapps/credentials/database_credentials"))) {
       databseURL = br.readLine();
       databaseName = br.readLine();
       username = br.readLine();
@@ -74,34 +75,9 @@ public class JSONQueryResult {
       stmt = this.connection.createStatement();
 
       // TODO add try catch finally blocks here
-      String query = "SELECT md.time_received as \"time\",\n" +
-              "       gd.coord,\n" +
-              "       gd.accuracy,\n" +
-              "       nd.speed_over_ground as \"sog\",\n" +
-              "       nd.course_over_ground as \"cog\",\n" +
-              "       nd.heading as \"hdg\",\n" +
-              "       nd.rate_of_turn as \"rot\",\n" +
-              "       ns.description as \"nav stat\",\n" +
-              "       mi.description as \"maneuver ind\",\n" +
-              "       sig.mmsi,\n" +
-              "       sig.imo,\n" +
-              "       sig.name,\n" +
-              "       sig.call_sign,\n" +
-              "       sig.loa,\n" +
-              "       sig.beam,\n" +
-              "       sig.ais_vessel_code,\n" +
-              "       sig.ais_ship_cargo_classification as \"ship/cargo classification\",\n" +
-              "       sig.vessel_group,\n" +
-              "       sig.note as \"ship/cargo note\"\n" +
-              "FROM message_data md\n" +
-              "         JOIN vessel_signature vs USING (vessel_signature_id)\n" +
-              "         JOIN msg_5_signature sig ON (vs.mmsi = sig.mmsi)\n" +
-              "         JOIN geospatial_data gd USING (geospatial_data_id)\n" +
-              "         JOIN navigation_data nd USING (navigation_data_id)\n" +
-              "         JOIN nav_status ns USING (nav_status_id)\n" +
-              "         JOIN maneuver_indicator mi USING (maneuver_indicator_id)\n" +
-              "ORDER BY time_received DESC\n" +
-              "LIMIT 100;";
+      // TODO remove 100 limit
+      // TODO modularize queries
+      String query = "SELECT * FROM message_data LIMIT 100;";
       ResultSet rs = stmt.executeQuery(query); // TODO
       jsonArray = ResultSetConverter.apply(rs);
       rs.close();
