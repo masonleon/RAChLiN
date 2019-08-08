@@ -1223,13 +1223,8 @@ CREATE TABLE "vessel_signature"
  "call_sign"           varchar(50) NULL,
  "name"                varchar(50) NULL,
  "vessel_type_id"      int NULL,
-<<<<<<< HEAD:database/AisDecodeMessageStore_schema_v3.sql
- CONSTRAINT "Indx_unique_vessel_signature" UNIQUE ( "call_sign", "imo", "mmsi", "name", "vessel_type_id" ),
- CONSTRAINT "FK_102" FOREIGN KEY ( "vessel_type_id" ) REFERENCES "vessel_type" ( "vessel_type_id" )
-=======
  CONSTRAINT "idx_unique_vessel_signature" UNIQUE ( "call_sign", "imo", "mmsi", "name", "vessel_type_id" ),
  CONSTRAINT "FK_vessel_type" FOREIGN KEY ( "vessel_type_id" ) REFERENCES "vessel_type" ( "vessel_type_id" )
->>>>>>> 90def96aae556c0f687b2f1483cbd459c9fc5cd4:database/AisDecodeMessageStore_schema_v4.sql
 );
 
 CREATE UNIQUE INDEX "PK_vessel_signature_id" ON "vessel_signature"
