@@ -48,11 +48,11 @@ public interface DatabaseConnectionInterface {
   /**
    * Grabs a vessel_signature_id from the vesselSignature table using a fully qualified vesselSignature record.
    *
-   * @param mmsi
-   * @param imo
-   * @param callSign
-   * @param name
-   * @param vesselTypeID
+   * @param mmsi the MMSI number.
+   * @param imo the IMO number.
+   * @param callSign the ship callsign.
+   * @param name the ship's name.
+   * @param vesselTypeID the vessel_type_id corresponding to a record in the vesselData table.
    *
    * @return an integer vessel_signature_id if found.
    * @throws SQLException if the query fails.
@@ -63,7 +63,7 @@ public interface DatabaseConnectionInterface {
   /**
    * Grabs a vessel_signature_id from the vesselSignature table using an MMSI number.
    *
-   * @param mmsi
+   * @param mmsi the MMSI number.
    * @return an integer vessel_signature_id if found.
    * @throws SQLException if the query fails.
    */
@@ -72,10 +72,10 @@ public interface DatabaseConnectionInterface {
   /**
    * Grabs a vessel_data_id from the vesselData table using values for all four columns.
    *
-   * @param toBow
-   * @param toStern
-   * @param toPort
-   * @param toStarboard
+   * @param toBow the length to bow
+   * @param toStern the length to stern
+   * @param toPort the length to port side
+   * @param toStarboard the length to starboard side
    * @return an integer vessel_data_id if found.
    * @throws SQLException if the query fails.
    */
@@ -84,9 +84,9 @@ public interface DatabaseConnectionInterface {
   /**
    * Inserts one record to the database using a specified sql query string.
    *
-   * @param insertSQL
-   * @return
-   * @throws SQLException
+   * @param insertSQL the insertion string to be applied to the database.
+   * @return the primary key of the table inserted to.
+   * @throws SQLException if the query could not be applied to insert new data to the database.
    */
   int insertOneRecord(String insertSQL) throws SQLException;
 }

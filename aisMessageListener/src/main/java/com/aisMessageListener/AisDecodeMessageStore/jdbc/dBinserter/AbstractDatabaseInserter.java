@@ -285,7 +285,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       Integer toPort = message.getToPort();
       Integer toStarboard = message.getToStarboard();
 
-      // Check if vessel signature already exists in table.
+      // Check if vessel data already exists in table.
       int vesselDataID = connection.getVesselDataIdFromRecord(toBow, toStern, toPort, toStarboard);
       if (vesselDataID != -1) {
         this.vesselDataPrimaryKey = vesselDataID;
