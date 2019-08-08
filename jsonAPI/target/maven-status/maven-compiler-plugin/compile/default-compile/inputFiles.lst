@@ -1,8 +1,3 @@
-/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/model/MessageStore.java
-/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/com/jsonAPI/AisDecodeMessageStore/fileClient.java
-/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/com/jsonAPI/AisDecodeMessageStore/App.java
-/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/com/jsonAPI/AisDecodeMessageStore/tcpClient.java
-/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/action/HelloWorldAction.java
-/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/model/JSONQueryResult.java
-/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/model/ResultSetConverter.java
-/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/org/apache/struts/helloworld/action/TestDisplayAction.java
+/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/com/jsonAPI/AisDecodeMessageStore/action/MapAction.java
+/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/com/jsonAPI/AisDecodeMessageStore/model/ResultSetConverter.java
+/Users/matthias/IdeaProjects/AisDecodeMessageStore/jsonAPI/src/main/java/com/jsonAPI/AisDecodeMessageStore/model/JSONQueryResult.java

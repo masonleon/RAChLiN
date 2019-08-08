@@ -1,9 +1,8 @@
-package org.apache.struts.helloworld.model;
+package com.jsonAPI.AisDecodeMessageStore.model;
 
 import org.json.JSONArray;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,8 +13,8 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class JSONQueryResult {
+  // TODO Should this port number be hardcoded like this?
   private static final String port = "5432";
-  private String message;
   private String databseURL;
   private Properties properties;
   private Connection connection;
@@ -28,15 +27,14 @@ public class JSONQueryResult {
     return JSONQueryResult.instance;
   }
 
+  // TODO Find a more secure way to get database credentials.
   private JSONQueryResult() {
-    // TODO Remove password from database connection
-    // TODO make a private file to pull from that isn't committed to GitHub
-
     String databaseName;
     String username = null;
     String password;
     String catalinaHome = System.getenv("CATALINA_HOME");
-    try (BufferedReader br = new BufferedReader(new FileReader(catalinaHome + "/webapps/credentials/database_credentials"))) {
+    try (BufferedReader br = new BufferedReader(
+            new FileReader(catalinaHome + "/webapps/credentials/database_credentials"))) {
       databseURL = br.readLine();
       databaseName = br.readLine();
       username = br.readLine();
@@ -48,8 +46,6 @@ public class JSONQueryResult {
       this.properties.setProperty("password", password);
       connectToDatabase();
 
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -69,26 +65,39 @@ public class JSONQueryResult {
   }
 
   public String getMessage() {
+    String result = "";
     Statement stmt = null;
     JSONArray jsonArray = null;
     try {
       stmt = this.connection.createStatement();
 
       // TODO add try catch finally blocks here
-      // TODO remove 100 limit
-      // TODO modularize queries
-      String query = "SELECT * FROM message_data LIMIT 100;";
-      ResultSet rs = stmt.executeQuery(query); // TODO
+      // TODO remove 1000 limit
+      String query = getQuery();
+      ResultSet rs = stmt.executeQuery(query);
       jsonArray = ResultSetConverter.apply(rs);
       rs.close();
       stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
+      result = e.toString();
     }
 
-    String result = jsonArray == null ? "mierde" : jsonArray.toString();
+    if (jsonArray != null) {
+      result = jsonArray.toString();
+    }
+
     return result;
   }
 
+  private String getQuery() {
+    return "SELECT vessel_signature_id,\n" +
+            "       gd.coord,\n" +
+            "       nd.heading\n" +
+            "FROM message_data md\n" +
+            "       JOIN geospatial_data gd USING (geospatial_data_id)\n" +
+            "       JOIN navigation_data nd USING (navigation_data_id)\n" +
+            "LIMIT 1000;";
+  }
 }
 

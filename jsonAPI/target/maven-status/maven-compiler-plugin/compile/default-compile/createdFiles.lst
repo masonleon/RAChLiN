@@ -1,8 +1,3 @@
-com/jsonAPI/AisDecodeMessageStore/App.class
-org/apache/struts/helloworld/action/TestDisplayAction.class
-org/apache/struts/helloworld/model/JSONQueryResult.class
-com/jsonAPI/AisDecodeMessageStore/fileClient.class
-com/jsonAPI/AisDecodeMessageStore/tcpClient.class
-org/apache/struts/helloworld/action/HelloWorldAction.class
-org/apache/struts/helloworld/model/MessageStore.class
-org/apache/struts/helloworld/model/ResultSetConverter.class
+com/jsonAPI/AisDecodeMessageStore/model/ResultSetConverter.class
+com/jsonAPI/AisDecodeMessageStore/model/JSONQueryResult.class
+com/jsonAPI/AisDecodeMessageStore/action/MapAction.class

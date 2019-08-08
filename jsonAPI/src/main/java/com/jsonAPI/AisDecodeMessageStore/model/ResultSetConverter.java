@@ -1,4 +1,4 @@
-package org.apache.struts.helloworld.model;
+package com.jsonAPI.AisDecodeMessageStore.model;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,11 +8,13 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-// https://stackoverflow.com/questions/6514876/most-efficient-conversion-of-resultset-to-json
-// Devin Dixon
 
-public class ResultSetConverter {
-  public static JSONArray apply(ResultSet rs)
+/**
+ * This code converts a JDBC Result to a JSONObject. This code takes heavily from code posted by
+ * Devin Dixon https://stackoverflow.com/questions/6514876/most-efficient-conversion-of-resultset-to-json
+ */
+class ResultSetConverter {
+  static JSONArray apply(ResultSet rs)
           throws SQLException, JSONException {
     JSONArray json = new JSONArray();
     ResultSetMetaData rsmd = rs.getMetaData();

@@ -1,10 +1,16 @@
-<!DOCTYPE html>
+<%--
+  Created by IntelliJ IDEA.
+  User: matthias
+  Date: 2019-08-08
+  Time: 13:58
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Hello World!</title>
+    <title>AIS Decode Message Store</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
           integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
           crossorigin=""/>
@@ -16,14 +22,12 @@
             height: 1080px;
         }
     </style>
-
 </head>
 <body>
-<h2><s:property value="messageStore.message"/></h2>
 <div id="mapid"></div>
+<p><s:property value="queryResult.getMessage"/></p>
 <script>
-
-    var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    var mymap = L.map('mapid').setView([42.3417649, -70.966159], 10);
 
     L.tileLayer(
         'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -37,20 +41,19 @@
             id: 'mapbox.streets'
         }).addTo(mymap);
 
-    L.marker([51.5, -0.09]).addTo(mymap)
-        .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+    var raw_data =
+    <s:property value="queryResult.getMessage" escapeHtml="a default value" />
 
-    L.circle([51.508, -0.11], 500, {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5
-    }).addTo(mymap).bindPopup("I am a circle.");
-
-    L.polygon([
-                  [51.509, -0.08],
-                  [51.503, -0.06],
-                  [51.51, -0.047]
-              ]).addTo(mymap).bindPopup("I am a polygon.");
+    for (var x in raw_data) {
+        console.log(x);
+        var coord = raw_data[x]["coord"];
+        lat_lon = coord.replace('(', '').replace(')', '').split(',');
+        latitutde = Number(lat_lon[0]);
+        longitude = Number(lat_lon[1]);
+        L.circle([latitutde, longitude], 15,
+                 {color: "white", fillColor: "white", fillOpacity: 1.0})
+            .addTo(mymap).bindPopup("vessel_signature_id: " + raw_data[x]["vessel_signature_id"]);
+    }
 
     var popup = L.popup();
 
@@ -62,7 +65,7 @@
     }
 
     mymap.on('click', onMapClick);
-
 </script>
+
 </body>
 </html>

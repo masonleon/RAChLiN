@@ -4,12 +4,11 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Basic Struts 2 Application - Welcome</title>
+    <title>AIS Decode Message Store</title>
 </head>
 <body>
-<h1>PUT API DOCUMENTATION HERE CLICK BELOW TO SEE MAP</h1>
-<%--TODO Rename--%>
-<p><a href="<s:url action='hello'/>">Hello World</a></p>
-<p><a href="<s:url action='test'/>">Test Display</a></p>
+<h2>AIS Decode Message Store</h2>
+<p>The "Map" link below will display ships near the Boston Harbor.</p>
+<p><a href="<s:url action='map'/>">Map</a></p>
 </body>
 </html>
