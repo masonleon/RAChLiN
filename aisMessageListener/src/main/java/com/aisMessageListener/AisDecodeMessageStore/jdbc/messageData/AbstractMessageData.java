@@ -1,8 +1,8 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
@@ -71,18 +71,10 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     return this.message.getNmeaMessages().length > 1;
   }
 
-
   @Override
-  public String getTimeReceived() {
+  public OffsetDateTime getTimeReceived() {
     Instant time = this.message.getMetadata().getReceived();
-    ZonedDateTime UTCtime = time.atZone(ZoneOffset.UTC);
-    int year = UTCtime.getYear();
-    String month = addZeroToSingleDigitInt(UTCtime.getMonthValue());
-    String day = addZeroToSingleDigitInt(UTCtime.getDayOfMonth());
-    String hour = addZeroToSingleDigitInt(UTCtime.getHour());
-    String minute = addZeroToSingleDigitInt(UTCtime.getMinute());
-    String second = addZeroToSingleDigitInt(UTCtime.getSecond());
-    return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + " UTC";
+    return time.atOffset(ZoneOffset.UTC);
   }
 
   @Override
@@ -176,7 +168,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public Optional<String> getETA() {
+  public Optional<OffsetDateTime> getETA() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 

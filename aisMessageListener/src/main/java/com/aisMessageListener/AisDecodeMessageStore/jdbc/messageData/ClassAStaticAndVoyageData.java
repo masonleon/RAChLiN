@@ -1,5 +1,6 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -82,18 +83,13 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public Optional<String> getETA() {
+  public Optional<OffsetDateTime> getETA() {
     Optional<ZonedDateTime> optionalTime = shipVoyageData.getEtaAfterReceived();
     if (!optionalTime.isPresent()) {
       return Optional.empty();
     }
-    ZonedDateTime time = optionalTime.get();
-    int year = time.getYear();
-    String month = addZeroToSingleDigitInt(time.getMonthValue());
-    String day = addZeroToSingleDigitInt(time.getDayOfMonth());
-    String hour = addZeroToSingleDigitInt(time.getHour());
-    String minute = addZeroToSingleDigitInt(time.getMinute());
-    return Optional.of("" + year + "-" + month + "-" + day + " " + hour + ":" + minute + " UTC");
+    OffsetDateTime offsetTime = optionalTime.get().toOffsetDateTime();
+    return Optional.of(offsetTime);
   }
 
   @Override

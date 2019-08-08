@@ -8,6 +8,7 @@ import com.aisMessageListener.AisDecodeMessageStore.jdbc.util.CoordinateUtil;
 import org.postgresql.geometric.PGpoint;
 
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 
@@ -77,7 +78,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeMessageData() throws SQLException {
     try {
-      String timeReceived = message.getTimeReceived();
+      OffsetDateTime timeReceived = message.getTimeReceived();
       Boolean isValidMessage = message.isValidType();
       Boolean isMultiPart = message.hasMultipleParts();
       String rawNMEA = message.getRawNMEA();
@@ -155,6 +156,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       String name = message.getShipName();
 
       // Check if vessel signature already exists in table.
+      //TODO: test checkVesselSig with null values.
       int vesselSignatureID = connection.checkVesselSig(mmsi, imo, callSign, name, vesselTypeId);
       if (vesselSignatureID != -1) {
         this.vesselSignaturePrimaryKey = vesselSignatureID;
@@ -208,7 +210,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       "NULL," +
                       "NULL," +
                       "NULL," +
-                      "NULL," +
+                      "NULL" +
                       ")";
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
@@ -223,28 +225,36 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeVoyageData() throws SQLException {
     try {
-      String eta;
-      if (message.getETA().isPresent()) {
-        eta = "'" + message.getETA().get() + "'";
-      } else {
-        eta = "NULL";
-      }
-
       Float draught = message.getDraught();
       String destination = message.getDestination();
 
-      // TODO: Replace with Prepared Statement
-      String sqlUpdate =
-              "INSERT INTO voyage_data(" +
-                      "draught," +
-                      "eta," +
-                      "destination" +
-                      ") " +
-                      "VALUES (" +
-                      draught + "," +
-                      eta + ",'" +
-                      destination +
-                      "')";
+      // TODO: Replace with Prepared Statements
+      String sqlUpdate;
+      if (message.getETA().isPresent()) {
+        sqlUpdate =
+                "INSERT INTO voyage_data(" +
+                        "draught," +
+                        "eta," +
+                        "destination" +
+                        ") " +
+                        "VALUES (" +
+                        draught + ",'" +
+                        message.getETA().get() + "','" +
+                        destination +
+                        "')";
+      } else {
+        sqlUpdate =
+                "INSERT INTO voyage_data(" +
+                        "draught," +
+                        "eta," +
+                        "destination" +
+                        ") " +
+                        "VALUES (" +
+                        draught + "," +
+                        "NULL" + ",'" +
+                        destination +
+                        "')";
+      }
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {

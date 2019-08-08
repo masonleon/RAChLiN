@@ -1,5 +1,6 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
@@ -63,9 +64,9 @@ public interface MessageDataInterface {
   /**
    * Checks the instant this message was received.
    *
-   * @return String
+   * @return OffsetDateTime
    */
-  String getTimeReceived();
+  OffsetDateTime getTimeReceived();
 
   /**
    * Grabs the Latitude from a message containing geometric information that has already been
@@ -231,9 +232,9 @@ public interface MessageDataInterface {
   /**
    * Grabs the voyage estimated time of arrival (ETA) for a vessel from a message. In UTC time.
    *
-   * @return String
+   * @return OffsetDateTime
    */
-  Optional<String> getETA();
+  Optional<OffsetDateTime> getETA();
 
 
   /**
