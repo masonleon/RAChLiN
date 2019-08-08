@@ -3,13 +3,11 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
 
 /**
- * TODO java doc
+ * Extension of the DatabaseInserter to handle specific functionality related to ClassAStaticAndVoyageData messages
+ * (type 5).
  */
 class ClassAStaticAndVoyageDataInserter extends AbstractDatabaseInserter {
 
-    /**
-     * TODO java doc
-     */
     ClassAStaticAndVoyageDataInserter(MessageDataInterface message) {
         super(message);
     }

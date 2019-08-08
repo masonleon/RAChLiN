@@ -3,13 +3,10 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
 
 /**
- * TODO java doc
+ * Extension of the DatabaseInserter to handle specific functionality related to currently unsupported messages.
  */
 class UnsupportedMessageInserter extends AbstractDatabaseInserter {
 
-  /**
-   * TODO java doc
-   */
   UnsupportedMessageInserter(MessageDataInterface message) {
     super(message);
   }

@@ -8,9 +8,9 @@ import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 
 /**
- * TODO java doc
+ * Factory to handle an incoming AISMessage and parse its type in order to construct a DatabaseInserter object.
  */
-public class DatabaseInserterFactory {
+public final class DatabaseInserterFactory {
 
   /**
    * Converts a decoded AISmessage into a database inserter.  A database inserter contains all logic
@@ -21,34 +21,21 @@ public class DatabaseInserterFactory {
    */
   public static DatabaseInserterInterface getDatabaseInserter(AISMessage message) {
     AISMessageType messageType = message.getMessageType();
-    DatabaseInserterInterface inserter;
 
     switch (messageType) {
-      // Message Type 1
-      case PositionReportClassAScheduled:
-        inserter = new ClassAPositionReportInserter(new ClassAPositionReportData(message));
-        break;
+        // Message Type 1, 2, and 3, respectively
+        case PositionReportClassAScheduled:
+        case PositionReportClassAAssignedSchedule:
+        case PositionReportClassAResponseToInterrogation:
+            return new ClassAPositionReportInserter(new ClassAPositionReportData(message));
 
-      // Message Type 2
-      case PositionReportClassAAssignedSchedule:
-        inserter = new ClassAPositionReportInserter(new ClassAPositionReportData(message));
-        break;
+        // Message Type 5
+        case ShipAndVoyageRelatedData:
+            return new ClassAStaticAndVoyageDataInserter(new ClassAStaticAndVoyageData(message));
 
-      // Message Type 3
-      case PositionReportClassAResponseToInterrogation:
-        inserter = new ClassAPositionReportInserter(new ClassAPositionReportData(message));
-        break;
-
-      // Message Type 5
-      case ShipAndVoyageRelatedData:
-        inserter = new ClassAStaticAndVoyageDataInserter(new ClassAStaticAndVoyageData(message));
-        break;
-
-      // Unsupported Message
-      default:
-        inserter = new UnsupportedMessageInserter(new UnsupportedMessageData(message));
-
+        // Unsupported Message
+        default:
+            return new UnsupportedMessageInserter(new UnsupportedMessageData(message));
     }
-    return inserter;
   }
 }

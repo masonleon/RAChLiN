@@ -3,12 +3,14 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
 
 /**
- * TODO java doc
+ * Placeholder for all unsupported message types.
  */
-public class UnsupportedMessageData extends AbstractMessageData {
+public final class UnsupportedMessageData extends AbstractMessageData {
 
   /**
-   * TODO java doc
+   * Default constructor does not modify any parent functionality.
+   *
+   * @param message the AIS Message
    */
   public UnsupportedMessageData(AISMessage message) {
     super(message);

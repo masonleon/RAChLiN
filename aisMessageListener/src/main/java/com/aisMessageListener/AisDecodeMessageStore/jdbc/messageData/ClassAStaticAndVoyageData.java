@@ -5,17 +5,22 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
+import dk.tbsalling.aismessages.ais.messages.PositionReport;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
 
+
 /**
- * TODO java doc
+ * Extension of message to support Class A position reports (i.e message type = 5).
  */
-public class ClassAStaticAndVoyageData extends AbstractMessageData {
+public final class ClassAStaticAndVoyageData extends AbstractMessageData {
 
   private final ShipAndVoyageData shipVoyageData;
 
   /**
-   * TODO java doc
+   * Constructor initializes a ClassAStaticAndVoyageData message using an AIS message.
+   *
+   * @param message an AISMessage object
+   * @throws IllegalArgumentException if the AIS message isn't a {@link ShipAndVoyageData}.
    */
   public ClassAStaticAndVoyageData(AISMessage message) {
     super(message);
@@ -29,12 +34,11 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
 
   @Override
   public Optional<Integer> getIMO() {
-    Optional<Integer> imo = Optional.empty();
     try {
-      imo = Optional.of(shipVoyageData.getImo().getIMO());
+      return Optional.of(shipVoyageData.getImo().getIMO());
     } catch (NullPointerException e) {
+      return Optional.empty();
     }
-    return imo;
   }
 
   @Override
@@ -49,12 +53,11 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
 
   @Override
   public Optional<Integer> getVesselTypeId() {
-    Optional<Integer> ship_type = Optional.empty();
     try {
-      ship_type = Optional.of(shipVoyageData.getShipType().getCode());
+      return  Optional.of(shipVoyageData.getShipType().getCode());
     } catch (NullPointerException e) {
+      return Optional.empty();
     }
-    return ship_type;
   }
 
   @Override
@@ -84,12 +87,7 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
 
   @Override
   public Optional<OffsetDateTime> getETA() {
-    Optional<ZonedDateTime> optionalTime = shipVoyageData.getEtaAfterReceived();
-    if (!optionalTime.isPresent()) {
-      return Optional.empty();
-    }
-    OffsetDateTime offsetTime = optionalTime.get().toOffsetDateTime();
-    return Optional.of(offsetTime);
+    return shipVoyageData.getEtaAfterReceived().map(ZonedDateTime::toOffsetDateTime);
   }
 
   @Override

@@ -45,11 +45,9 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     return key;
   }
 
-  /**
-   * TODO java doc
-   */
-  public int checkVesselSig(int mmsi, String imo, String callSign, String name, String vesselTypeID)
-          throws SQLException {
+  @Override
+  public int getVesselSignatureIdFromFullyQualifiedSignature(
+          int mmsi, String imo, String callSign, String name, String vesselTypeID) throws SQLException {
 
     String sqlQuery =
             "SELECT vessel_signature_id from vessel_signature WHERE " +
@@ -62,10 +60,8 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     return queryOneInt(sqlQuery, 1);
   }
 
-  /**
-   * TODO java doc
-   */
-  public int checkVesselMMSI(int mmsi)
+  @Override
+  public int getVesselSignatureIdWithMMSI(int mmsi)
           throws SQLException {
 
     String sqlQuery =
@@ -73,10 +69,8 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
     return queryOneInt(sqlQuery, 1);
   }
 
-  /**
-   * TODO java doc
-   */
-  public int checkVesselData(int toBow, int toStern, int toPort, int toStarboard)
+  @Override
+  public int getVesselDataIdFromRecord(int toBow, int toStern, int toPort, int toStarboard)
           throws SQLException {
 
     String sqlQuery =
@@ -98,7 +92,7 @@ public class DatabaseConnectionManager extends AbstractDatabaseConnectionManager
    * @return an integer from the specified column in the first row of the query result.
    * @throws SQLException if query or column number are invalid.
    */
-  public int queryOneInt(String selectSQL, int column) throws SQLException {
+  private int queryOneInt(String selectSQL, int column) throws SQLException {
     int result = -1;
     Statement stmt = this.connection.createStatement();
 

@@ -3,14 +3,11 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
 import com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData.MessageDataInterface;
 
 /**
- * TODO java doc
+ * Extension of the DatabaseInserter to handle specific functionality related to ClassAPositionReport messages (types
+ * 1, 2, or 3).
  */
 class ClassAPositionReportInserter extends AbstractDatabaseInserter {
 
-    /**
-     * TODO java doc
-     * @param message
-     */
     ClassAPositionReportInserter(MessageDataInterface message) {
         super(message);
     }

@@ -19,15 +19,13 @@ public interface MessageDataInterface {
   boolean isValidType();
 
   /**
-   * TODO edit java doc Grabs the MMSI of the sender.
+   * Grabs the MMSI of the sender. Each country has a different organization responsible for allocating a designated
+   * block of MMSI numbers. In the United States, federal users get them through the National Telecommunications
+   * Administration.
    *
-   * s regulated  I believe each * country has a different organization responsible for allocating
-   * their block of MMSI's. In the US, * federal users get them through the National
-   * Telecommunications Administration and everyone else * through the . The problem with inaccurate
-   * MMSI mostly isn't always intentional, * however there are issues when a owner sells the boat,
-   * gets a new transponder and doesn't update the MMSI being broadcast. * There can be other issues
-   * with invalid or corrupted MMSI's due to interference or even if the ship's antenna is struck by
-   * lightning, etc.
+   * Sometimes, MMSI numbers can be inaccurate due to issues, for example when an owner sells their boat, gets a new
+   * transponder, and doesn't update the MMSI being broadcasted. Invalid and corrupted MMSI numbers can occur due to
+   * interference, inclement weather, etc.
    *
    * @return int
    */

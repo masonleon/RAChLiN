@@ -4,16 +4,22 @@ import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.PositionReport;
 
 /**
- * TODO java doc
+ * Extension of message to support Class A position reports (i.e message types 1, 2, 3).
  */
-public class ClassAPositionReportData extends AbstractMessageData {
+public final class ClassAPositionReportData extends AbstractMessageData {
+
+  private static final int DEFAULT_MANEUVER_INDICATOR_ID = 0;
+  private static final int DEFAULT_NAV_STATUS_ID = 15;
 
   private final PositionReport positionReport;
 
   /**
-   * TODO java doc
+   * Constructor initializes a ClassAPositionReportData message using an AIS message.
+   *
+   * @param message an AISMessage object
+   * @throws IllegalArgumentException if the AIS message isn't a {@link PositionReport}.
    */
-  public ClassAPositionReportData(AISMessage message) {
+  public ClassAPositionReportData(AISMessage message) throws IllegalArgumentException {
     super(message);
 
     if (!(message instanceof PositionReport)) {
@@ -39,22 +45,20 @@ public class ClassAPositionReportData extends AbstractMessageData {
 
   @Override
   public int getNavStatusId() {
-    int nav_status = 15;
     try {
-      nav_status = positionReport.getNavigationStatus().getCode();
+      return positionReport.getNavigationStatus().getCode();
     } catch (NullPointerException e) {
+        return DEFAULT_NAV_STATUS_ID;
     }
-    return nav_status;
   }
 
   @Override
   public int getManeuverIndicatorId() {
-    int indicator = 0;
     try {
-      indicator = positionReport.getSpecialManeuverIndicator().getCode();
+      return positionReport.getSpecialManeuverIndicator().getCode();
     } catch (NullPointerException e) {
+        return DEFAULT_MANEUVER_INDICATOR_ID;
     }
-    return indicator;
 
   }
 
