@@ -1,5 +1,0 @@
-localhost ais_decode_message_store postgres [your_local_database_password]
-
-// Update according to your local database credentials for testing.
-
-

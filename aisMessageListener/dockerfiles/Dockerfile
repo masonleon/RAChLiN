@@ -7,5 +7,19 @@ WORKDIR usr/local/bin
 EXPOSE 10110/tcp
 EXPOSE 5432/tcp
 
-# TODO make a private file to pull from that isn't committed to GitHub.
-CMD ["java", "-jar", "aisMessageListener-jar-with-dependencies.jar", "10110", "aisdb.cz93wcr6yyio.us-east-2.rds.amazonaws.com", "ais_DB", "aisDBmasterUser", "[Insert database password here]"]
+CMD ["java", "-jar", "aisMessageListener-jar-with-dependencies.jar"]
+
+# Build locally:
+    # mvn package to produce jar
+    # move jar from target dockerfiles directory
+    # docker build --tag=[your-tag-here] .
+    # docker tag image username/repo:tag
+    # docker login
+    # docker push username/repo:tag
+
+# Deploy to server:
+    # docker pull username/repo:tag
+    # docker create --net=host [your-tag-here]
+    # database credentials file must be accessible on server
+    # docker cp database_credentials.txt [id-output-by-create]:/usr/local/bin/
+    # docker start -a [id-output-by-create]
