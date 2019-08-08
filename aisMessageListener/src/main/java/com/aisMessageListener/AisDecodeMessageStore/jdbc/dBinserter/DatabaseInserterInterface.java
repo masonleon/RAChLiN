@@ -5,16 +5,16 @@ import com.aisMessageListener.AisDecodeMessageStore.jdbc.DatabaseConnectionInter
 import java.sql.SQLException;
 
 /**
- * TODO java doc
+ * Interface to manage logic for writing to various tables in the Postgres database.
  */
 public interface DatabaseInserterInterface {
 
     /**
-     * TODO Java doc
-     * @param conn
-     * @throws SQLException
+     * Attaches the a DatabaseConnectionInterface object to the DatabaseInserter.
+     *
+     * @param conn the DatabaseConnectionInterface implementation.
      */
-    void attachConnection(DatabaseConnectionInterface conn) throws SQLException;
+    void attachConnection(DatabaseConnectionInterface conn);
 
     /**
      * Top level function that begins the transaction, then writes to all tables, then commits the transaction.
@@ -87,36 +87,39 @@ public interface DatabaseInserterInterface {
      */
     WriteResult writeGeospatialData() throws SQLException;
 
-    @Deprecated
     /**
      * Parses an AIS message and writes to the maneuverIndicator table.
      *
      * <p>MUST BE CALLED IN TRANSACTION</p>
      *
+     * @deprecated reference table that we do not write to.
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
+    @Deprecated
     WriteResult writeManeuverIndicator() throws SQLException;
 
-    @Deprecated
     /**
      * Parses an AIS message and writes to the vesselType table.
      *
      * <p>MUST BE CALLED IN TRANSACTION</p>
      *
+     * @deprecated reference table that we do not write to.
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
+    @Deprecated
     WriteResult writeVesselType() throws SQLException;
 
-    @Deprecated
     /**
      * Parses an AIS message and writes to the navigationStatus table.
      *
      * <p>MUST BE CALLED IN TRANSACTION</p>
      *
+     * @deprecated reference table that we do not write to.
      * @return WriteResult
      * @throws SQLException if operation fails due to database access errors.
      */
+    @Deprecated
     WriteResult writeNavigationStatus() throws SQLException;
 }

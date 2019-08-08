@@ -13,7 +13,10 @@ import java.time.OffsetDateTime;
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 
 /**
- * TODO java doc
+ * Insertion logic that can be abstracted out of individual message types live in this Abstract object. DatabaseInserter
+ * objects are to be constructed with minimally a MessageDataInterface implementation, i.e our wrappers around supported
+ * message functionality. DatabaseInserters must also have a connection to the database attached in order to commit
+ * write transactions.
  */
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 
@@ -27,7 +30,9 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   private int geospatialDataPrimaryKey;
 
   /**
-   * TODO java doc
+   * Constructor that supplies a MessageData implementation wrapper and an existing Database connection to be attached.
+   * @param message
+   * @param connection
    */
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
@@ -35,7 +40,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   }
 
   /**
-   * TODO java doc
+   * Default constructor supplies a MessageData implementation wrapper to be inserted to the database.
+   * @param message
    */
   protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
@@ -156,8 +162,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       String name = message.getShipName();
 
       // Check if vessel signature already exists in table.
-      //TODO: test checkVesselSig with null values.
-      int vesselSignatureID = connection.checkVesselSig(mmsi, imo, callSign, name, vesselTypeId);
+      //TODO: test getVesselSignatureIdFromFullyQualifiedSignature with null values.
+      int vesselSignatureID = connection.getVesselSignatureIdFromFullyQualifiedSignature(mmsi, imo, callSign, name, vesselTypeId);
       if (vesselSignatureID != -1) {
         this.vesselSignaturePrimaryKey = vesselSignatureID;
         return WriteResult.SUCCESS;
@@ -190,7 +196,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     } catch (UnsupportedMessageType ex) {
 
       // Check if vessel signature already exists in table.
-      int vesselSignatureID = connection.checkVesselMMSI(message.getMMSI());
+      int vesselSignatureID = connection.getVesselSignatureIdWithMMSI(message.getMMSI());
       if (vesselSignatureID != -1) {
         this.vesselSignaturePrimaryKey = vesselSignatureID;
         return WriteResult.SUCCESS;
@@ -280,7 +286,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       Integer toStarboard = message.getToStarboard();
 
       // Check if vessel signature already exists in table.
-      int vesselDataID = connection.checkVesselData(toBow, toStern, toPort, toStarboard);
+      int vesselDataID = connection.getVesselDataIdFromRecord(toBow, toStern, toPort, toStarboard);
       if (vesselDataID != -1) {
         this.vesselDataPrimaryKey = vesselDataID;
         return WriteResult.SUCCESS;

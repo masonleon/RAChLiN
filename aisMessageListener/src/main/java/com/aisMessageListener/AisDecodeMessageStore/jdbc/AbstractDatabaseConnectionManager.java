@@ -33,25 +33,14 @@ public abstract class AbstractDatabaseConnectionManager implements DatabaseConne
     connectToDatabase();
   }
 
-  /**
-   * Checks if connection has dropped and reestablishes connection as applicable.  Call before
-   * making updates or queries, as connections can go stale over time.  Exits program if connection
-   * is not possible.
-   *
-   * @throws SQLException if isValid timeout is negative (e.g., exception does not need to be
-   *                      handled here).
-   */
+  @Override
   public void connectIfDropped() throws SQLException {
-    if (this.connection == null) {
-      connectToDatabase();
-    } else if (!this.connection.isValid(2)) {
+    if (this.connection == null || !this.connection.isValid(2)) {
       connectToDatabase();
     }
   }
 
-  /**
-   * Helper method to close the database connection.  Exits the program if a close is not possible.
-   */
+  @Override
   public void closeConnection() {
     try {
       this.connection.close();
@@ -73,10 +62,10 @@ public abstract class AbstractDatabaseConnectionManager implements DatabaseConne
       this.connection = DriverManager.getConnection(this.url, this.properties);
     } catch (SQLException e) {
       System.err.println("Error while connecting to database.\n");
-        e.printStackTrace();
+      e.printStackTrace();
       System.exit(1);
     } catch (ClassNotFoundException ex){
-	ex.printStackTrace();
+	  ex.printStackTrace();
     }
   }
 }
