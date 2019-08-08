@@ -1,7 +1,8 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import java.util.Optional;
+
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
-import org.postgresql.geometric.PGpoint;
 
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver,
@@ -17,8 +18,7 @@ public interface MessageDataInterface {
   boolean isValidType();
 
   /**
-   * TODO edit java doc
-   * Grabs the MMSI of the sender.
+   * TODO edit java doc Grabs the MMSI of the sender.
    *
    * s regulated  I believe each * country has a different organization responsible for allocating
    * their block of MMSI's. In the US, * federal users get them through the National
@@ -156,7 +156,7 @@ public interface MessageDataInterface {
    *
    * @return int
    */
-  int getIMO();
+  Optional<Integer> getIMO();
 
   /**
    * Grabs the radio call sign of a vessel from a message. Call sign is governed by the
@@ -184,7 +184,7 @@ public interface MessageDataInterface {
    *
    * @return ShipType
    */
-  int getVesselTypeId();
+  Optional<Integer> getVesselTypeId();
 
   /**
    * Grabs the length in Meters from the Electronic Position-Fixing Device (EPFD) antenna to the bow
@@ -231,11 +231,9 @@ public interface MessageDataInterface {
   /**
    * Grabs the voyage estimated time of arrival (ETA) for a vessel from a message. In UTC time.
    *
-   * @return Optional/</ZonedDateTime/>/
+   * @return String
    */
-  //TODO what was the Optional from?
-  //Optional<ZonedDateTime> getETA();
-  String getETA();
+  Optional<String> getETA();
 
 
   /**

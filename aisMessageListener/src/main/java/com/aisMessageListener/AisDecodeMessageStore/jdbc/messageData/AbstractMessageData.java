@@ -3,6 +3,7 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
@@ -58,6 +59,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
           messages.append(" | ");
         }
       }
+
       return messages.toString();
     } else {
       return nmeaSentence[0].getRawMessage();
@@ -100,12 +102,12 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getNavStatusId() {
-    return 15; // Default for unavailable navigation status. Override as needed.
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public int getManeuverIndicatorId() {
-    return 0; //Default for unavailable maneuver indicator. Override as needed.
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
@@ -129,7 +131,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getIMO() {
+  public Optional<Integer> getIMO() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
@@ -144,8 +146,8 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getVesselTypeId() {
-    return 0; //For unavailable vessel types and unsupported Message Types. Override as needed.
+  public Optional<Integer> getVesselTypeId() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
@@ -174,7 +176,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public String getETA() {
+  public Optional<String> getETA() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 

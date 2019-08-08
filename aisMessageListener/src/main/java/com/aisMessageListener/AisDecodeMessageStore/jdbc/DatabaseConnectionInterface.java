@@ -46,13 +46,13 @@ public interface DatabaseConnectionInterface {
   /**
    * TODO java doc
    */
-  int checkVesselSig(int mmsi, int imo, String callSign, String name, int vesselTypeID)
+  int checkVesselSig(int mmsi, String imo, String callSign, String name, String vesselTypeID)
           throws SQLException;
 
   /**
    * TODO java doc
    */
-  int checkVesselSigWithNulls(int mmsi, int vesselTypeID) throws SQLException;
+  int checkVesselMMSI(int mmsi) throws SQLException;
 
   /**
    * TODO java doc

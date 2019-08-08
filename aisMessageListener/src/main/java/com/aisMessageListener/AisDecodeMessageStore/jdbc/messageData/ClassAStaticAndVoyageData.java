@@ -27,10 +27,10 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public int getIMO() {
-    int imo = -1;
+  public Optional<Integer> getIMO() {
+    Optional<Integer> imo = Optional.empty();
     try {
-      imo = shipVoyageData.getImo().getIMO();
+      imo = Optional.of(shipVoyageData.getImo().getIMO());
     } catch (NullPointerException e) {
     }
     return imo;
@@ -47,10 +47,10 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public int getVesselTypeId() {
-    int ship_type = 0;
+  public Optional<Integer> getVesselTypeId() {
+    Optional<Integer> ship_type = Optional.empty();
     try {
-      ship_type = shipVoyageData.getShipType().getCode();
+      ship_type = Optional.of(shipVoyageData.getShipType().getCode());
     } catch (NullPointerException e) {
     }
     return ship_type;
@@ -82,10 +82,10 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public String getETA() {
+  public Optional<String> getETA() {
     Optional<ZonedDateTime> optionalTime = shipVoyageData.getEtaAfterReceived();
     if (!optionalTime.isPresent()) {
-      return null;
+      return Optional.empty();
     }
     ZonedDateTime time = optionalTime.get();
     int year = time.getYear();
@@ -93,7 +93,7 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
     String day = addZeroToSingleDigitInt(time.getDayOfMonth());
     String hour = addZeroToSingleDigitInt(time.getHour());
     String minute = addZeroToSingleDigitInt(time.getMinute());
-    return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute + " UTC";
+    return Optional.of("" + year + "-" + month + "-" + day + " " + hour + ":" + minute + " UTC");
   }
 
   @Override

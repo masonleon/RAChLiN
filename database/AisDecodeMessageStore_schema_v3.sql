@@ -1063,8 +1063,6 @@ INSERT INTO vessel_type VALUES
 (999,   'Other'                 ,   999, 'No designation'                    ,  NULL                                           );
 
 
-
-
 -- ************************************** "vessel_data"
 
 CREATE TABLE "vessel_data"
@@ -1224,7 +1222,7 @@ CREATE TABLE "vessel_signature"
  "imo"                 int NULL,
  "call_sign"           varchar(50) NULL,
  "name"                varchar(50) NULL,
- "vessel_type_id"      int NOT NULL,
+ "vessel_type_id"      int NULL,
  CONSTRAINT "Indx_unique_vessel_signature" UNIQUE ( "call_sign", "imo", "mmsi", "name", "vessel_type_id" ),
  CONSTRAINT "FK_102" FOREIGN KEY ( "vessel_type_id" ) REFERENCES "vessel_type" ( "vessel_type_id" )
 );
