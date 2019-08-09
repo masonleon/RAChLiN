@@ -17,6 +17,10 @@
             <result name="success">/map.jsp</result>
         </action>
 
+        <action name="time" class="com.jsonAPI.AisDecodeMessageStore.action.TimeAction">
+            <result name="success">/map.jsp</result>
+        </action>
+
 
     </package>
 

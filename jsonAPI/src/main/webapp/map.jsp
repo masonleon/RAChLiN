@@ -19,18 +19,22 @@
             crossorigin=""></script>
     <style>
         #mapid {
-            height: 1080px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 720px;
         }
     </style>
 </head>
 <body>
 <h2>Datapoints Received</h2>
+<%--TODO Display the number of points received.--%>
 <p>To filter results to only datapoints between a certain period of time, enter start and stop times
     in a &quot;YYYY-MM-DD HH:MM:SS&quot; format (All times should be in UTC).</p>
+<p>There is a current limit of 5000 points returned. This is a performance issue resulting from the
+    design of our logic. It's likely that part of the code should be moved server side.</p>
 <p>Displaying results between times:</p>
 <p><s:property value="timeSpan.getStartTime"/></p>
 <p><s:property value="timeSpan.getEndTime"/></p>
-<%--TODO Display the time being shown currently.--%>
 <s:form action="time">
     <s:textfield name="timeSpan.startTime" label="Start time"/>
     <s:textfield name="timeSpan.endTime" label="End time"/>
@@ -78,7 +82,24 @@
         longitude = Number(lat_lon[1]);
         L.circle([latitutde, longitude], 15,
                  {color: iconColor, fillColor: iconColor, fillOpacity: 1.0})
-            .addTo(mymap).bindPopup("vessel_signature_id: " + raw_data[x]["vessel_signature_id"]);
+            .addTo(mymap)
+            .bindPopup("name: " + raw_data[x]["name"] + "\n" +
+                       "call_sign: " + raw_data[x]["call_sign"] + "\n" +
+                       "time_received: " + raw_data[x]["time_received"] + "\n" +
+                       "coord: " + raw_data[x]["coord"] + "\n" +
+                       "accuracy: " + raw_data[x]["accuracy"] + "\n" +
+                       "length_overall: " + raw_data[x]["length_overall"] + "\n" +
+                       "beam_width: " + raw_data[x]["beam_width"] + "\n" +
+                       "speed_over_ground: " + raw_data[x]["speed_over_ground"] + "\n" +
+                       "course_over_ground: " + raw_data[x]["course_over_ground"] + "\n" +
+                       "heading: " + raw_data[x]["heading"] + "\n" +
+                       "rate_of_turn: " + raw_data[x]["rate_of_turn"] + "\n" +
+                       "navigation_status: " + raw_data[x]["navigation_status"] + "\n" +
+                       "maneuver_indicator: " + raw_data[x]["maneuver_indicator"] + "\n" +
+                       "ship_classification: " + raw_data[x]["ship_classification"] + "\n" +
+                       "ais_vessel_code: " + raw_data[x]["ais_vessel_code"] + "\n" +
+                       "vessel_group: " + raw_data[x]["vessel_group"] + "\n" +
+                       "note: " + raw_data[x]["note"]);
     }
 
     var popup = L.popup();

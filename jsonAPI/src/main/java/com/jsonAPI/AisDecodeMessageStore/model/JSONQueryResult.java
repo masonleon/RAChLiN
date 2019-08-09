@@ -105,12 +105,32 @@ public class JSONQueryResult {
     // TODO copy from report reasoning behind this query
     // TODO replace with the more full-fledged query and use a pop for descriptions.
     // TODO figure out how to do heading from
-    return "select vessel_signature_id, gd.coord, nd.heading\n" +
-            "from message_data\n" +
-            "join msg_5_signature using (vessel_signature_id)\n" +
-            "join geospatial_data gd on message_data.geospatial_data_id = gd.geospatial_data_id\n" +
-            "join navigation_data nd on message_data.navigation_data_id = nd.navigation_data_id\n" +
-            "order by vessel_signature_id, heading;";
+    return "SELECT md.vessel_signature_id,\n" +
+            "       time_received,\n" +
+            "       gd.coord,\n" +
+            "       gd.accuracy,\n" +
+            "       nd.speed_over_ground,\n" +
+            "       nd.course_over_ground,\n" +
+            "       nd.heading,\n" +
+            "       nd.rate_of_turn,\n" +
+            "       ns.description as \"navigation_status\",\n" +
+            "       mi.description as \"maneuver_indicator\",\n" +
+            "       sig.name,\n" +
+            "       sig.call_sign,\n" +
+            "       sig.loa as \"length_overall\",\n" +
+            "       sig.beam as \"beam_width\",\n" +
+            "       sig.ais_vessel_code,\n" +
+            "       sig.ais_ship_cargo_classification as \"ship_classification\",\n" +
+            "       sig.vessel_group,\n" +
+            "       sig.note as \"note\"\n" +
+            "FROM message_data md\n" +
+            "         JOIN vessel_signature vs USING (vessel_signature_id)\n" +
+            "         JOIN msg_5_signature sig ON (vs.mmsi = sig.mmsi)\n" +
+            "         JOIN geospatial_data gd USING (geospatial_data_id)\n" +
+            "         JOIN navigation_data nd USING (navigation_data_id)\n" +
+            "         JOIN nav_status ns USING (nav_status_id)\n" +
+            "         JOIN maneuver_indicator mi USING (maneuver_indicator_id)\n" +
+            "LIMIT 5000;";
   }
 
   private String getQueryWithTimeSpan() {
@@ -118,17 +138,38 @@ public class JSONQueryResult {
     String startTime = timeSpan.getStartTime();
     String endTime = timeSpan.getEndTime();
 
-    return "select md.vessel_signature_id, gd.coord, nd.heading, md.time_received\n" +
-            "from message_data md\n" +
-            "         join msg_5_signature using (vessel_signature_id)\n" +
-            "         join geospatial_data gd using (geospatial_data_id)\n" +
-            "         join navigation_data nd using(navigation_data_id)\n" +
-            "where (DATE_PART('day', '" + endTime + "'::timestamp - md.time_received) * 24 +\n" +
+    return "SELECT md.vessel_signature_id,\n" +
+            "       time_received,\n" +
+            "       gd.coord,\n" +
+            "       gd.accuracy,\n" +
+            "       nd.speed_over_ground,\n" +
+            "       nd.course_over_ground,\n" +
+            "       nd.heading,\n" +
+            "       nd.rate_of_turn,\n" +
+            "       ns.description as \"navigation_status\",\n" +
+            "       mi.description as \"maneuver_indicator\",\n" +
+            "       sig.name,\n" +
+            "       sig.call_sign,\n" +
+            "       sig.loa as \"length_overall\",\n" +
+            "       sig.beam as \"beam_width\",\n" +
+            "       sig.ais_vessel_code,\n" +
+            "       sig.ais_ship_cargo_classification as \"ship_classification\",\n" +
+            "       sig.vessel_group,\n" +
+            "       sig.note as \"note\"\n" +
+            "FROM message_data md\n" +
+            "         JOIN vessel_signature vs USING (vessel_signature_id)\n" +
+            "         JOIN msg_5_signature sig ON (vs.mmsi = sig.mmsi)\n" +
+            "         JOIN geospatial_data gd USING (geospatial_data_id)\n" +
+            "         JOIN navigation_data nd USING (navigation_data_id)\n" +
+            "         JOIN nav_status ns USING (nav_status_id)\n" +
+            "         JOIN maneuver_indicator mi USING (maneuver_indicator_id)\n" +
+            "WHERE (DATE_PART('day', '" + endTime + "'::timestamp - md.time_received) * 24 +\n" +
             "       DATE_PART('hour', '" + endTime + "'::timestamp - md.time_received)) * 60 +\n" +
             "      DATE_PART('minute', '" + endTime + "'::timestamp - md.time_received) >= 0 and\n" +
             "      (DATE_PART('day', md.time_received - '" + startTime + "'::timestamp) * 24 +\n" +
             "       DATE_PART('hour', md.time_received - '" + startTime + "'::timestamp)) * 60 +\n" +
-            "      DATE_PART('minute', md.time_received - '" + startTime + "'::timestamp) >= 0;";
+            "      DATE_PART('minute', md.time_received - '" + startTime + "'::timestamp) >= 0" +
+            "LIMIT 5000;";
   }
 
   public void setTimeSpan(TimeSpan timeSpan) {
