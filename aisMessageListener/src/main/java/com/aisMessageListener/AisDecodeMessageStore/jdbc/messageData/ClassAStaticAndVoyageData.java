@@ -1,20 +1,26 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
+import dk.tbsalling.aismessages.ais.messages.PositionReport;
 import dk.tbsalling.aismessages.ais.messages.ShipAndVoyageData;
 
+
 /**
- * TODO java doc
+ * Extension of message to support Class A position reports (i.e message type = 5).
  */
-public class ClassAStaticAndVoyageData extends AbstractMessageData {
+public final class ClassAStaticAndVoyageData extends AbstractMessageData {
 
   private final ShipAndVoyageData shipVoyageData;
 
   /**
-   * TODO java doc
+   * Constructor initializes a ClassAStaticAndVoyageData message using an AIS message.
+   *
+   * @param message an AISMessage object
+   * @throws IllegalArgumentException if the AIS message isn't a {@link ShipAndVoyageData}.
    */
   public ClassAStaticAndVoyageData(AISMessage message) {
     super(message);
@@ -27,13 +33,12 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public int getIMO() {
-    int imo = -1;
+  public Optional<Integer> getIMO() {
     try {
-      imo = shipVoyageData.getImo().getIMO();
+      return Optional.of(shipVoyageData.getImo().getIMO());
     } catch (NullPointerException e) {
+      return Optional.empty();
     }
-    return imo;
   }
 
   @Override
@@ -47,13 +52,12 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public int getVesselTypeId() {
-    int ship_type = 0;
+  public Optional<Integer> getVesselTypeId() {
     try {
-      ship_type = shipVoyageData.getShipType().getCode();
+      return  Optional.of(shipVoyageData.getShipType().getCode());
     } catch (NullPointerException e) {
+      return Optional.empty();
     }
-    return ship_type;
   }
 
   @Override
@@ -82,18 +86,8 @@ public class ClassAStaticAndVoyageData extends AbstractMessageData {
   }
 
   @Override
-  public String getETA() {
-    Optional<ZonedDateTime> optionalTime = shipVoyageData.getEtaAfterReceived();
-    if (!optionalTime.isPresent()) {
-      return null;
-    }
-    ZonedDateTime time = optionalTime.get();
-    int year = time.getYear();
-    String month = addZeroToSingleDigitInt(time.getMonthValue());
-    String day = addZeroToSingleDigitInt(time.getDayOfMonth());
-    String hour = addZeroToSingleDigitInt(time.getHour());
-    String minute = addZeroToSingleDigitInt(time.getMinute());
-    return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute + " UTC";
+  public Optional<OffsetDateTime> getETA() {
+    return shipVoyageData.getEtaAfterReceived().map(ZonedDateTime::toOffsetDateTime);
   }
 
   @Override

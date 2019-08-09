@@ -8,11 +8,15 @@ import com.aisMessageListener.AisDecodeMessageStore.jdbc.util.CoordinateUtil;
 import org.postgresql.geometric.PGpoint;
 
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 
 /**
- * TODO java doc
+ * Insertion logic that can be abstracted out of individual message types live in this Abstract object. DatabaseInserter
+ * objects are to be constructed with minimally a MessageDataInterface implementation, i.e our wrappers around supported
+ * message functionality. DatabaseInserters must also have a connection to the database attached in order to commit
+ * write transactions.
  */
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 
@@ -26,7 +30,9 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   private int geospatialDataPrimaryKey;
 
   /**
-   * TODO java doc
+   * Constructor that supplies a MessageData implementation wrapper and an existing Database connection to be attached.
+   * @param message
+   * @param connection
    */
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
@@ -34,7 +40,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   }
 
   /**
-   * TODO java doc
+   * Default constructor supplies a MessageData implementation wrapper to be inserted to the database.
+   * @param message
    */
   protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
@@ -68,7 +75,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       connection.commitTransaction();
       return WriteResult.SUCCESS;
     } catch (SQLException ex) {
-      ex.printStackTrace();  // For testing.
+      ex.printStackTrace();
       connection.rollBackTransaction();
     }
     return WriteResult.FAILURE;
@@ -77,7 +84,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeMessageData() throws SQLException {
     try {
-      String timeReceived = message.getTimeReceived();
+      OffsetDateTime timeReceived = message.getTimeReceived();
       Boolean isValidMessage = message.isValidType();
       Boolean isMultiPart = message.hasMultipleParts();
       String rawNMEA = message.getRawNMEA();
@@ -136,54 +143,48 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   @Override
   public WriteResult writeVesselSignature() throws SQLException {
     try {
+      String imo;
+      if (message.getIMO().isPresent()) {
+        imo = "" + message.getIMO().get();
+      } else {
+        imo = "NULL";
+      }
+
+      String vesselTypeId;
+      if (message.getVesselTypeId().isPresent()) {
+        vesselTypeId = "" + message.getVesselTypeId().get();
+      } else {
+        vesselTypeId = "NULL";
+      }
+
       int mmsi = message.getMMSI();
-      int imo = message.getIMO();
       String callSign = message.getCallsign();
       String name = message.getShipName();
-      int vesselTypeId = message.getVesselTypeId();
 
       // Check if vessel signature already exists in table.
-      int vesselSignatureID = connection.checkVesselSig(mmsi, imo, callSign, name, vesselTypeId);
+      //TODO: test getVesselSignatureIdFromFullyQualifiedSignature with null values.
+      int vesselSignatureID = connection.getVesselSignatureIdFromFullyQualifiedSignature(mmsi, imo, callSign, name, vesselTypeId);
       if (vesselSignatureID != -1) {
         this.vesselSignaturePrimaryKey = vesselSignatureID;
         return WriteResult.SUCCESS;
       }
 
       // TODO: Replace with Prepared Statement
-      String sqlUpdate;
-      if (imo != -1) {
-        sqlUpdate =
-                "INSERT INTO vessel_signature(" +
-                        "mmsi," +
-                        "imo," +
-                        "call_sign," +
-                        "name," +
-                        "vessel_type_id" +
-                        ") " +
-                        "VALUES (" +
-                        mmsi + "," +
-                        imo + ",'" +
-                        callSign + "','" +
-                        name + "'," +
-                        vesselTypeId +
-                        ")";
-      } else {
-        sqlUpdate =
-                "INSERT INTO vessel_signature(" +
-                        "mmsi," +
-                        "imo," +
-                        "call_sign," +
-                        "name," +
-                        "vessel_type_id" +
-                        ") " +
-                        "VALUES (" +
-                        mmsi + "," +
-                        "NULL" + ",'" +
-                        callSign + "','" +
-                        name + "'," +
-                        vesselTypeId +
-                        ")";
-      }
+      String sqlUpdate =
+              "INSERT INTO vessel_signature(" +
+                      "mmsi," +
+                      "imo," +
+                      "call_sign," +
+                      "name," +
+                      "vessel_type_id" +
+                      ") " +
+                      "VALUES (" +
+                      mmsi + "," +
+                      imo + ",'" +
+                      callSign + "','" +
+                      name + "'," +
+                      vesselTypeId +
+                      ")";
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
       if (primaryKey == -1) {
@@ -195,7 +196,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
     } catch (UnsupportedMessageType ex) {
 
       // Check if vessel signature already exists in table.
-      int vesselSignatureID = connection.checkVesselSigWithNulls(message.getMMSI(), message.getVesselTypeId());
+      int vesselSignatureID = connection.getVesselSignatureIdWithMMSI(message.getMMSI());
       if (vesselSignatureID != -1) {
         this.vesselSignaturePrimaryKey = vesselSignatureID;
         return WriteResult.SUCCESS;
@@ -215,7 +216,7 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                       "NULL," +
                       "NULL," +
                       "NULL," +
-                      "NULL," +
+                      "NULL" +
                       ")";
 
       int primaryKey = connection.insertOneRecord(sqlUpdate);
@@ -231,11 +232,11 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   public WriteResult writeVoyageData() throws SQLException {
     try {
       Float draught = message.getDraught();
-      String eta = message.getETA();
       String destination = message.getDestination();
+
+      // TODO: Replace with Prepared Statements
       String sqlUpdate;
-      if (eta == null) {
-        // TODO: Replace with Prepared Statement
+      if (message.getETA().isPresent()) {
         sqlUpdate =
                 "INSERT INTO voyage_data(" +
                         "draught," +
@@ -243,8 +244,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                         "destination" +
                         ") " +
                         "VALUES (" +
-                        draught + "," +
-                        "NULL,'" +
+                        draught + ",'" +
+                        message.getETA().get() + "','" +
                         destination +
                         "')";
       } else {
@@ -255,8 +256,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
                         "destination" +
                         ") " +
                         "VALUES (" +
-                        draught + ",'" +
-                        eta + "','" +
+                        draught + "," +
+                        "NULL" + ",'" +
                         destination +
                         "')";
       }
@@ -268,10 +269,12 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       this.voyageDataPrimaryKey = primaryKey; // Update for writeMessageData foreign key.
 
       return WriteResult.SUCCESS;
-    } catch (UnsupportedMessageType ex) {
+    } catch (
+            UnsupportedMessageType ex) {
       // This message does not contain voyage data. FK will be null in Message_Data table.
       return WriteResult.UNSUPPORTED;
     }
+
   }
 
   @Override
@@ -282,8 +285,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       Integer toPort = message.getToPort();
       Integer toStarboard = message.getToStarboard();
 
-      // Check if vessel signature already exists in table.
-      int vesselDataID = connection.checkVesselData(toBow, toStern, toPort, toStarboard);
+      // Check if vessel data already exists in table.
+      int vesselDataID = connection.getVesselDataIdFromRecord(toBow, toStern, toPort, toStarboard);
       if (vesselDataID != -1) {
         this.vesselDataPrimaryKey = vesselDataID;
         return WriteResult.SUCCESS;

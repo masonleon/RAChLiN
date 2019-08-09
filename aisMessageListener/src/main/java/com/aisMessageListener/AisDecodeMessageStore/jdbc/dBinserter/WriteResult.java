@@ -9,5 +9,5 @@ package com.aisMessageListener.AisDecodeMessageStore.jdbc.dBinserter;
  * there was no actual vessel data in the AIS Message, so NULLs were written instead.
  */
 public enum WriteResult {
-    FAILURE, SUCCESS, UNSUPPORTED;
+    FAILURE, SUCCESS, UNSUPPORTED
 }

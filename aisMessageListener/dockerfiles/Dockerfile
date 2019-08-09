@@ -4,9 +4,22 @@ COPY aisMessageListener-jar-with-dependencies.jar /usr/local/bin
 
 WORKDIR usr/local/bin
 
-# arbitrary port numbers.  Bind to actual port with docker run -p host_port:10110 ais-message-listener.
-# see build notes.
 EXPOSE 10110/tcp
 EXPOSE 5432/tcp
 
-CMD ["java", "-jar", "aisMessageListener-jar-with-dependencies.jar", "10110", "aisdb.cz93wcr6yyio.us-east-2.rds.amazonaws.com", "ais_DB", "aisDBmasterUser", "[Insert password here]"]
+CMD ["java", "-jar", "aisMessageListener-jar-with-dependencies.jar"]
+
+# Build locally:
+    # mvn package to produce jar
+    # move jar from target dockerfiles directory
+    # docker build --tag=[your-tag-here] .
+    # docker tag image username/repo:tag
+    # docker login
+    # docker push username/repo:tag
+
+# Deploy to server:
+    # docker pull username/repo:tag
+    # docker create --net=host [your-tag-here]
+    # database credentials file must be accessible on server
+    # docker cp database_credentials.txt [id-output-by-create]:/usr/local/bin/
+    # docker start -a [id-output-by-create]

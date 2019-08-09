@@ -1,8 +1,9 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 import dk.tbsalling.aismessages.ais.messages.AISMessage;
@@ -10,13 +11,16 @@ import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
 /**
- * TODO java doc
+ * A wrapper class around the MessageData interface. Most getters are unsupported in the abstract class, and have the
+ * correct implementation in the relevant objects that should be accessing these getters. We are adapting different
+ * message types to a consolidated abstract object.
  */
 public abstract class AbstractMessageData implements MessageDataInterface {
   private final AISMessage message;
 
   /**
-   * TODO java doc
+   * Default constructor instantiates a Message Data wrapper via an input AISMessage object.
+   * @param message
    */
   public AbstractMessageData(AISMessage message) {
     this.message = message;
@@ -58,6 +62,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
           messages.append(" | ");
         }
       }
+
       return messages.toString();
     } else {
       return nmeaSentence[0].getRawMessage();
@@ -69,18 +74,10 @@ public abstract class AbstractMessageData implements MessageDataInterface {
     return this.message.getNmeaMessages().length > 1;
   }
 
-
   @Override
-  public String getTimeReceived() {
+  public OffsetDateTime getTimeReceived() {
     Instant time = this.message.getMetadata().getReceived();
-    ZonedDateTime UTCtime = time.atZone(ZoneOffset.UTC);
-    int year = UTCtime.getYear();
-    String month = addZeroToSingleDigitInt(UTCtime.getMonthValue());
-    String day = addZeroToSingleDigitInt(UTCtime.getDayOfMonth());
-    String hour = addZeroToSingleDigitInt(UTCtime.getHour());
-    String minute = addZeroToSingleDigitInt(UTCtime.getMinute());
-    String second = addZeroToSingleDigitInt(UTCtime.getSecond());
-    return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + " UTC";
+    return time.atOffset(ZoneOffset.UTC);
   }
 
   @Override
@@ -100,12 +97,12 @@ public abstract class AbstractMessageData implements MessageDataInterface {
 
   @Override
   public int getNavStatusId() {
-    return 15; // Default for unavailable navigation status. Override as needed.
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
   public int getManeuverIndicatorId() {
-    return 0; //Default for unavailable maneuver indicator. Override as needed.
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
@@ -129,7 +126,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getIMO() {
+  public Optional<Integer> getIMO() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 
@@ -144,8 +141,8 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public int getVesselTypeId() {
-    return 0; //For unavailable vessel types and unsupported Message Types. Override as needed.
+  public Optional<Integer> getVesselTypeId() {
+    throw new UnsupportedMessageType(getMessageTypeId());
   }
 
   @Override
@@ -174,7 +171,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public String getETA() {
+  public Optional<OffsetDateTime> getETA() {
     throw new UnsupportedMessageType(getMessageTypeId());
   }
 

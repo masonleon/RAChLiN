@@ -1063,8 +1063,6 @@ INSERT INTO vessel_type VALUES
 (999,   'Other'                 ,   999, 'No designation'                    ,  NULL                                           );
 
 
-
-
 -- ************************************** "vessel_data"
 
 CREATE TABLE "vessel_data"

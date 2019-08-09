@@ -1,7 +1,9 @@
 package com.aisMessageListener.AisDecodeMessageStore.jdbc.messageData;
 
+import java.time.OffsetDateTime;
+import java.util.Optional;
+
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
-import org.postgresql.geometric.PGpoint;
 
 /**
  * Base Interface for supporting incoming Message data. Messages come in from a VHF Receiver,
@@ -17,16 +19,13 @@ public interface MessageDataInterface {
   boolean isValidType();
 
   /**
-   * TODO edit java doc
-   * Grabs the MMSI of the sender.
+   * Grabs the MMSI of the sender. Each country has a different organization responsible for allocating a designated
+   * block of MMSI numbers. In the United States, federal users get them through the National Telecommunications
+   * Administration.
    *
-   * s regulated  I believe each * country has a different organization responsible for allocating
-   * their block of MMSI's. In the US, * federal users get them through the National
-   * Telecommunications Administration and everyone else * through the . The problem with inaccurate
-   * MMSI mostly isn't always intentional, * however there are issues when a owner sells the boat,
-   * gets a new transponder and doesn't update the MMSI being broadcast. * There can be other issues
-   * with invalid or corrupted MMSI's due to interference or even if the ship's antenna is struck by
-   * lightning, etc.
+   * Sometimes, MMSI numbers can be inaccurate due to issues, for example when an owner sells their boat, gets a new
+   * transponder, and doesn't update the MMSI being broadcasted. Invalid and corrupted MMSI numbers can occur due to
+   * interference, inclement weather, etc.
    *
    * @return int
    */
@@ -63,9 +62,9 @@ public interface MessageDataInterface {
   /**
    * Checks the instant this message was received.
    *
-   * @return String
+   * @return OffsetDateTime
    */
-  String getTimeReceived();
+  OffsetDateTime getTimeReceived();
 
   /**
    * Grabs the Latitude from a message containing geometric information that has already been
@@ -156,7 +155,7 @@ public interface MessageDataInterface {
    *
    * @return int
    */
-  int getIMO();
+  Optional<Integer> getIMO();
 
   /**
    * Grabs the radio call sign of a vessel from a message. Call sign is governed by the
@@ -184,7 +183,7 @@ public interface MessageDataInterface {
    *
    * @return ShipType
    */
-  int getVesselTypeId();
+  Optional<Integer> getVesselTypeId();
 
   /**
    * Grabs the length in Meters from the Electronic Position-Fixing Device (EPFD) antenna to the bow
@@ -231,11 +230,9 @@ public interface MessageDataInterface {
   /**
    * Grabs the voyage estimated time of arrival (ETA) for a vessel from a message. In UTC time.
    *
-   * @return Optional/</ZonedDateTime/>/
+   * @return OffsetDateTime
    */
-  //TODO what was the Optional from?
-  //Optional<ZonedDateTime> getETA();
-  String getETA();
+  Optional<OffsetDateTime> getETA();
 
 
   /**
