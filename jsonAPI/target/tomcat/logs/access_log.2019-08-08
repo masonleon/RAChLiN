@@ -1,5 +1,0 @@
-0:0:0:0:0:0:0:1 - - [08/Aug/2019:20:20:59 -0400] "GET /jsonAPI HTTP/1.1" 302 - http-bio-8080-exec-1 0
-0:0:0:0:0:0:0:1 - - [08/Aug/2019:20:21:01 -0400] "GET /jsonAPI/ HTTP/1.1" 200 373 http-bio-8080-exec-2 852
-0:0:0:0:0:0:0:1 - - [08/Aug/2019:20:21:01 -0400] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-3 0
-0:0:0:0:0:0:0:1 - - [08/Aug/2019:20:21:05 -0400] "GET /jsonAPI/map.action;jsessionid=8EEA89D593DB0B652AA950AD4FAFE2D0 HTTP/1.1" 200 2191 http-bio-8080-exec-4 129
-0:0:0:0:0:0:0:1 - - [08/Aug/2019:20:21:11 -0400] "GET /jsonAPI/map.action;jsessionid=8EEA89D593DB0B652AA950AD4FAFE2D0 HTTP/1.1" 200 2191 http-bio-8080-exec-5 11
