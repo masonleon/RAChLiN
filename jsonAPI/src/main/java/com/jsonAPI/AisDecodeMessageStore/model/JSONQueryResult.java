@@ -12,8 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+/**
+ * Model class that handles all database access and queries.
+ */
 public class JSONQueryResult {
-  // TODO Should this port number be hardcoded like this?
   private static final String port = "5432";
   private String databseURL;
   private Properties properties;
@@ -39,7 +41,6 @@ public class JSONQueryResult {
     return timeSpan == null ? "NULL " + accesses : timeSpan.toString() + " " + accesses;
   }
 
-  // TODO Find a more secure way to get database credentials.
   private JSONQueryResult() {
     String databaseName;
     String username = null;
@@ -102,9 +103,6 @@ public class JSONQueryResult {
   }
 
   private String getQuery() {
-    // TODO copy from report reasoning behind this query
-    // TODO replace with the more full-fledged query and use a pop for descriptions.
-    // TODO figure out how to do heading from
     return "SELECT md.vessel_signature_id,\n" +
             "       time_received,\n" +
             "       gd.coord,\n" +
@@ -134,7 +132,6 @@ public class JSONQueryResult {
   }
 
   private String getQueryWithTimeSpan() {
-    // TODO Make sure this works.
     String startTime = timeSpan.getStartTime();
     String endTime = timeSpan.getEndTime();
 

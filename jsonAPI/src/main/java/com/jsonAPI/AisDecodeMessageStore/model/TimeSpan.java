@@ -1,5 +1,8 @@
 package com.jsonAPI.AisDecodeMessageStore.model;
 
+/**
+ * Model class representing a time interval, to be specified by users.
+ */
 public class TimeSpan {
   private String startTime;
   private String endTime;

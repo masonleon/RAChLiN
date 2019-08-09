@@ -10,8 +10,8 @@ import java.sql.SQLException;
 
 
 /**
- * This code converts a JDBC Result to a JSONObject. This code takes heavily from code posted by
- * Devin Dixon https://stackoverflow.com/questions/6514876/most-efficient-conversion-of-resultset-to-json
+ * Converts a JDBC Result to a JSONObject. This code takes heavily from code posted by Devin Dixon
+ * at: https://stackoverflow.com/questions/6514876/most-efficient-conversion-of-resultset-to-json
  */
 class ResultSetConverter {
   static JSONArray apply(ResultSet rs)
