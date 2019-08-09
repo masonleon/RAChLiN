@@ -36,9 +36,9 @@ class AisTcpClient {
   }
 
   /**
-   * Starts connection with the server and requests AIS messages indefinitely. Received messages
-   * will be forwarded to an inserter for database update. Before running, open an ssh tunnel that
-   * forwards the desired port from localhost.  Use autossh to keep the tunnel alive.
+   * Starts connection with the kplex server and requests AIS messages indefinitely. Received
+   * messages will be forwarded to an inserter for database update. Before running, open an ssh
+   * tunnel that forwards the desired port from localhost.  Use autossh to keep the tunnel alive.
    *
    * @throws InterruptedException does not need to be handled. Only occurs when another thread
    *                              interrupts the sleep method during connection recovery.

@@ -1,4 +1,4 @@
-package com.aisMessageListener.AisDecodeMessageStore.samples_old;
+package com.aisMessageListener.AisDecodeMessageStore.unused_sample_code;
 
 import java.io.IOException;
 import java.net.Socket;

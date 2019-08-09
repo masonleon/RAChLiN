@@ -13,10 +13,10 @@ import java.time.OffsetDateTime;
 import dk.tbsalling.aismessages.ais.exceptions.UnsupportedMessageType;
 
 /**
- * Insertion logic that can be abstracted out of individual message types live in this Abstract object. DatabaseInserter
- * objects are to be constructed with minimally a MessageDataInterface implementation, i.e our wrappers around supported
- * message functionality. DatabaseInserters must also have a connection to the database attached in order to commit
- * write transactions.
+ * Insertion logic that can be abstracted out of individual message types live in this Abstract
+ * object. DatabaseInserter objects are to be constructed with minimally a MessageDataInterface
+ * implementation, i.e our wrappers around supported message functionality. DatabaseInserters must
+ * also have a connection to the database attached in order to commit write transactions.
  */
 public abstract class AbstractDatabaseInserter implements DatabaseInserterInterface {
 
@@ -30,9 +30,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   private int geospatialDataPrimaryKey;
 
   /**
-   * Constructor that supplies a MessageData implementation wrapper and an existing Database connection to be attached.
-   * @param message
-   * @param connection
+   * Constructor that supplies a MessageData implementation wrapper and an existing Database
+   * connection to be attached.
    */
   protected AbstractDatabaseInserter(MessageDataInterface message, DatabaseConnectionInterface connection) {
     this(message);
@@ -40,8 +39,8 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
   }
 
   /**
-   * Default constructor supplies a MessageData implementation wrapper to be inserted to the database.
-   * @param message
+   * Default constructor supplies a MessageData implementation wrapper to be inserted to the
+   * database.
    */
   protected AbstractDatabaseInserter(MessageDataInterface message) {
     this.message = message;
@@ -162,7 +161,9 @@ public abstract class AbstractDatabaseInserter implements DatabaseInserterInterf
       String name = message.getShipName();
 
       // Check if vessel signature already exists in table.
-      //TODO: test getVesselSignatureIdFromFullyQualifiedSignature with null values.
+      //TODO: getVesselSignatureIdFromFullyQualifiedSignature may not handle null values correctly.
+      //      Currently a non-issue, as we have not encountered a fully qualified signature that
+      //      contains nulls.
       int vesselSignatureID = connection.getVesselSignatureIdFromFullyQualifiedSignature(mmsi, imo, callSign, name, vesselTypeId);
       if (vesselSignatureID != -1) {
         this.vesselSignaturePrimaryKey = vesselSignatureID;

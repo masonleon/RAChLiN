@@ -11,16 +11,15 @@ import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 import dk.tbsalling.aismessages.nmea.messages.NMEAMessage;
 
 /**
- * A wrapper class around the MessageData interface. Most getters are unsupported in the abstract class, and have the
- * correct implementation in the relevant objects that should be accessing these getters. We are adapting different
- * message types to a consolidated abstract object.
+ * A wrapper class around the MessageData interface. Most getters are unsupported in the abstract
+ * class, and have the correct implementation in the relevant objects that should be accessing these
+ * getters. We are adapting different message types to a consolidated abstract object.
  */
 public abstract class AbstractMessageData implements MessageDataInterface {
   private final AISMessage message;
 
   /**
    * Default constructor instantiates a Message Data wrapper via an input AISMessage object.
-   * @param message
    */
   public AbstractMessageData(AISMessage message) {
     this.message = message;
@@ -141,9 +140,7 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   }
 
   @Override
-  public Optional<Integer> getVesselTypeId() {
-    throw new UnsupportedMessageType(getMessageTypeId());
-  }
+  public Optional<Integer> getVesselTypeId() { throw new UnsupportedMessageType(getMessageTypeId()); }
 
   @Override
   public Integer getToBow() {
@@ -178,13 +175,5 @@ public abstract class AbstractMessageData implements MessageDataInterface {
   @Override
   public String getDestination() {
     throw new UnsupportedMessageType(getMessageTypeId());
-  }
-
-  protected String addZeroToSingleDigitInt(int value) {
-    String formattedValue = "" + value;
-    if (formattedValue.length() == 1) {
-      formattedValue = "0" + value;
-    }
-    return formattedValue;
   }
 }

@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 /**
  * Test class that emulates kplex.  Listens for requests from Tcp client on local loopback address
- * (no ssh tunnel required) and responds with 3 separate batches of AISmessages.
+ * (no ssh tunnel required) and responds with batches of AISmessages.
  */
 class testKplexServer {
 
@@ -28,7 +28,7 @@ class testKplexServer {
     int port = Integer.parseInt(args[0]);
     String filepath = "./aisMessageListener/src/test/testData/" + args[1];
 
-    // Change 1 to higher number to check connection recover for AisTcpClient.
+    // Change 1 to higher number to check connection recovery for AisTcpClient.
     for (int i = 0; i < 1; i++) {
       try (
               ServerSocket server = new ServerSocket(

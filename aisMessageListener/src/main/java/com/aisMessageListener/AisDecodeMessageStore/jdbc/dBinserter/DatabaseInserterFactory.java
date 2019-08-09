@@ -8,7 +8,8 @@ import dk.tbsalling.aismessages.ais.messages.AISMessage;
 import dk.tbsalling.aismessages.ais.messages.types.AISMessageType;
 
 /**
- * Factory to handle an incoming AISMessage and parse its type in order to construct a DatabaseInserter object.
+ * Factory to handle an incoming AISMessage and parse its type in order to construct a
+ * DatabaseInserter object.
  */
 public final class DatabaseInserterFactory {
 
@@ -23,19 +24,19 @@ public final class DatabaseInserterFactory {
     AISMessageType messageType = message.getMessageType();
 
     switch (messageType) {
-        // Message Type 1, 2, and 3, respectively
-        case PositionReportClassAScheduled:
-        case PositionReportClassAAssignedSchedule:
-        case PositionReportClassAResponseToInterrogation:
-            return new ClassAPositionReportInserter(new ClassAPositionReportData(message));
+      // Message Type 1, 2, and 3, respectively
+      case PositionReportClassAScheduled:
+      case PositionReportClassAAssignedSchedule:
+      case PositionReportClassAResponseToInterrogation:
+        return new ClassAPositionReportInserter(new ClassAPositionReportData(message));
 
-        // Message Type 5
-        case ShipAndVoyageRelatedData:
-            return new ClassAStaticAndVoyageDataInserter(new ClassAStaticAndVoyageData(message));
+      // Message Type 5
+      case ShipAndVoyageRelatedData:
+        return new ClassAStaticAndVoyageDataInserter(new ClassAStaticAndVoyageData(message));
 
-        // Unsupported Message
-        default:
-            return new UnsupportedMessageInserter(new UnsupportedMessageData(message));
+      // Unsupported Message
+      default:
+        return new UnsupportedMessageInserter(new UnsupportedMessageData(message));
     }
   }
 }
