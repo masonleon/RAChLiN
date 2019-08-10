@@ -50,7 +50,8 @@ FROM vessel_signature vs
          LEFT JOIN vessel_data vd USING (vessel_data_id)
          LEFT JOIN vessel_type vt USING (vessel_type_id)
 
-WHERE md.message_type_id = 5 AND vs.vessel_type_id IS NOT NULL
+WHERE md.message_type_id = 5
+  AND vs.vessel_type_id IS NOT NULL
 
 GROUP BY vs.vessel_signature_id,
          vs.mmsi,
@@ -66,8 +67,37 @@ GROUP BY vs.vessel_signature_id,
          vt.note;
 
 ---------------------------------------------SAMPLE QUERIES-------------------------------------------------------------
--- List of distinct vessels (vessel signatures), sorted largest to smallest
-SELECT DISTINCT vs.mmsi,
+-- Total number of messages received.
+SELECT Count(message_id)
+FROM message_data;
+
+-- Total number of messages received by message-type.
+SELECT mt.supported,
+       COUNT(message_id) num_msg_received,
+       mt.message_type_id,
+       mt.name,
+       mt.description
+FROM message_data
+         LEFT JOIN message_type mt USING (message_type_id)
+GROUP BY mt.supported, mt.message_type_id, mt.name, mt.description
+ORDER BY num_msg_received DESC;
+
+-- Total number of Class A vessels by type having sent a Message 5 identified in Boston Harbor.
+SELECT COUNT(vessel_type_id) num_vessels,
+       ais_vessel_code,
+       vessel_group,
+       ais_ship_cargo_classification,
+       note
+FROM msg_5_signature
+GROUP BY ais_vessel_code,
+         vessel_group,
+         ais_ship_cargo_classification,
+         note
+ORDER BY num_vessels DESC;
+
+-- List of 10 largest Class A vessels having sent a Message 5 identified in Boston Harbor
+SELECT DISTINCT vs.vessel_signature_id,
+                vs.mmsi,
                 vs.imo,
                 vs.name,
                 vs.call_sign,
@@ -81,97 +111,25 @@ FROM vessel_signature vs
          LEFT JOIN message_data md USING (vessel_signature_id)
          LEFT JOIN vessel_data vd USING (vessel_data_id)
          LEFT JOIN vessel_type vt USING (vessel_type_id)
--- where md.message_type_id = '1' or md.message_type_id = '2' or md.message_type_id = '3' or md.message_type_id = '5'
-GROUP BY vt.ais_vessel_code, vt.vessel_group, vt.ais_ship_cargo_classification, vt.note,
+WHERE md.message_type_id = '5'
+GROUP BY vs.vessel_signature_id, vt.ais_vessel_code, vt.vessel_group, vt.ais_ship_cargo_classification, vt.note,
          vs.mmsi, vs.imo, vs.name, vs.call_sign,
          loa, beam
-ORDER BY loa DESC NULLS LAST;
-
-
-SELECT DISTINCT vs.mmsi,
-                vs.imo,
-                vs.name,
-                vs.call_sign,
-                vd.vessel_data_id,
-                vd.to_bow,
-                vd.to_stern,
-                vd.to_port,
-                vd.to_starboard,
-                vt.ais_vessel_code,
-                vt.vessel_group,
-                vt.ais_ship_cargo_classification,
-                vt.note
-FROM vessel_signature vs
-         LEFT JOIN message_data md USING (vessel_signature_id)
-         LEFT JOIN vessel_data vd USING (vessel_data_id)
-         LEFT JOIN vessel_type vt USING (vessel_type_id)
--- where md.message_type_id = '1' or md.message_type_id = '2' or md.message_type_id = '3' or md.message_type_id = '5'
-GROUP BY vs.mmsi,
-         vs.imo,
-         vs.name,
-         vs.call_sign,
-         vd.vessel_data_id, vd.to_bow, vd.to_stern, vd.to_port, vd.to_starboard,
-         vt.ais_vessel_code,
-         vt.vessel_group,
-         vt.ais_ship_cargo_classification,
-         vt.note;
--- loa, beam
--- ORDER BY loa DESC NULLS LAST;
-
-
--- Number of distinct vessels (vessel signatures)
-SELECT count(DISTINCT mmsi)
-FROM vessel_signature
-         LEFT JOIN message_data md USING (vessel_signature_id)
-WHERE
-    --md.message_type_id = '1'
-    --OR md.message_type_id = '2'
-    -- OR md.message_type_id = '3'
-    -- OR md.message_type_id = '5';
-    md.message_type_id = '5';
-
--- checking vessel with vessel data but reporting vessel type as 0
-SELECT DISTINCT mt.name, mt.description, vs.mmsi, vs.imo, vs.call_sign, vs.name, vs.vessel_type_id, vs.vessel_signature_id
-FROM vessel_signature vs
-         LEFT JOIN message_data md USING (vessel_signature_id)
-         LEFT JOIN message_type mt USING (message_type_id)
-GROUP BY mt.name, mt.description, vs.mmsi, vs.imo, vs.call_sign, vs.name, vs.vessel_type_id, vs.vessel_signature_id;
-
-
--- -- checking vessel with vessel data but reporting vessel type as 0
--- SELECT DISTINCT mt.name, mt.description, vs.*
--- FROM vessel_signature vs
---          LEFT JOIN message_data md USING (vessel_signature_id)
---          LEFT JOIN message_type mt USING (message_type_id)
--- WHERE vs.mmsi = '538002221';
-
--- Number of total messages received
-SELECT Count(message_id)
-FROM message_data;
-
--- Number of messages received by type
-SELECT mt.supported, COUNT(message_id) num_msg_received, mt.message_type_id, mt.name, mt.description
-FROM message_data
-         LEFT JOIN message_type mt USING (message_type_id)
-GROUP BY mt.supported, mt.message_type_id, mt.name, mt.description
-ORDER BY num_msg_received DESC;
-
-
-
-
+ORDER BY loa DESC NULLS LAST
+LIMIT 10;
 
 ---------------------------------------------QUERY FOR MAP API-------------------------------------------------------------
 -----------------------------------------***STILL IN DEVELOPMENT-------------------------------------------------------------
 -- List of  most recent geo and navigation data (msg 1, 2, or 3) joined to distinct vessels (msg 5)
-SELECT md.time_received as "time",
+SELECT md.time_received                  AS "time",
        gd.coord,
        gd.accuracy,
-       nd.speed_over_ground as "sog",
-       nd.course_over_ground as "cog",
-       nd.heading as "hdg",
-       nd.rate_of_turn as "rot",
-       ns.description as "nav stat",
-       mi.description as "maneuver ind",
+       nd.speed_over_ground              AS "sog",
+       nd.course_over_ground             AS "cog",
+       nd.heading                        AS "hdg",
+       nd.rate_of_turn                   AS "rot",
+       ns.description                    AS "nav stat",
+       mi.description                    AS "maneuver ind",
        sig.mmsi,
        sig.imo,
        sig.name,
@@ -179,9 +137,9 @@ SELECT md.time_received as "time",
        sig.loa,
        sig.beam,
        sig.ais_vessel_code,
-       sig.ais_ship_cargo_classification as "ship/cargo classification",
+       sig.ais_ship_cargo_classification AS "ship/cargo classification",
        sig.vessel_group,
-       sig.note as "ship/cargo note"
+       sig.note                          AS "ship/cargo note"
 FROM message_data md
          JOIN vessel_signature vs USING (vessel_signature_id)
          JOIN msg_5_signature sig ON (vs.mmsi = sig.mmsi)
@@ -189,109 +147,4 @@ FROM message_data md
          JOIN navigation_data nd USING (navigation_data_id)
          JOIN nav_status ns USING (nav_status_id)
          JOIN maneuver_indicator mi USING (maneuver_indicator_id)
-where  sig.ais_ship_cargo_classification like 'Tug'
 ORDER BY time_received DESC;
-
--- List of distinct vessels by length with time of last message received
-SELECT max(md.time_received) AS time,
-       sig.mmsi,
-       sig.imo,
-       sig.name,
-       sig.call_sign,
-       sig.loa,
-       sig.beam,
-       sig.ais_vessel_code,
-       sig.ais_ship_cargo_classification,
-       sig.vessel_group,
-       sig.note
-FROM (
-    SELECT vessel_signature_id,
-             mmsi,
-             imo,
-             name,
-             call_sign,
-             loa,
-             beam,
-             ais_vessel_code,
-             ais_ship_cargo_classification,
-             vessel_group,
-             note
-      FROM msg_5_signature
-      GROUP BY vessel_signature_id,
-               mmsi,
-               imo,
-               name,
-               call_sign,
-               loa,
-               beam,
-               ais_vessel_code,
-               ais_ship_cargo_classification,
-               vessel_group,
-               note
-    ) AS sig, message_data md
-          -- JOIN message_data md ON (md.vessel_signature_id = sig.vessel_signature_id)
-          JOIN vessel_signature vs ON (md.vessel_signature_id = vs.vessel_signature_id and vs.mmsi = sig.mmsi)
-GROUP BY sig.mmsi,
-         sig.imo,
-         sig.name,
-         sig.call_sign,
-         sig.loa,
-         sig.beam,
-         sig.ais_vessel_code,
-         sig.ais_ship_cargo_classification,
-         sig.vessel_group,
-         sig.note
-ORDER BY sig.loa DESC;
-
-select
-       distinct
-                        vs.mmsi,
-vs.imo,
-vs.name,
-vs.call_sign,
-LENGTH_OVERALL_METERS(vd.to_bow, vd.to_stern)    loa,
-BEAM_OVERALL_METERS(vd.to_port, vd.to_starboard) beam,
-vs.vessel_type_id, max(md.time_received) AS time
-
-from message_data md
-JOIN vessel_signature vs ON md.vessel_signature_id = vs.vessel_signature_id
-join vessel_data vd ON md.vessel_data_id = vd.vessel_data_id
-GROUP BY mmsi,
-         imo,
-         name,
-         call_sign,
-         loa,
-         beam,
-         vessel_type_id
-ORDER BY loa desc;
-
-
-
-SELECT max(md.time_received) AS time,
-        ms.mmsi,
-        ms.imo,
-        ms.name,
-        ms.call_sign,
-        ms.loa,
-        ms.beam,
-        ms.ais_vessel_code,
-        ms.ais_ship_cargo_classification,
-        ms.vessel_group,
-        ms.note
-
-FROM message_data md
-          -- JOIN message_data md ON (md.vessel_signature_id = sig.vessel_signature_id)
-          JOIN vessel_signature vs ON (md.vessel_signature_id = vs.vessel_signature_id)
-          join msg_5_signature ms ON (ms.mmsi = vs.mmsi)
-
-GROUP BY ms.mmsi,
-         ms.imo,
-         ms.name,
-         ms.call_sign,
-         ms.loa,
-         ms.beam,
-         ms.ais_vessel_code,
-         ms.ais_ship_cargo_classification,
-         ms.vessel_group,
-         ms.note
-ORDER BY ms.loa DESC;
