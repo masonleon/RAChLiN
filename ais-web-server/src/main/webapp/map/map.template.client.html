@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Map</title>
+
+
+
+
+  <link rel="shortcut icon"
+        type="image/x-icon"
+        href="docs/images/favicon.ico" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
+<!--   Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+          integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+          crossorigin=""></script>
+
+  <link href="map.style.client.css"
+        rel="stylesheet"/>
+
+  <script src="map.controller.client.js"
+          type="text/javascript"></script>
+
+
+</head>
+
+<body>
+
+  <h1>Map</h1>
+  <h2>Datapoints Received</h2>
+<!--    TODO Display the number of points received.-->
+  <p>
+    To filter results to only datapoints between a certain period of time, enter start and stop times
+    in a &quot;YYYY-MM-DD HH:MM:SS&quot; format (All times should be in UTC).
+  </p>
+  <p>
+    There is a current limit of 5000 points returned. This is a performance issue resulting from the
+    design of our logic. It's likely that part of the code should be moved server side.
+  </p>
+  <p>
+    Displaying results between times:
+  </p>
+<!--&lt;!&ndash;    <p>&ndash;&gt;-->
+<!--&lt;!&ndash;      <s:property value="timeSpan.getStartTime"/>&ndash;&gt;-->
+<!--&lt;!&ndash;    </p>&ndash;&gt;-->
+<!--&lt;!&ndash;    <p>&ndash;&gt;-->
+<!--&lt;!&ndash;      <s:property value="timeSpan.getEndTime"/>&ndash;&gt;-->
+<!--&lt;!&ndash;    </p>&ndash;&gt;-->
+<!--&lt;!&ndash;  <s:form action="time">&ndash;&gt;-->
+<!--&lt;!&ndash;    <s:textfield name="timeSpan.startTime" label="Start time"/>&ndash;&gt;-->
+<!--&lt;!&ndash;    <s:textfield name="timeSpan.endTime" label="End time"/>&ndash;&gt;-->
+<!--&lt;!&ndash;    <s:submit/>&ndash;&gt;-->
+<!--&lt;!&ndash;  </s:form>&ndash;&gt;-->
+
+  <div id="mapid"></div>
+
+</body>
+</html>
