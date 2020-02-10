@@ -9,5 +9,4 @@ class AisWebServerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
