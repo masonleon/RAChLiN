@@ -33,4 +33,7 @@ hs_err_pid*
 /.idea
 /target/
 */target/*
+#/aisMessageListener/target/
+#/jsonAPI/target/
 
+/dev_notes/
