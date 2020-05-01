@@ -24,7 +24,9 @@ public abstract class AbstractDatabaseConnectionManager implements DatabaseConne
    * @param username     the database username.
    * @param password     the database password.
    */
-  AbstractDatabaseConnectionManager(String host, String databaseName, String username,
+  AbstractDatabaseConnectionManager(String host,
+                                    String databaseName,
+                                    String username,
                                     String password) {
     this.url = "jdbc:postgresql://" + host + ":" + port + "/" + databaseName;
     this.properties = new Properties();
