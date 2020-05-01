@@ -11,11 +11,12 @@
 	<groupId>io.seeport.rachlin</groupId>
 	<artifactId>ais-web-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ais-web-server</name>
-	<description>ais json api</description>
+	<name>AIS Web Server</name>
+	<description>AIS Web Server REST API</description>
 
 	<properties>
 		<java.version>11</java.version>
+		<dependencies.spring-boot.version>2.2.4.RELEASE</dependencies.spring-boot.version>
 	</properties>
 
 	<dependencies>
@@ -27,6 +28,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${dependencies.spring-boot.version}</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -35,7 +37,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+  </dependencies>
 
 	<build>
 		<plugins>
@@ -43,7 +49,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
